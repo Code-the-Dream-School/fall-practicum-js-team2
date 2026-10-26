@@ -59,3 +59,11 @@ model Vote {
     @@unique([voterParticipantId, targetParticipantId], name: "uniqueVotePerDrawing")
     @@map("votes")
 }
+
+// The pictionary word
+model Word {
+    id                Int       @id @default(autoincrement()) 
+    text              String    @unique @db.VarChar(50)
+    difficulty        String    @default("easy") @db.VarChar(50)
+    createdAt         DateTime  @default(now()) @db.Timestamp(6) @map("created_at")
+}
