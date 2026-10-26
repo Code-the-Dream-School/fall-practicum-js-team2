@@ -19,10 +19,16 @@ model User {
 }
 
 model Game { 
-  id            Int       @id @default(autoincrement()) 
-  startDate     DateTime  @default(now()) @map("start_date)
-  endDate       DateTime  @map("end_date)
-  participants  Participant[]
-
-  @@map("games)
+  id             Int       @id @default(autoincrement()) 
+  startDate      DateTime  @default(now()) @map("start_date)
+  endDate        DateTime  @map("end_date)
+  
+  @@map("games")
 }
+
+model Participant {
+    userId       Int       @map("user_id")
+    gameId       Int       @map("game_id")
+
+    @@map("participants")
+} 
