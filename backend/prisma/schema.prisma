@@ -13,7 +13,16 @@ model User {
   name           String   @db.VarChar(30)
   hashedPassword String   @db.VarChar(255) @map("hashed_password") // Mapped
   createdAt      DateTime @default(now()) @db.Timestamp(6) @map("created_at") // Mapped
-  gamesPlayed    Games[]  
+  gamesPlayed    Game[]  
 
   @@map("users")
+}
+
+model Game { 
+  id            Int       @id @default(autoincrement()) 
+  startDate     DateTime  @default(now()) @map("start_date)
+  endDate       DateTime  @map("end_date)
+  participants  Participant[]
+
+  @@map("games)
 }
