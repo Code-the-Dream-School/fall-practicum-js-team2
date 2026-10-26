@@ -23,6 +23,7 @@ model Game {
   id                 Int       @id @default(autoincrement()) 
   pictionaryWord     String    @map("pictionary_word") @db.VarChar(50)
   status             String    @default("active") @db.VarChar(20)
+  privacy            String    @default("public") @db.VarChar(20)
   startDate          DateTime  @default(now()) @map("start_date")
   endDate            DateTime  @map("end_date")
   participants       Participant[] 
