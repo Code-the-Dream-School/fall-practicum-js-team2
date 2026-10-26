@@ -18,17 +18,25 @@ model User {
   @@map("users")
 }
 
+// Game rules
 model Game { 
   id             Int       @id @default(autoincrement()) 
+  pictionaryWord String    @map("pictionary_word") @db.VarChar(50)
+  status         String    @default("active") @db.VarChar(20)
   startDate      DateTime  @default(now()) @map("start_date)
   endDate        DateTime  @map("end_date)
   
   @@map("games")
 }
 
+// What each user can do
 model Participant {
-    userId       Int       @map("user_id")
-    gameId       Int       @map("game_id")
-
-    @@map("participants")
+   id            Int       @id @default(autoincrement())
+   userId        Int       @map("user_id")
+   gameId        Int       @map("game_id")
+   score         Int       @default(0)
+   isDrawing     Boolean   @default(false) @map("is_drawing")
+   
+   @@map("participants")
 } 
+
