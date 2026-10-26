@@ -8,34 +8,34 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  email          String   @unique @db.VarChar(255)
-  name           String   @db.VarChar(30)
-  hashedPassword String   @db.VarChar(255) @map("hashed_password") // Mapped
-  createdAt      DateTime @default(now()) @db.Timestamp(6) @map("created_at") // Mapped
-  participated   Participant[] // Play history of games and votes 
+  id                 Int      @id @default(autoincrement())
+  email              String   @unique @db.VarChar(255)
+  name               String   @db.VarChar(30)
+  hashedPassword     String   @db.VarChar(255) @map("hashed_password") // Mapped
+  createdAt          DateTime @default(now()) @db.Timestamp(6) @map("created_at") // Mapped
+  participated       Participant[] // Play history of games and votes 
 
   @@map("users")
 }
 
 // Game rules
 model Game { 
-  id             Int       @id @default(autoincrement()) 
-  pictionaryWord String    @map("pictionary_word") @db.VarChar(50)
-  status         String    @default("active") @db.VarChar(20)
-  startDate      DateTime  @default(now()) @map("start_date)
-  endDate        DateTime  @map("end_date)
+  id                 Int       @id @default(autoincrement()) 
+  pictionaryWord     String    @map("pictionary_word") @db.VarChar(50)
+  status             String    @default("active") @db.VarChar(20)
+  startDate          DateTime  @default(now()) @map("start_date)
+  endDate            DateTime  @map("end_date)
   
   @@map("games")
 }
 
 // What each user can do
 model Participant {
-   id            Int       @id @default(autoincrement())
-   userId        Int       @map("user_id")
-   gameId        Int       @map("game_id")
-   score         Int       @default(0)
-   isDrawing     Boolean   @default(false) @map("is_drawing")
+   id                Int       @id @default(autoincrement())
+   userId            Int       @map("user_id")
+   gameId            Int       @map("game_id")
+   score             Int       @default(0)
+   isDrawing         Boolean   @default(false) @map("is_drawing")
    
    @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
    @@map("participants")
@@ -43,9 +43,9 @@ model Participant {
 
 // @TODO need to figure out how to save track gps path here
 model Drawing {
-   id            Int       @id @default(autoincrement()) 
-   participantId Int       @map("participant_id")
-   submittedAt   DateTime  @default(now()) @db.Timestamp(6) @map("submitted_at")
+   id                 Int       @id @default(autoincrement()) 
+   participantId      Int       @map("participant_id")
+   submittedAt        DateTime  @default(now()) @db.Timestamp(6) @map("submitted_at")
 
    @@map("drawings")
 }
