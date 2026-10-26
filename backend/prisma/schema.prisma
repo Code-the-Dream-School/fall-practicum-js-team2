@@ -40,3 +40,11 @@ model Participant {
    @@map("participants")
 } 
 
+model Drawing {
+   id            Int       @id @default(autoincrement()) 
+   participantId Int       @map("participant_id")
+   submittedAt   DateTime  @default(now()) @db.Timestamp(6) map("submitted_at")
+
+   @@map("drawings")
+}
+
