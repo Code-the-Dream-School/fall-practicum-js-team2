@@ -23,9 +23,10 @@ model Game {
   id                 Int       @id @default(autoincrement()) 
   pictionaryWord     String    @map("pictionary_word") @db.VarChar(50)
   status             String    @default("active") @db.VarChar(20)
-  startDate          DateTime  @default(now()) @map("start_date)
-  endDate            DateTime  @map("end_date)
-  
+  startDate          DateTime  @default(now()) @map("start_date")
+  endDate            DateTime  @map("end_date")
+  participants       Participant[] 
+
   @@map("games")
 }
 
@@ -37,6 +38,13 @@ model Participant {
    score             Int       @default(0)
    isDrawing         Boolean   @default(false) @map("is_drawing")
    
+   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+   game              Game      @relation(fields: [gameId], references: [id], onDelete: Cascade) 
+
+   drawings          Drawing[]
+   voted             Vote[]    @relation("VoterRelation")
+   received          Vote[]    @relation("TargetRelation")
+
    @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
    @@map("participants")
 } 
@@ -47,6 +55,8 @@ model Drawing {
    participantId      Int       @map("participant_id")
    submittedAt        DateTime  @default(now()) @db.Timestamp(6) @map("submitted_at")
 
+   participant        Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+ 
    @@map("drawings")
 }
 
@@ -56,7 +66,10 @@ model Vote {
     targetParticipant Int       @map("target_participant")
     createdAt         DateTime  @default(now()) @db.Timestamp(6) @map("created_at")
 
-    @@unique([voterParticipantId, targetParticipantId], name: "uniqueVotePerDrawing")
+    voter             Participant @relation("VoterRelation", fields: [voterParticipant], references: [id], onDelete: Cascade)
+    target            Participant @relation("TargetRelation", fields: [targetParticipant], references: [id], onDelete: Cascade)
+
+    @@unique([voterParticipant, targetParticipant], name: "uniqueVotePerDrawing")
     @@map("votes")
 }
 
@@ -66,4 +79,6 @@ model Word {
     text              String    @unique @db.VarChar(50)
     difficulty        String    @default("easy") @db.VarChar(50)
     createdAt         DateTime  @default(now()) @db.Timestamp(6) @map("created_at")
+
+    @@map("words")
 }
