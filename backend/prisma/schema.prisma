@@ -13,7 +13,7 @@ model User {
   name           String   @db.VarChar(30)
   hashedPassword String   @db.VarChar(255) @map("hashed_password") // Mapped
   createdAt      DateTime @default(now()) @db.Timestamp(6) @map("created_at") // Mapped
-  gamesPlayed    Game[]  
+  participated   Participant[] // Play history of games and votes 
 
   @@map("users")
 }
@@ -37,14 +37,25 @@ model Participant {
    score         Int       @default(0)
    isDrawing     Boolean   @default(false) @map("is_drawing")
    
+   @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
    @@map("participants")
 } 
 
+// @TODO need to figure out how to save track gps path here
 model Drawing {
    id            Int       @id @default(autoincrement()) 
    participantId Int       @map("participant_id")
-   submittedAt   DateTime  @default(now()) @db.Timestamp(6) map("submitted_at")
+   submittedAt   DateTime  @default(now()) @db.Timestamp(6) @map("submitted_at")
 
    @@map("drawings")
 }
 
+model Vote {
+    id                Int       @id @default(autoincrement())
+    voterParticipant  Int       @map("voter_participant")
+    targetParticipant Int       @map("target_participant")
+    createdAt         DateTime  @default(now()) @db.Timestamp(6) @map("created_at")
+
+    @@unique([voterParticipantId, targetParticipantId], name: "uniqueVotePerDrawing")
+    @@map("votes")
+}
