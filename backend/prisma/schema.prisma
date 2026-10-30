@@ -50,14 +50,14 @@ model Participant {
    @@map("participants")
 } 
 
-// @TODO need to figure out how to save track gps path here
 model Drawing {
    id                 Int       @id @default(autoincrement()) 
    participantId      Int       @map("participant_id")
    submittedAt        DateTime  @default(now()) @db.Timestamp(6) @map("submitted_at")
 
    participant        Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
- 
+   coordinates        Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
+
    @@map("drawings")
 }
 
