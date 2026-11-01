@@ -1,11 +1,16 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HomeLandingPage } from "./pages/HomeLandingPage";
 import { HomeDashboard } from "./pages/Home";
 
 function App() {
   return (
-    <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <HomeDashboard />
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeLandingPage />} />
+        <Route path="/home" element={<HomeDashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
