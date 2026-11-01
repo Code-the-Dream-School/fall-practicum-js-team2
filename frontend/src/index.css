@@ -1,0 +1,49 @@
+/* Shared design values from Figma.
+   Use these variables in component styles to keep the app consistent. */
+:root {
+  --color-background: #062240;
+  --color-surface: #103050;
+  --color-text: #f6f5ee;
+  --color-text-muted: #adbed0;
+  --color-accent: #ffc000;
+  --color-on-accent: #062240;
+  --color-border: #2b4966;
+  --color-success: #85d6b1;
+
+  --font-family: "Inter", sans-serif;
+  --font-size-caption: 0.75rem;
+  --font-size-body: 1rem;
+  --font-size-heading: 1.5rem;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  --radius-button: 14px;
+  --radius-card: 18px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+/* Form controls don't inherit the page font by default. */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
