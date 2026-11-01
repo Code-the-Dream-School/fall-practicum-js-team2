@@ -5,6 +5,7 @@
   max-width: 40rem;
   margin-inline: auto;
   padding: 1rem;
+  background-color: var(--color-background);
 }
 
 .challenge-actions {
