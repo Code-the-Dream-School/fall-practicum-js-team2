@@ -1,17 +1,16 @@
-import { Navbar } from "./components/common/Navbar";
-import { Footer } from "./components/common/Footer";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomeLandingPage } from "./pages/HomeLandingPage";
-import './App.css';
+import { HomeDashboard } from "./pages/Home";
 
 function App() {
   return (
-    <div className="app">
-      <Navbar />
-      <main>
-        <HomeLandingPage />
-      </main>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeLandingPage />} />
+        <Route path="/home" element={<HomeDashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
