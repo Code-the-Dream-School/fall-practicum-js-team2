@@ -29,7 +29,7 @@ model User {
   email          String        @unique @db.VarChar(255)
   name           String        @db.VarChar(30)
   hashedPassword String        @map("hashed_password") @db.VarChar(255) // Mapped
-  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamp(6) // Mapped
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6) // Mapped
   participated   Participant[] // Play history of games and votes 
 
   @@map("users")
@@ -41,8 +41,8 @@ model Game {
   pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
   status         GameStatus    @default(ACTIVE) 
   privacy        Privacy       @default(PUBLIC) 
-  startDate      DateTime      @default(now()) @map("start_date")
-  endDate        DateTime      @map("end_date")
+  startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
+  endDate        DateTime      @map("end_date") @db.Timestamptz(6)
   participants   Participant[]
 
   @@map("games")
@@ -74,7 +74,7 @@ model Participant {
 model Drawing {
   id            Int      @id @default(autoincrement())
   participantId Int      @map("participant_id")
-  submittedAt   DateTime @default(now()) @map("submitted_at") @db.Timestamp(6)
+  submittedAt   DateTime @default(now()) @map("submitted_at") @db.Timestamptz(6)
 
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
@@ -88,7 +88,7 @@ model Vote {
   id                Int      @id @default(autoincrement())
   voterParticipant  Int      @map("voter_participant")
   targetParticipant Int      @map("target_participant")
-  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   voter  Participant @relation("VoterRelation", fields: [voterParticipant], references: [id], onDelete: Cascade)
   target Participant @relation("TargetRelation", fields: [targetParticipant], references: [id], onDelete: Cascade)
@@ -106,7 +106,7 @@ model Word {
   id         Int         @id @default(autoincrement())
   text       String      @unique @db.VarChar(50)
   difficulty Difficulty  @default(EASY) 
-  createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@map("words")
 }
