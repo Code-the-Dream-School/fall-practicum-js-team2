@@ -9,6 +9,9 @@
   --color-on-accent: #062240;
   --color-border: #2b4966;
   --color-success: #85d6b1;
+  --color-card-background-primary: #3c3520;
+  --color-card-border-primary: #c59a28;
+  --color-card-background-secondary: #123352;
 
   --font-family: "Inter", sans-serif;
   --font-size-caption: 0.75rem;
@@ -35,9 +38,10 @@ body {
   margin: 0;
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: var(--font-family);
+  font-family: "Inter", sans-serif;
   font-size: var(--font-size-body);
   line-height: 1.5;
+  color: var(--color-text);
 }
 
 /* Form controls don't inherit the page font by default. */
