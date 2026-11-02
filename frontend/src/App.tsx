@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomeLandingPage } from "./pages/HomeLandingPage";
 import { HomeDashboard } from "./pages/Home";
+import { ChallengeMap } from "./components/Map/ChallengeMap";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLandingPage />} />
         <Route path="/home" element={<HomeDashboard />} />
+        <Route path="/challenge-map" element={<ChallengeMap />} />
       </Routes>
     </BrowserRouter>
   );
