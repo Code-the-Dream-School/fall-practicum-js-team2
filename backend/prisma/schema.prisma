@@ -29,7 +29,8 @@ model User {
   email          String        @unique @db.VarChar(255)
   name           String        @db.VarChar(30)
   hashedPassword String        @map("hashed_password") @db.VarChar(255) // Mapped
-  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6) // Mapped
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6) 
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
   participated   Participant[] // Play history of games and votes 
 
   @@map("users")
@@ -43,6 +44,7 @@ model Game {
   privacy        Privacy       @default(PUBLIC) 
   startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
   endDate        DateTime      @map("end_date") @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
   participants   Participant[]
 
   @@map("games")
@@ -55,6 +57,7 @@ model Participant {
   gameId    Int     @map("game_id")
   score     Int     @default(0)
   isDrawing Boolean @default(false) @map("is_drawing")
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
