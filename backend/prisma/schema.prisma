@@ -79,8 +79,8 @@ model Drawing {
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
 
-  @@index([participantId], map: "drawings_participant_id_idx")
-
+  @@unique([participantId], map: "drawings_participant_id_unique")
+  
   @@map("drawings")
 }
 
