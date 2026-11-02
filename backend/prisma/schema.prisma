@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GameStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum Privacy {
+  PUBLIC
+  PRIVATE
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique @db.VarChar(255)
+  name           String        @db.VarChar(30)
+  hashedPassword String        @map("hashed_password") @db.VarChar(255) // Mapped
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  participated   Participant[] // Play history of games and votes 
+
+  @@map("users")
+}
+
+// Game rules
+model Game {
+  id             Int           @id @default(autoincrement())
+  pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
+  status         GameStatus    @default(ACTIVE)
+  privacy        Privacy       @default(PUBLIC)
+  startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
+  endDate        DateTime      @map("end_date") @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  participants   Participant[]
+
+  @@map("games")
+}
+
+// What each user can do
+model Participant {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  gameId    Int      @map("game_id")
+  score     Int      @default(0)
+  isDrawing Boolean  @default(false) @map("is_drawing")
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  drawings Drawing[]
+  voted    Vote?     @relation("VoterRelation")
+  received Vote[]    @relation("TargetRelation")
+
+  @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
+  @@index([userId], map: "participants_user_id_idx")
+  @@index([gameId], map: "participants_game_id_idx")
+  @@map("participants")
+}
+
+model Drawing {
+  id            Int      @id @default(autoincrement())
+  participantId Int      @map("participant_id")
+  submittedAt   DateTime @default(now()) @map("submitted_at") @db.Timestamptz(6)
+
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
+
+  @@unique([participantId], map: "drawings_participant_id_unique")
+  @@map("drawings")
+}
+
+model Vote {
+  id                Int      @id @default(autoincrement())
+  voterParticipant  Int      @map("voter_participant")
+  targetParticipant Int      @map("target_participant")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  voter  Participant @relation("VoterRelation", fields: [voterParticipant], references: [id], onDelete: Cascade)
+  target Participant @relation("TargetRelation", fields: [targetParticipant], references: [id], onDelete: Cascade)
+
+  @@unique([voterParticipant], map: "votes_voter_participant_unique")
+  @@index([targetParticipant], map: "votes_target_participant_idx")
+  @@map("votes")
+}
+
+// The pictionary word
+model Word {
+  id         Int        @id @default(autoincrement())
+  text       String     @unique @db.VarChar(50)
+  difficulty Difficulty @default(EASY)
+  createdAt  DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("words")
+}
