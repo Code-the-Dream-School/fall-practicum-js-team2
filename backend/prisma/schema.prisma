@@ -60,7 +60,7 @@ model Participant {
   game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   drawings Drawing[]
-  voted    Vote[]    @relation("VoterRelation")
+  voted    Vote?     @relation("VoterRelation")
   received Vote[]    @relation("TargetRelation")
 
   @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
@@ -80,7 +80,7 @@ model Drawing {
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
 
   @@unique([participantId], map: "drawings_participant_id_unique")
-  
+
   @@map("drawings")
 }
 
@@ -93,9 +93,7 @@ model Vote {
   voter  Participant @relation("VoterRelation", fields: [voterParticipant], references: [id], onDelete: Cascade)
   target Participant @relation("TargetRelation", fields: [targetParticipant], references: [id], onDelete: Cascade)
 
-  @@unique([voterParticipant, targetParticipant], name: "uniqueVotePerDrawing")
-
-  @@index([voterParticipant], map: "votes_voter_participant_idx")
+  @@unique([voterParticipant], map: "votes_voter_participant_unique")
   @@index([targetParticipant], map: "votes_target_participant_idx")
 
   @@map("votes")
