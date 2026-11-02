@@ -11,13 +11,6 @@ const shape: LatLng[] = [
   [47.6062, -122.3321],
 ]
 
-const fakeWalk: LatLng[] = [
-  [47.6062, -122.3321],
-  [47.6065, -122.3321],
-  [47.6068, -122.3321],
-  [47.6068, -122.3316],
-  [47.6068, -122.3311],
-]
 
 function colorForSegment(a: LatLng, b: LatLng) {
   const up = b[0] - a[0]
@@ -30,17 +23,15 @@ export function ChallengeMap() {
   const [path, setPath] = useState<LatLng[]>([])
 
   useEffect(() => {
-    let index = 0
-    const timer = setInterval(() => {
-      if (index >= fakeWalk.length) {
-        clearInterval(timer)
-        return
-      }
-      const point = fakeWalk[index]
-      setPath((current) => [...current, point])
-      index += 1
-    }, 1000)
-    return () => clearInterval(timer)
+    const id = navigator.geolocation.watchPosition(
+      (position) => {
+        const next: LatLng = [position.coords.latitude, position.coords.longitude]
+        setPath((current) => [...current, next])
+      },
+      (error) => console.error(error.message),
+      { enableHighAccuracy: true, maximumAge: 1000 }
+    )
+    return () => navigator.geolocation.clearWatch(id)
   }, [])
 
   return (
