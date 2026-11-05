@@ -9,7 +9,10 @@ export function HomeDashboard() {
       <div className="home-header-logo">
         <h2>VanGo</h2>
       </div>
-      <PageHeader title="Hey, Edward" subtitle="Get Outside. Get Creative." />
+      <PageHeader
+        title="Hey, User Name"
+        subtitle="Get Outside. Get Creative."
+      />
       <section className="home-featured-challenge-section">
         <div>
           <p className="challenge-label">FEATURED CHALLENGE</p>
