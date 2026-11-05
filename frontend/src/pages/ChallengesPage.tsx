@@ -57,7 +57,7 @@ return (
         </section>
         
         <nav aria-label="Main navigation"
-        classname="bottom-nav">
+        className="bottom-nav">
             <a href="/home">Home</a>
         <a href="/challenges" aria-current="page" className="active-link">Challenges</a>
         <a href="/profile">Profile</a>
