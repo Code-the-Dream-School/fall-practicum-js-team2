@@ -1,0 +1,105 @@
+.challenges-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: 1.5rem 1rem 5rem; 
+    min-height: 100vh;
+}
+/* Header */
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.brand-logo {
+    color: var(--color-accent);
+    font-weight: 800;
+    font-size: 1.4rem;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+.page-header h1 {
+    font-size: var(--font-size-heading);
+    margin: 0.25rem 0 0;
+    color: var(--color-text);
+}
+.page-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+}
+/* Challenges Feed */
+.challenges-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+/* Individual Card */
+.active-challenge-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.active-challenge-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+.challenge-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.challenge-badge {
+    font-size: var(--font-size-caption);
+    background-color: rgba(255, 192, 0, 0.15);
+    color: var(--color-accent);
+    border: 1px solid rgba(255, 192, 0, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+.challenge-lobby {
+    font-size: var(--font-size-caption);
+    color: var(--color-text-muted);
+}
+.challenge-card-title {
+    margin: 0 0 0.35rem;
+    font-size: 1.2rem;
+    color: var(--color-text);
+    }
+.challenge-prompt-text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+.challenge-prompt-text strong {
+    color: var(--color-accent);
+}
+/* Button */
+.challenge-action-btn {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-button);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+}
+.challenge-action-btn:hover {
+    filter: brightness(1.1);
+}
+/* Bottom Nav link active state */
+.bottom-nav .active-link {
+    color: var(--color-accent);
+    font-weight: 700;
+}

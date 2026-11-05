@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Challenges.css';
-import {ActiveChallengeCard, Challenge} from '../components/challenges/ActiveChallengeCard';
+import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
 
 
 export const ChallengesPage: React.FC = () => {
@@ -11,7 +11,7 @@ const [challenges] = useState<Challenge[]>([
         title: 'Weekend sketch walk',
         prompt: 'Draw a Heart',
         playerCount: 5,
-        lobbyThpe: 'Private lobby',
+        lobbyType: 'Private lobby',
         timeLeft: '2 day left',
     },
     {
