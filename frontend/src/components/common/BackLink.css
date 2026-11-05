@@ -1,0 +1,7 @@
+.backlink-section {
+  display: flex;
+  flex-direction: row;
+  color: var(--color-text);
+  text-decoration: none;
+  align-items: center;
+}
