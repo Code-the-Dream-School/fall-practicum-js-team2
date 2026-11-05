@@ -1,0 +1,18 @@
+.bottom-nav {
+  display: flex;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  padding-bottom: 0;
+
+  a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .active {
+    color: var(--color-accent);
+  }
+}
