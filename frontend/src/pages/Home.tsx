@@ -1,7 +1,7 @@
 import "./Home.css";
 import heartRoute from "../assets/featured-heart-route.png";
 import { BottomNav } from "../components/common/BottomNav";
-import { PageHeader } from "../components/PageHeader";
+import { PageHeader } from "../components/common/PageHeader";
 
 export function HomeDashboard() {
   return (
