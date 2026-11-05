@@ -42,6 +42,7 @@ body {
   font-size: var(--font-size-body);
   line-height: 1.5;
   color: var(--color-text);
+  border-radius: 28px;
 }
 
 /* Form controls don't inherit the page font by default. */

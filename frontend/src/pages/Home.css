@@ -10,7 +10,6 @@
   padding: 1.5rem;
 
   border: 1px solid #adbed0;
-  border-radius: 28px;
   background-color: var(--color-background);
 
   color: var(--color-text);
@@ -32,19 +31,6 @@
     font-size: 2rem;
     font-weight: 700;
   }
-}
-
-.home-user-greeting h1 {
-  margin: 0 0 0.75rem;
-  font-size: 1.875rem;
-  font-weight: 700;
-}
-
-.home-header-tagline p {
-  margin: 0;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--color-text-muted);
 }
 
 .home-featured-challenge-section {
@@ -133,25 +119,5 @@
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--color-text-muted);
-  }
-}
-
-.bottom-nav {
-  display: flex;
-  margin-top: auto;
-  padding-top: 0.75rem;
-  padding-bottom: 0;
-
-  a {
-    flex: 1;
-    text-align: center;
-    text-decoration: none;
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-  }
-
-  /* nav link highlight to be updated later */
-  a[aria-current="page"] {
-    color: var(--color-accent);
   }
 }
