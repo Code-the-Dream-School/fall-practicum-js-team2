@@ -1,3 +1,4 @@
+const { createGameSchema } = require("../middleware/validation/gameValidation");
 const prisma = require("../config/prisma");
 
 async function create(req, res) {
