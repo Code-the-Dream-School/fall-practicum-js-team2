@@ -13,12 +13,13 @@ const {
 
 const { 
     validateCreateGame,
-    validateJoinGame 
+    validateJoinGame,
+    validateSubmitDrawing, 
 } = require('../middleware/validation/gameValidation');
 
 router.post("/create", validateCreateGame, create);
 router.post("/join", validateJoinGame, join);
-router.post("/:id/submit", submitDrawing);
+router.post("/:id/submit", validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
 router.patch("/:id", update);
