@@ -105,8 +105,66 @@ async function join(req, res, next) {
     }
 }
 
-async function submitDrawing(req, res) {
+async function submitDrawing(req, res, next) {
+    try {
 
+        const gameId = Number(req.params.id);
+        const userId = Number(req.user.id);
+        const { coordinates } = req.body;
+
+        const game = await prisma.game.findUnique({
+            where: { id : gameId }
+        });
+
+        if (!game) {
+            return res.status(404).json({ message: "Game lobby not found" });
+        }
+
+        let today = new Date();
+        if(today > game.endDate || game.status !== "ACTIVE") {
+            return res.status(400).json({ message: "This game has already finished" });
+        }
+
+        const participant = await prisma.participant.findFirst({
+            where: {
+                gameId: gameId,
+                userId: Number(userId)
+            }
+        });
+
+        if (!participant) {
+            return res.status(403).json({ message: "You must join this lobby before submitting a drawing" });
+        }
+
+        const existingDrawing = await prisma.drawing.findFirst({
+            where: {
+                participantId: participant.id
+            }
+        });
+
+        if (existingDrawing) {
+            return res.status(400).json({
+                success: false,
+                message: "You have already submitted a drawing for this round"
+            });
+        }
+
+        const newDrawing = await prisma.drawing.create({
+            data: {
+                participantId: participant.id,
+                coordinates: coordinates
+            }
+        })
+
+        return res.status(201).json({
+            success: true,
+            message: "Drawing has been submitted successfully",
+            data: newDrawing
+        });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 async function getOpenGames(req, res) {
