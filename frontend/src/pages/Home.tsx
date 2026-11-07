@@ -5,14 +5,24 @@ export function HomeDashboard() {
   return (
     <div className="home-dashboard">
       <header>
-        <p>VanGo</p>
-        <h1>Hey, Edward</h1>
-        <p>Get outside. Get Creative</p>
+        <div className="home-header-logo">
+          <h2>VanGo</h2>
+        </div>
+        <div className="home-user-greeting">
+          <h1>Hey, Edward</h1>
+        </div>
+        <div className="home-header-tagline">
+          <p>Get outside. Get Creative.</p>
+        </div>
       </header>
-      <section>
-        <p>Featured challenge</p>
-        <h2>Draw a heart</h2>
-        <p>Turn your next walk into a work of art</p>
+      <section className="home-featured-challenge-section">
+        <div>
+          <p className="challenge-label">FEATURED CHALLENGE</p>
+          <h2>Draw a heart</h2>
+          <p className="challenge-description">
+            Turn your next walk into a work of art
+          </p>
+        </div>
         <img
           className="featured-challenge-image"
           src={heartRoute}
@@ -20,13 +30,19 @@ export function HomeDashboard() {
         />
       </section>
       <div className="challenge-actions">
-        <button type="button">Create challenge</button>
-        <button type="button">Join Challenge</button>
+        <button type="button" className="challenge-create">
+          Create challenge
+        </button>
+        <button type="button" className="challenge-join">
+          Join challenge
+        </button>
       </div>
-      <section>
+      <section className="home-active-challenge">
         <h2>Active challenge</h2>
-        <h3>Weekend sketch walk</h3>
-        <p>5 players · Private lobby</p>
+        <div className="active-challenge-card">
+          <h3>Weekend sketch walk</h3>
+          <p>5 players · Private lobby</p>
+        </div>
       </section>
       <nav aria-label="Main navigation" className="bottom-nav">
         <a href="/" aria-current="page">
