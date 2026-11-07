@@ -193,8 +193,34 @@ async function getOpenGames(req, res, next) {
     }
 }
 
-async function getGameStatus(req, res) {
+//get game information (eg partipants, status, privacy, etc)
+async function getGameStatus(req, res, next) {
+    try{
+        const gameId = Number(req.params.id);
+        
+        const game = await prisma.game.findUnique({
+            where: {
+                id: gameId 
+            },
+            include: {
+                status: true,
+                privacy: true,
+                participants: true
+            }
+        });
 
+        if (!game) {
+            return res.status(404).json({ message: "Game lobby not found" });
+        }
+
+        return res.status(200).json({
+            success: true, 
+            data: game
+        });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 async function update(req, res) {
