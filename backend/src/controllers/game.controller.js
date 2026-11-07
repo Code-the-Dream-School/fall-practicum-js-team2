@@ -105,10 +105,6 @@ async function join(req, res, next) {
     }
 }
 
-async function startGame(req, res) {
-
-}
-
 async function submitDrawing(req, res) {
 
 }
@@ -132,7 +128,6 @@ async function closePrivateGame(req, res) {
 module.exports = {
     create,
     join,
-    startGame,
     submitDrawing,
     getOpenGames,
     getGameStatus,

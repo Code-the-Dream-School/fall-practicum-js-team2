@@ -4,7 +4,6 @@ const router = express.Router();
 const { 
     create, 
     join,
-    startGame,
     submitDrawing,
     getOpenGames,
     getGameStatus,
@@ -19,7 +18,6 @@ const {
 
 router.post("/create", validateCreateGame, create);
 router.post("/join", validateJoinGame, join);
-router.post("/:id/start", startGame);
 router.post("/:id/submit", submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
