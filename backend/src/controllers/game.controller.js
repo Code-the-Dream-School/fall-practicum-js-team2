@@ -107,7 +107,6 @@ async function join(req, res, next) {
 
 async function submitDrawing(req, res, next) {
     try {
-
         const gameId = Number(req.params.id);
         const userId = Number(req.user.id);
         const { coordinates } = req.body;
@@ -167,8 +166,31 @@ async function submitDrawing(req, res, next) {
     }
 }
 
-async function getOpenGames(req, res) {
+async function getOpenGames(req, res, next) {
+    try {
+        const today = new Date();
+        
+        const openGames = await prisma.game.findMany({
+            where: {
+                status: "ACTIVE",
+                privacy: "PUBLIC",
+                endDate: {
+                    gt: today
+                }
+            },
+            orderBy: {
+                endDate: 'asc'
+            }
+        });
 
+        return res.status(200).json({
+            success:true, 
+            data: openGames
+        });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 async function getGameStatus(req, res) {
