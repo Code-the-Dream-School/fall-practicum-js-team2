@@ -42,6 +42,7 @@ model Game {
   pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
   status         GameStatus    @default(ACTIVE)
   privacy        Privacy       @default(PUBLIC)
+  joinCode       String?       @unique @db.VarChar(10)
   startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
   endDate        DateTime      @map("end_date") @db.Timestamptz(6)
   updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
