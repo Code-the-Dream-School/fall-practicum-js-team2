@@ -26,15 +26,14 @@ async function create(req, res, next) {
             data: {
                 startDate,
                 endDate,
-                isPrivate,
-                joinCode,
-                creatorId,
+                privacy: isPrivate ? "PRIVATE" : "PUBLIC",
+                joinCode: joinCode,
                 pictionaryWord: pictionaryWord,
                 status: "ACTIVE",
                 
                 participants: {
                     create: {
-                        userId: creatorId
+                        userId: Number(creatorId)
                     },
                 },
             },
@@ -54,8 +53,59 @@ async function create(req, res, next) {
     }
 }
 
-async function join(req, res) {
+async function join(req, res, next) {
+    try {
+        const { gameId, joinCode } = req.body;
+        const userId = req.user.id;
 
+        let game = null;
+
+        if (joinCode) {
+            game = await prisma.game.findUnique({
+                where: { joinCode: joinCode }
+            });
+        } else if (gameId) {
+            game = await prisma.game.findUnique({
+                where: { id: Number(gameId) }
+            });
+        }
+
+        if (!game) {
+            return res.status(404).json({ message: "Game lobby not found "});
+        }
+        
+        const today = new Date();
+        if (today > game.endDate) {
+            return res.status(400).json({ message: "This game has already finished "})
+        }
+
+        const participantCheck = await prisma.participant.findFirst({
+            where: {
+                gameId: game.id,
+                userId: Number(userId)
+            }
+        });
+
+        if (participantCheck) {
+            return res.status(400).json({ message: "You are already in this game lobby" })
+        }
+
+        const newParticipant = await prisma.participant.create({
+            data: {
+                gameId: game.id,
+                userId: Number(userId)
+            }
+        });
+
+        return res.status(201).json({
+            success: true, 
+            message: "Successfully joined the game lobby",
+            data: newParticipant
+        });
+
+    } catch (error) {
+        next(error)
+    }
 }
 
 async function startGame(req, res) {
