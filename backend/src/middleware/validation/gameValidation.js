@@ -5,6 +5,12 @@ const createGameSchema = Joi.object({
   isPrivate: Joi.boolean().required(),
 });
 
+const joinGameSchema = Joi.object({
+  gameId: Joi.number().integer().min(1).optional(),
+  joinCode: Joi.string().trim().uppercase().optional(),
+}).xor('gameId', 'joinCode'); 
+
 module.exports = {
-  createGameSchema
+  createGameSchema,
+  joinGameSchema
 }
