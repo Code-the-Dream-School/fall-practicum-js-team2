@@ -8,7 +8,6 @@ const {
     getOpenGames,
     getGameStatus,
     update,
-    closePrivateGame 
 } = require("../controllers/game.controller");
 
 const { 
@@ -23,6 +22,5 @@ router.post("/:id/submit", validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
 router.patch("/:id", update);
-router.delete("/:id", closePrivateGame);
 
 module.exports = router;

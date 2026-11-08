@@ -223,12 +223,66 @@ async function getGameStatus(req, res, next) {
     }
 }
 
-async function update(req, res) {
+async function update(req, res, next) {
+    try {
+        const gameId = Number(req.params.id);
+        const userId = Number(req.user.id);
 
-}
+        const { status, endDate, pictionaryWord } = req.body;
 
-async function closePrivateGame(req, res) {
+        const game = await prisma.game.findUnique({
+            where: { id: gameId },
+            include: {
+                participants: {
+                    orderBy: {
+                        id: 'asc'
+                    }
+                }
+            }
+        });
 
+        if (!game) {
+            return res.status(404).json({
+                success: false,
+                message: "Game lobby not found"
+            })
+        }
+
+        //First participant is the creator
+        const creatorParticipant = game.participants[0];
+        if (!creatorParticipant || creatorParticipant.userId !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: "Forbidden, only the game owner can make changes to this lobby"
+            });
+        }
+
+        if (game.status != "ACTIVE") {
+            return res.status(400).json({
+                sucess: false,
+                message: "Cannot update a game that is no longer active"
+            });
+        }
+
+        const updateData = {};
+        if (status !== undefined) updateData.status = status;
+        if (endDate !== undefined) updateData.endDate = endDate;
+        if (pictionaryWord !== undefined) updateData.pictionaryWord = pictionaryWord;
+
+        const updatedGame = await prisma.game.update({
+            where: { id: gameId },
+            data: updateData
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Game lobby updated successfully",
+            data: updatedGame
+        });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 module.exports = {
@@ -238,5 +292,4 @@ module.exports = {
     getOpenGames,
     getGameStatus,
     update,
-    closePrivateGame,
 }
