@@ -23,8 +23,8 @@ function mockAuthenticate(req, res, next) {
 }
 
 router.post("/create", mockAuthenticate, validateCreateGame, create);
-router.post("/join", validateJoinGame, join);
-router.post("/:id/submit", validateSubmitDrawing, submitDrawing);
+router.post("/join", mockAuthenticate, validateJoinGame, join);
+router.post("/:id/submit", mockAuthenticate, validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
 router.patch("/:id", update);
