@@ -202,8 +202,6 @@ async function getGameStatus(req, res, next) {
                 id: gameId 
             },
             include: {
-                status: true,
-                privacy: true,
                 participants: true
             }
         });
