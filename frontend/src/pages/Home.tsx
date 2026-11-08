@@ -5,7 +5,8 @@ import { PageHeader } from "../components/common/PageHeader";
 
 export function HomeDashboard() {
   // TODO: Replace with real user data once the user endpoint/auth exists.
-  const userObject = { name: "User Name" };
+  const userObject = { name: undefined };
+  const greetingName = userObject.name || "Username";
 
   return (
     <div className="home-dashboard">
@@ -13,7 +14,7 @@ export function HomeDashboard() {
         <h2>VanGo</h2>
       </div>
       <PageHeader
-        title={`Hey, ${userObject.name}!`}
+        title={`Hey, ${greetingName}!`}
         subtitle="Get Outside. Get Creative."
       />
       <section className="home-featured-challenge-section">
