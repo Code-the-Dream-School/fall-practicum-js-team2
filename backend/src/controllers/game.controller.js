@@ -1,10 +1,9 @@
 const crypto = require('crypto');
-const { createGameSchema, joinGameSchema } = require("../middleware/validation/gameValidation");
 const prisma = require("../config/prisma");
 
 async function create(req, res, next) {
     try {
-        const { durationInDays, isPrivate } = value;
+        const { durationInDays, isPrivate } = req.body;
         const creatorId = req.user.id;
 
         const startDate = new Date();
