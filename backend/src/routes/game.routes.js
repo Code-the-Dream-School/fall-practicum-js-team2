@@ -27,6 +27,6 @@ router.post("/join", mockAuthenticate, validateJoinGame, join);
 router.post("/:id/submit", mockAuthenticate, validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
-router.patch("/:id", update);
+router.patch("/:id", mockAuthenticate, update);
 
 module.exports = router;
