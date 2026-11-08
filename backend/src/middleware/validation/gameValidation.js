@@ -18,8 +18,29 @@ const submitDrawingSchema = Joi.array().items(
   })
 ).min(2).required(); 
 
+const validateCreateGame = (req, res, next) => {
+    const { error, value } = createGameSchema.validate(req.body);
+    if (error) return res.status(400).json({ success: false, message: error.message });
+    req.body = value; 
+    next();
+};
+
+const validateJoinGame = (req, res, next) => {
+    const { error, value } = joinGameSchema.validate(req.body);
+    if (error) return res.status(400).json({ success: false, message: error.message });
+    req.body = value;
+    next();
+};
+
+const validateSubmitDrawing = (req, res, next) => {
+    const dataToValidate = req.body.coordinates || req.body;
+    const { error, value } = submitDrawingSchema.validate(dataToValidate);
+    if (error) return res.status(400).json({ success: false, message: error.message });
+    next();
+};
+
 module.exports = {
-  createGameSchema,
-  joinGameSchema,
-  submitDrawingSchema,
+  validateCreateGame,
+  validateJoinGame,
+  validateSubmitDrawing,
 }
