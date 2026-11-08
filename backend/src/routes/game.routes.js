@@ -16,7 +16,13 @@ const {
     validateSubmitDrawing, 
 } = require('../middleware/validation/gameValidation');
 
-router.post("/create", validateCreateGame, create);
+// Temporary mock authentication middleware for testing without a user controller
+function mockAuthenticate(req, res, next) {
+    req.user = { id: 1 }; 
+    next();
+}
+
+router.post("/create", mockAuthenticate, validateCreateGame, create);
 router.post("/join", validateJoinGame, join);
 router.post("/:id/submit", validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
