@@ -1,4 +1,4 @@
-import Joi from 'joi';
+const Joi = require("joi");
 
 const createGameSchema = Joi.object({
   durationInDays: Joi.number().integer().min(1).max(30).default(7),
