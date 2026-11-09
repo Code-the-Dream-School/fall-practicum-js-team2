@@ -1,17 +1,17 @@
 import React from 'react';
 
 export interface Challenge {
-    id: string;
-    title: string;
-    prompt: string;
-    playerCount: number;
-    lobbyType: 'Private lobby' | 'Public lobby';
-    timeLeft: string;
+    id: number | string;
+    pictionaryWord: string;
+    status: 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
+    privacy: 'PUBLIC' | 'PRIVATE';
+    endDate?: string;
+    participantsCount?: number;
 }
 
 interface ActiveChallengeCardProps {
     challenge: Challenge;
-    onSelect?: (id: string) => void;
+    onSelect?: (id: number | string) => void;
 }
 
 export const ActiveChallengeCard: React.FC<ActiveChallengeCardProps> = ({
@@ -21,15 +21,16 @@ export const ActiveChallengeCard: React.FC<ActiveChallengeCardProps> = ({
     return(
     <article className="active-challenge-card">
         <div className="challenge-card-header">
-        <span className="challenge-badge">{challenge.timeLeft}</span>
+        <span className="challenge-badge">{challenge.status}</span>
         <span className="challenge-lobby">
-            👥 {challenge.playerCount} players · {challenge.lobbyType}
+            👥 {challenge.participantsCount ?? 1} players · {challenge.privacy === 'PUBLIC' ? 'Public' : 'Private'} lobby
         </span>
         </div>
+
         <div className="challenge-card-body">
-        <h3 className="challenge-card-title">{challenge.title}</h3>
+        <h3 className="challenge-card-title">{challenge.pictionaryWord}</h3>
         <p className="challenge-prompt-text">
-            Prompt: <strong>"{challenge.prompt}"</strong>
+            Prompt: <strong>"{challenge.pictionaryWord}"</strong>
         </p>
         </div>
         <div className="challenge-card-footer">

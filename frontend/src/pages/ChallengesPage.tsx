@@ -1,42 +1,59 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import './Challenges.css';
 import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
 
 
-export const ChallengesPage: React.FC = () => {
-    // active challenges mock data, will replace with API 
-const [challenges] = useState<Challenge[]>([
-    {
-        id: '1',
-        title: 'Weekend sketch walk',
-        prompt: 'Draw a Heart',
-        playerCount: 5,
-        lobbyType: 'Private lobby',
-        timeLeft: '2 day left',
-    },
-    {
-        id: '2',
-        title: 'City Center Run',
-        prompt: 'Celestial Star',
-        playerCount: 12,
-        lobbyType: 'Public lobby',
-        timeLeft: '5 hours left',
-    },
-    {
-        id: '3',
-        title: 'Campus Art Stroll',
-        prompt: 'Origami swan',
-        playerCount: 4,
-        lobbyType: 'Private lobby',
-        timeLeft: '3 days left',
-    },
-]);
 
-const handleSelectChallenge = (id: string) =>
-{
-    console.log('Selected Challenge:', id);
-    // this is where we can open GPS tracking/map once it is set up
-};
+const MOCK_CHALLENGES: Challenge[] = [
+    {
+    id: 1,
+    pictionaryWord: 'Heart',
+    status: 'ACTIVE',
+    privacy: 'PRIVATE',
+    participantsCount: 5,
+    },
+    {
+    id: 2,
+    pictionaryWord: 'Star',
+    status: 'ACTIVE',
+    privacy: 'PUBLIC',
+    participantsCount: 12,
+    },
+    {
+    id: 3,
+    pictionaryWord: 'Swan',
+    status: 'ACTIVE',
+    privacy: 'PRIVATE',
+    participantsCount: 4,
+    },
+];
+
+export const ChallengesPage: React.FC = () => {
+    const [challenges, setChallenges] =
+    useState<Challenge[]>(MOCK_CHALLENGES);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // This will attempt to fetch from backend API
+        fetch('http://localhost:8080/api/games')
+        .then((res) => {
+            if (!res.ok) throw new Error('Failed to load challenges.');
+            return res.json();
+        })
+        .then((data: Challenge[]) => {
+            setChallenges(data);
+            setError(null);
+        })
+        .catch((err) => {
+            console.error(err);
+            setError('Could not connect to the server. Showing offline mock challenges');
+            setChallenges(MOCK_CHALLENGES);
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
+    }, []);
 
 return (
     <div className="challenges-page">
@@ -48,12 +65,12 @@ return (
 
         {/* {challenge cards feed} */}
         <section className="challenges-feed">
-            {challenges.map((challenge) => (
-                <ActiveChallengeCard
-                key={challenge.id}
-                challenge={challenge}
-                onSelect={handleSelectChallenge}/>
+            {isLoading && <p>Loading challenges...</p>}
+            {error && <p className="error-banner">{error}</p>}
+            {!isLoading && challenges.map((challenge) => (
+                <ActiveChallengeCard key={challenge.id} challenge={challenge} />
             ))}
+            
         </section>
         
         <nav aria-label="Main navigation"

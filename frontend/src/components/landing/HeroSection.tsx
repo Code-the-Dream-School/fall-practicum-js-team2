@@ -1,4 +1,5 @@
 import React from 'react';
+import swanRoute from '../../assets/Swan_GPS.webp';
 
 export const HeroSection: React.FC = () => {
     return(
@@ -18,8 +19,12 @@ export const HeroSection: React.FC = () => {
                 </div>
             </div>
             <div className="hero-preview">
-                <div className="hero-preview-box">
-                <p>🗺️ GPS Route Preview / Map Mockup</p>
+                <div className="hero-image-card">
+                <img src={swanRoute} alt="Swan GPS art route" className="hero-preview-image"/>
+                <div className="hero-image-caption">
+                    <span>Your Word: <strong>"Swan"</strong></span>
+                    <span>Distance: 3.2 miles</span>
+                </div>
             </div>
             </div>
         </section>

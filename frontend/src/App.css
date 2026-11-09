@@ -165,6 +165,32 @@ main {
     color: var(--color-text-muted);
     font-weight: 500;
     }
+.hero-image-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
+}
+
+.hero-preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    }
+.hero-image-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+.hero-image-caption strong {
+    color: var(--color-accent);
+}
 
 /* --- Features & How It Works Sections --- */
 .features-section,
