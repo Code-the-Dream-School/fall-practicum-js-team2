@@ -1,4 +1,5 @@
 import React, {useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 import './Challenges.css';
 import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
 
@@ -29,6 +30,7 @@ const MOCK_CHALLENGES: Challenge[] = [
 ];
 
 export const ChallengesPage: React.FC = () => {
+    const navigate = useNavigate();
     const [challenges, setChallenges] =
     useState<Challenge[]>(MOCK_CHALLENGES);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -55,6 +57,10 @@ export const ChallengesPage: React.FC = () => {
         });
     }, []);
 
+    const handleSelectChallenge = (id: number | string) => {
+        navigate(`/challenges/${id}`);
+    };
+
 return (
     <div className="challenges-page">
         <header className="page-header">
@@ -67,8 +73,18 @@ return (
         <section className="challenges-feed">
             {isLoading && <p>Loading challenges...</p>}
             {error && <p className="error-banner">{error}</p>}
+
+            {/* Empty State */}
+            {!isLoading && challenges.length === 0 && (
+                <div className="no-challenges">
+                    <p>No active challenges at the moment.</p>
+                    <button type="button" className="challenge-action-btn" 
+                    onClick={() => navigate('/home')}> Browse or Create a Challenge</button>
+                </div>
+            )}
+            {/* Pass onSelect to challenge card */}
             {!isLoading && challenges.map((challenge) => (
-                <ActiveChallengeCard key={challenge.id} challenge={challenge} />
+                <ActiveChallengeCard key={challenge.id} challenge={challenge} onSelect={handleSelectChallenge}/>
             ))}
             
         </section>
