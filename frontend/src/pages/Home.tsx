@@ -1,20 +1,18 @@
 import "./Home.css";
 import heartRoute from "../assets/featured-heart-route.png";
+import { BottomNav } from "../components/common/BottomNav";
+import { PageHeader } from "../components/common/PageHeader";
 
 export function HomeDashboard() {
   return (
     <div className="home-dashboard">
-      <header>
-        <div className="home-header-logo">
-          <h2>VanGo</h2>
-        </div>
-        <div className="home-user-greeting">
-          <h1>Hey, Edward</h1>
-        </div>
-        <div className="home-header-tagline">
-          <p>Get outside. Get Creative.</p>
-        </div>
-      </header>
+      <div className="home-header-logo">
+        <h2>VanGo</h2>
+      </div>
+      <PageHeader
+        title="Hey, User Name"
+        subtitle="Get Outside. Get Creative."
+      />
       <section className="home-featured-challenge-section">
         <div>
           <p className="challenge-label">FEATURED CHALLENGE</p>
@@ -44,13 +42,7 @@ export function HomeDashboard() {
           <p>5 players · Private lobby</p>
         </div>
       </section>
-      <nav aria-label="Main navigation" className="bottom-nav">
-        <a href="/" aria-current="page">
-          Home
-        </a>
-        <a href="/challenges">Challenges</a>
-        <a href="/profile">Profile</a>
-      </nav>
+      <BottomNav />
     </div>
   );
 }
