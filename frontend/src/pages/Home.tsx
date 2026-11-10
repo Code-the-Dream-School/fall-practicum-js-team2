@@ -2,6 +2,7 @@ import "./Home.css";
 import heartRoute from "../assets/featured-heart-route.png";
 import { BottomNav } from "../components/common/BottomNav";
 import { PageHeader } from "../components/common/PageHeader";
+import { ButtonLink } from "../components/common/ButtonLink";
 
 export function HomeDashboard() {
   return (
@@ -28,12 +29,16 @@ export function HomeDashboard() {
         />
       </section>
       <div className="challenge-actions">
-        <button type="button" className="challenge-create">
-          Create challenge
-        </button>
-        <button type="button" className="challenge-join">
-          Join challenge
-        </button>
+        <ButtonLink
+          text="Create challenge"
+          variant="primary"
+          path="/challenges/new"
+        />
+        <ButtonLink
+          text="Join challenge"
+          variant="secondary"
+          path="/challenges/join"
+        />
       </div>
       <section className="home-active-challenge">
         <h2>Active challenge</h2>

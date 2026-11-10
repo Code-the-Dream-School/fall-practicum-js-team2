@@ -70,25 +70,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-
-  button {
-    min-height: 3.5rem;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 1rem;
-    font: inherit;
-    cursor: pointer;
-  }
-}
-
-.challenge-create {
-  background-color: var(--color-accent);
-  color: var(--color-background);
-}
-
-.challenge-join {
-  background-color: var(--color-card-background-secondary);
-  color: var(--color-text);
 }
 
 .home-active-challenge {

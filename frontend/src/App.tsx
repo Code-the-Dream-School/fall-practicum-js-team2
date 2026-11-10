@@ -11,6 +11,8 @@ function App() {
         <Route path="/home" element={<HomeDashboard />} />
         <Route path="/challenges" element={""} />
         <Route path="/profile" element={""} />
+        <Route path="/challenges/new" element={""} />
+        <Route path="/challenges/join" element={""} />
       </Routes>
     </BrowserRouter>
   );
