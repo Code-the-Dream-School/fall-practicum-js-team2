@@ -2,7 +2,7 @@ import React, {useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Challenges.css';
 import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
-
+import {BottomNav} from '../components/common/BottomNav';
 
 
 const MOCK_CHALLENGES: Challenge[] = [
@@ -11,6 +11,7 @@ const MOCK_CHALLENGES: Challenge[] = [
     pictionaryWord: 'Heart',
     status: 'ACTIVE',
     privacy: 'PRIVATE',
+    difficulty: 'EASY',
     participantsCount: 5,
     },
     {
@@ -18,6 +19,7 @@ const MOCK_CHALLENGES: Challenge[] = [
     pictionaryWord: 'Star',
     status: 'ACTIVE',
     privacy: 'PUBLIC',
+    difficulty: 'MEDIUM',
     participantsCount: 5,
     },
     {
@@ -25,6 +27,7 @@ const MOCK_CHALLENGES: Challenge[] = [
     pictionaryWord: 'Swan',
     status: 'ACTIVE',
     privacy: 'PRIVATE',
+    difficulty: 'HARD',
     participantsCount: 4,
     },
 ];
@@ -58,7 +61,7 @@ export const ChallengesPage: React.FC = () => {
     }, []);
 
     const handleSelectChallenge = (id: number | string) => {
-        navigate(`/challenges/${id}`);
+        navigate(`/challenges/${id}/lobby`);
     };
 
 return (
@@ -88,13 +91,9 @@ return (
             ))}
             
         </section>
-        
-        <nav aria-label="Main navigation"
-        className="bottom-nav">
-            <a href="/home">Home</a>
-        <a href="/challenges" aria-current="page" className="active-link">Challenges</a>
-        <a href="/profile">Profile</a>
-        </nav>
+
+        <BottomNav/> 
+
     </div>
 );
 

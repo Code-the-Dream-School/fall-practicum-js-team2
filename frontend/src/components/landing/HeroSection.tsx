@@ -22,7 +22,7 @@ export const HeroSection: React.FC = () => {
                 <div className="hero-image-card">
                 <img src={heartRoute} alt="Heart GPS art route" className="hero-preview-image"/>
                 <div className="hero-image-caption">
-                    <span>Your Word: <strong>"Heart"</strong></span>
+                    <span>Prompt: <strong>"Heart"</strong></span>
                     <span>Distance: 2.5 km </span>
                 </div>
             </div>
