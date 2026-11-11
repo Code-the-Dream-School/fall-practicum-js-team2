@@ -18,7 +18,7 @@ const MOCK_CHALLENGES: Challenge[] = [
     pictionaryWord: 'Star',
     status: 'ACTIVE',
     privacy: 'PUBLIC',
-    participantsCount: 12,
+    participantsCount: 5,
     },
     {
     id: 3,
