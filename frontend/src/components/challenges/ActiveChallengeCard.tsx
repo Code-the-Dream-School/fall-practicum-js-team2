@@ -29,7 +29,7 @@ export const ActiveChallengeCard: React.FC<ActiveChallengeCardProps> = ({
         </div>
 
         <div className="challenge-card-body">
-        <h3 className="challenge-card-title">{challenge.pictionaryWord}</h3>
+        {/* <h3 className="challenge-card-title">{challenge.pictionaryWord}</h3>  */}
         <p className="challenge-prompt-text">
             Prompt: <strong>"{challenge.pictionaryWord}"</strong>
         </p>
