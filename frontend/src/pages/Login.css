@@ -1,0 +1,132 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  box-sizing: border-box;
+  max-width: 40rem;
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: 1.5rem;
+
+  border: 1px solid #adbed0;
+  background-color: var(--color-background);
+
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.login-header-logo {
+  text-align: center;
+  color: var(--color-accent);
+}
+
+.login-header-logo h2 {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+}
+
+.login-form-error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-button);
+  background-color: #4a2326;
+  color: #ffb4ab;
+  font-size: 0.875rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.login-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.login-field input {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.login-field input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.login-field-error {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  color: #ffb4ab;
+}
+
+.login-submit {
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--radius-button);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+}
+
+.login-google {
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background-color: var(--color-card-background-secondary);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.login-google-note {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+.login-signup-note {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
