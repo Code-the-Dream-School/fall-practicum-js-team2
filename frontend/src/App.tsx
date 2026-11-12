@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomeLandingPage } from "./pages/HomeLandingPage";
 import { HomeDashboard } from "./pages/Home";
-import { ChallengeMap } from "./components/Map/ChallengeMap";
+import { LiveChallenge } from "./pages/LiveChallenge";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLandingPage />} />
         <Route path="/home" element={<HomeDashboard />} />
-        <Route path="/challenge-map" element={<ChallengeMap />} />
+        <Route path="/challenge-map" element={<LiveChallenge />} />
         <Route path="/challenges" element={""} />
         <Route path="/profile" element={""} />
       </Routes>
