@@ -1,0 +1,226 @@
+.plan-stage {
+  min-height: 100dvh;
+  background: #e6e8ec;
+  display: flex;
+  justify-content: center;
+}
+
+.plan-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  min-height: 100dvh;
+  padding: 18px 16px 22px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.plan-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-phone .backlink-section {
+  width: fit-content;
+  gap: 2px;
+  color: #d7e3ef;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.plan-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.plan-title-row h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.plan-pill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.plan-meta {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.live-map {
+  position: relative;
+  flex: 0 0 auto;
+  height: 320px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #0c2038;
+}
+
+.live-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #0c2038;
+  font-family: var(--font-family);
+}
+
+.live-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.95) contrast(0.92);
+}
+
+.live-map .leaflet-container .leaflet-bottom.leaflet-right {
+  margin: 0 12px 10px 0;
+}
+
+.live-map .leaflet-container .leaflet-control-attribution {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: rgba(215, 227, 239, 0.75);
+  font-size: 9px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.live-map .leaflet-container .leaflet-control-attribution a {
+  color: rgba(215, 227, 239, 0.85);
+}
+
+.map-zoom,
+.map-locate {
+  position: absolute;
+  z-index: 500;
+}
+
+.map-zoom {
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(12, 36, 64, 0.94);
+}
+
+.map-zoom button {
+  width: 38px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f6f5ee;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.map-zoom button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.map-locate {
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-accent);
+  cursor: pointer;
+}
+
+.map-locate-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #062240;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 4px var(--color-accent), 7px 0 0 -6px #062240, -7px 0 0 -6px #062240, 0 7px 0 -6px #062240, 0 -7px 0 -6px #062240;
+}
+
+.plan-legend {
+  margin: 0;
+  color: #d5e0ea;
+  font-size: 0.92rem;
+}
+
+.plan-legend span {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.plan-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.plan-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px 10px 10px;
+  border-radius: 16px;
+  background: #0d2b4c;
+}
+
+.plan-stat strong {
+  font-size: 1.15rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.plan-stat span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.plan-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  margin-top: auto;
+  border: 0;
+  border-radius: 16px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (min-width: 480px) {
+  .plan-stage {
+    align-items: flex-start;
+    padding: 28px 16px;
+  }
+
+  .plan-phone {
+    min-height: calc(100dvh - 56px);
+    border-radius: 28px;
+    box-shadow: 0 18px 50px rgba(16, 32, 54, 0.18);
+  }
+}
