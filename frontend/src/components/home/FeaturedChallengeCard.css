@@ -1,0 +1,32 @@
+.home-featured-challenge-section {
+  padding: 1rem;
+  border: 1px solid var(--color-card-border-primary);
+  border-radius: 1.25rem;
+  background-color: var(--color-card-background-primary);
+
+  .challenge-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .challenge-description {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+}
+
+.featured-challenge-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}

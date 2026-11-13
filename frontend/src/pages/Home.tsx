@@ -1,8 +1,9 @@
 import "./Home.css";
-import heartRoute from "../assets/featured-heart-route.png";
+
 import { BottomNav } from "../components/common/BottomNav";
 import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
+import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 
 export function HomeDashboard() {
   return (
@@ -14,20 +15,7 @@ export function HomeDashboard() {
         title="Hey, User Name"
         subtitle="Get Outside. Get Creative."
       />
-      <section className="home-featured-challenge-section">
-        <div>
-          <p className="challenge-label">FEATURED CHALLENGE</p>
-          <h2>Draw a heart</h2>
-          <p className="challenge-description">
-            Turn your next walk into a work of art
-          </p>
-        </div>
-        <img
-          className="featured-challenge-image"
-          src={heartRoute}
-          alt="Heart-shaped walking route on a street map"
-        />
-      </section>
+      <FeaturedChallengeCard title="Draw a heart" />
       <div className="challenge-actions">
         <ButtonLink
           text="Create challenge"
