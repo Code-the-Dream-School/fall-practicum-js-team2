@@ -1,7 +1,9 @@
 import "./Home.css";
-import heartRoute from "../assets/featured-heart-route.png";
+
 import { BottomNav } from "../components/common/BottomNav";
 import { PageHeader } from "../components/common/PageHeader";
+import { ButtonLink } from "../components/common/ButtonLink";
+import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 
 export function HomeDashboard() {
   // TODO: Replace with real user data once the user endpoint/auth exists.
@@ -17,27 +19,18 @@ export function HomeDashboard() {
         title={`Hey, ${greetingName}!`}
         subtitle="Get Outside. Get Creative."
       />
-      <section className="home-featured-challenge-section">
-        <div>
-          <p className="challenge-label">FEATURED CHALLENGE</p>
-          <h2>Draw a heart</h2>
-          <p className="challenge-description">
-            Turn your next walk into a work of art
-          </p>
-        </div>
-        <img
-          className="featured-challenge-image"
-          src={heartRoute}
-          alt="Heart-shaped walking route on a street map"
-        />
-      </section>
+      <FeaturedChallengeCard title="Draw a heart" />
       <div className="challenge-actions">
-        <button type="button" className="challenge-create">
-          Create challenge
-        </button>
-        <button type="button" className="challenge-join">
-          Join challenge
-        </button>
+        <ButtonLink
+          text="Create challenge"
+          variant="primary"
+          path="/challenges/new"
+        />
+        <ButtonLink
+          text="Join challenge"
+          variant="secondary"
+          path="/challenges/join"
+        />
       </div>
       <section className="home-active-challenge">
         <h2>Active challenge</h2>
