@@ -2,10 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+datasource db { 
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Used when running locally or in production
+  directUrl = env("DIRECT_URL") // Used strictly for running migrations (prisma migrate dev)
 }
 
 enum GameStatus {

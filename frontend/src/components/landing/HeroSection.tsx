@@ -1,4 +1,5 @@
 import React from 'react';
+import heartRoute from '../../assets/featured-heart-route.png';
 
 export const HeroSection: React.FC = () => {
     return(
@@ -18,8 +19,12 @@ export const HeroSection: React.FC = () => {
                 </div>
             </div>
             <div className="hero-preview">
-                <div className="hero-preview-box">
-                <p>🗺️ GPS Route Preview / Map Mockup</p>
+                <div className="hero-image-card">
+                <img src={heartRoute} alt="Heart GPS art route" className="hero-preview-image"/>
+                <div className="hero-image-caption">
+                    <span>Prompt: <strong>"Heart"</strong></span>
+                    <span>Distance: 2.5 km </span>
+                </div>
             </div>
             </div>
         </section>
