@@ -81,7 +81,8 @@ model Participant {
 model Drawing {
   id            Int      @id @default(autoincrement())
   participantId Int      @map("participant_id")
-  submittedAt   DateTime @default(now()) @map("submitted_at") @db.Timestamptz(6)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  submittedAt   DateTime?@map("submitted_at") @db.Timestamptz(6)
 
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
