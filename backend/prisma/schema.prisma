@@ -15,6 +15,7 @@ enum GameStatus {
 }
 
 enum Privacy {
+  SOLO
   PUBLIC
   PRIVATE
 }
@@ -40,13 +41,16 @@ model User {
 // Game rules
 model Game {
   id             Int           @id @default(autoincrement())
+  lobbyName      String        @map("lobby_name") @db.VarChar(50)
   pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
   status         GameStatus    @default(ACTIVE)
   privacy        Privacy       @default(PUBLIC)
   joinCode       String?       @unique @db.VarChar(10)
   startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
-  endDate        DateTime      @map("end_date") @db.Timestamptz(6)
+  endDate        DateTime      @map("end_date") @db.Timestamptz(6) // This doubles up as the vote start date
   updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  voteEndDate    DateTime      @map("vote_end_date")
+  maxParticipants Int          @map("map_participants")
   participants   Participant[]
 
   @@map("games")
