@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") 
+  directUrl = env("DIRECT_URL")
 }
 
 enum GameStatus {
@@ -40,18 +40,18 @@ model User {
 
 // Game rules
 model Game {
-  id             Int           @id @default(autoincrement())
-  lobbyName      String        @map("lobby_name") @db.VarChar(50)
-  pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
-  status         GameStatus    @default(ACTIVE)
-  privacy        Privacy       @default(PUBLIC)
-  joinCode       String?       @unique @map("join_code") @db.VarChar(10)
-  startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
-  endDate        DateTime      @map("end_date") @db.Timestamptz(6) // This doubles up as the vote start date
-  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
-  voteEndDate    DateTime      @map("vote_end_date") @db.Timestamptz(6)
-  maxParticipants Int          @map("max_participants")
-  participants   Participant[]
+  id              Int           @id @default(autoincrement())
+  lobbyName       String        @map("lobby_name") @db.VarChar(50)
+  pictionaryWord  String        @map("pictionary_word") @db.VarChar(50)
+  status          GameStatus    @default(ACTIVE)
+  privacy         Privacy       @default(PUBLIC)
+  joinCode        String?       @unique @map("join_code") @db.VarChar(10)
+  startDate       DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
+  endDate         DateTime      @map("end_date") @db.Timestamptz(6) // This doubles up as the vote start date
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  voteEndDate     DateTime      @map("vote_end_date") @db.Timestamptz(6)
+  maxParticipants Int           @map("max_participants")
+  participants    Participant[]
 
   @@map("games")
 }
@@ -68,9 +68,9 @@ model Participant {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
-  drawings Drawing[]
-  voted    Vote?     @relation("VoterRelation")
-  received Vote[]    @relation("TargetRelation")
+  drawings Drawing?
+  voted    Vote?    @relation("VoterRelation")
+  received Vote[]   @relation("TargetRelation")
 
   @@unique([userId, gameId], name: "userGame", map: "user_id_game_id_unique")
   @@index([userId], map: "participants_user_id_idx")
@@ -79,10 +79,10 @@ model Participant {
 }
 
 model Drawing {
-  id            Int      @id @default(autoincrement())
-  participantId Int      @map("participant_id")
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  submittedAt   DateTime?@map("submitted_at") @db.Timestamptz(6)
+  id            Int       @id @default(autoincrement())
+  participantId Int       @map("participant_id")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  submittedAt   DateTime? @map("submitted_at") @db.Timestamptz(6)
 
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
