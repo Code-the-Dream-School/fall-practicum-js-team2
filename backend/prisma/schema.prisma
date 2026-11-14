@@ -20,12 +20,6 @@ enum Privacy {
   PRIVATE
 }
 
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
-}
-
 model User {
   id             Int           @id @default(autoincrement())
   email          String        @unique @db.VarChar(255)
@@ -103,14 +97,4 @@ model Vote {
   @@unique([voterParticipant], map: "votes_voter_participant_unique")
   @@index([targetParticipant], map: "votes_target_participant_idx")
   @@map("votes")
-}
-
-// The pictionary word
-model Word {
-  id         Int        @id @default(autoincrement())
-  text       String     @unique @db.VarChar(50)
-  difficulty Difficulty @default(EASY)
-  createdAt  DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-
-  @@map("words")
 }
