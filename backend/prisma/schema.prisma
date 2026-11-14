@@ -45,12 +45,12 @@ model Game {
   pictionaryWord String        @map("pictionary_word") @db.VarChar(50)
   status         GameStatus    @default(ACTIVE)
   privacy        Privacy       @default(PUBLIC)
-  joinCode       String?       @unique @db.VarChar(10)
+  joinCode       String?       @unique @map("join_code") @db.VarChar(10)
   startDate      DateTime      @default(now()) @map("start_date") @db.Timestamptz(6)
   endDate        DateTime      @map("end_date") @db.Timestamptz(6) // This doubles up as the vote start date
   updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
-  voteEndDate    DateTime      @map("vote_end_date")
-  maxParticipants Int          @map("map_participants")
+  voteEndDate    DateTime      @map("vote_end_date") @db.Timestamptz(6)
+  maxParticipants Int          @map("max_participants")
   participants   Participant[]
 
   @@map("games")
