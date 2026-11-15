@@ -1,8 +1,12 @@
 const Joi = require("joi");
 
 const createGameSchema = Joi.object({
-  durationInDays: Joi.number().integer().min(1).max(30).default(7),
-  isPrivate: Joi.boolean().required(),
+  lobbyName: Joi.string().trim().min(3).max(50).required(),
+  drawingPrompt: Joi.string().trim.min(2).max(100).optional(),
+  privacy: Joi.string().valid("PUBLIC", "PRIVATE", "SOLO").required(),
+  gameDuration: Joi.number().integer().valid(24,48,72).default(24),
+  voteDuration: Joi.number().integer().valid(6,12,24).default(6),
+  playerLimit: Joi.number().min(1).required()
 });
 
 const joinGameSchema = Joi.object({
