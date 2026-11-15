@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const prisma = require("../config/prisma");
-const { PICTONARY_WORDS } = require("../utils/pictionaryWords");
+const { PICTIONARY_WORDS } = require("../utils/pictionaryWords");
 
 async function create(req, res, next) {
     try {
@@ -26,25 +26,22 @@ async function create(req, res, next) {
             joinCode = crypto.randomBytes(3).toString('hex').toUpperCase();
         }
 
-        if (privacy === "SOLO") {
-            playerLimit = 1;
-        }
+        const finalPlayerLimit = privacy === "SOLO" ? 1 : playerLimit;
 
-        const wordPool = PICTONARY_WORDS[difficulty] || PICTONARY_WORDS.EASY;
+        const wordPool = PICTIONARY_WORDS[difficulty] || PICTIONARY_WORDS.EASY;
         const randomPrompt = wordPool[Math.floor(Math.random() * wordPool.length)];
-        finalPrompt = drawingPrompt || randomPrompt;
+        const finalPrompt = drawingPrompt || randomPrompt;
         
         const newGame = await prisma.game.create({
             data: {
                 lobbyName,
-                drawingPrompt,
                 startDate,
                 endDate,
                 voteEndDate,
-                privacy: privacy,
-                joinCode: joinCode,
+                privacy,
+                joinCode,
                 pictionaryWord: finalPrompt,
-                playerLimit,
+                maxParticipants: finalPlayerLimit,
                 status: "ACTIVE",
                 
                 participants: {
