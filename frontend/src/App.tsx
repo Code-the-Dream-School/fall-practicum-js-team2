@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomeLandingPage } from "./pages/HomeLandingPage";
 import { HomeDashboard } from "./pages/Home";
 import { ChallengesPage } from "./pages/ChallengesPage";
+import { VotingPage } from "./pages/VotingPage";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
         <Route path="/home" element={<HomeDashboard />} />
         <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/profile" element={""} />
+        <Route path="/challenges/:id/vote" element={<VotingPage />}/>
+
       </Routes>
     </BrowserRouter>
   );
