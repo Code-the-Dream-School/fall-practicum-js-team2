@@ -75,6 +75,12 @@ async function join(req, res, next) {
             return res.status(400).json({ message: "This game has already finished "})
         }
 
+        if (game.privacy === "PRIVATE" && game.joinCode !== joinCode) {
+            return res.status(403).json({ 
+                message: "Invalid or missing join code for this private game" 
+            });
+        }
+
         const participantCheck = await prisma.participant.findFirst({
             where: {
                 gameId: game.id,
