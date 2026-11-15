@@ -6,9 +6,9 @@ import { BottomNav } from '../components/common/BottomNav';
 import { DrawingVoteCard, type SubmittedDrawing } from '../components/voting/DrawingVoteCard';
 
 // sample submitted routes using assets img for testing
-import heartImg from '../assets/heart.jpg';
-import starImg from '../assets/Star.jpg';
-import swanImg from '../assets/swan.jpg';
+import heartImg from '../assets/featured-heart-route.png';
+import starImg from '../assets/featured-heart-route.png';
+import swanImg from '../assets/featured-heart-route.png';
 
 export const VotingPage: React.FC = () => {
     const {id} = useParams<{ id: string}>();
