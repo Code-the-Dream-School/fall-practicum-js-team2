@@ -6,13 +6,17 @@ import { ButtonLink } from "../components/common/ButtonLink";
 import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 
 export function HomeDashboard() {
+  // TODO: Replace with real user data once the user endpoint/auth exists.
+  const userObject = { name: undefined };
+  const greetingName = userObject.name || "Username";
+
   return (
     <div className="home-dashboard">
       <div className="home-header-logo">
         <h2>VanGo</h2>
       </div>
       <PageHeader
-        title="Hey, User Name"
+        title={`Hey, ${greetingName}!`}
         subtitle="Get Outside. Get Creative."
       />
       <FeaturedChallengeCard title="Draw a heart" />
