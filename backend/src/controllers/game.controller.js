@@ -318,7 +318,7 @@ async function getDrawings(req, res, next) {
             return res.status(403).json({ message: "Cannot view drawings of games you are not in" });
         }
 
-        const drawings = await prisma.game.findMany({
+        const drawings = await prisma.drawing.findMany({
             where: {
                 participant: {
                     gameId
@@ -337,10 +337,6 @@ async function getDrawings(req, res, next) {
                 }
             }
         });
-
-        if (!drawings) {
-            return res.status(404).json({ message: "Game lobby not found" });
-        }
 
         return res.status(200).json({
             success: true,
