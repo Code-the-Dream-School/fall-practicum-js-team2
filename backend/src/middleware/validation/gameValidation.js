@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const createGameSchema = Joi.object({
   lobbyName: Joi.string().trim().min(3).max(50).required(),
-  drawingPrompt: Joi.string().trim.min(2).max(100).optional(),
+  drawingPrompt: Joi.string().trim().min(2).max(100).optional(),
   privacy: Joi.string().valid("PUBLIC", "PRIVATE", "SOLO").required(),
   gameDuration: Joi.number().integer().valid(24,48,72).default(24),
   voteDuration: Joi.number().integer().valid(6,12,24).default(6),
