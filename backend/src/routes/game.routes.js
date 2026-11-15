@@ -7,6 +7,7 @@ const {
     submitDrawing,
     getOpenGames,
     getGameStatus,
+    getDrawings,
     update,
 } = require("../controllers/game.controller");
 
@@ -27,6 +28,7 @@ router.post("/join", mockAuthenticate, validateJoinGame, join);
 router.post("/:id/submit", mockAuthenticate, validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
+router.get("/:id/drawings", getDrawings);
 router.patch("/:id", mockAuthenticate, update);
 
 module.exports = router;

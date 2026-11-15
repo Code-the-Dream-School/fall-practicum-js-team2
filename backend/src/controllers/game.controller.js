@@ -305,6 +305,55 @@ async function getGameStatus(req, res, next) {
     }
 }
 
+async function getDrawings(req, res, next) {
+    try {
+        const gameId = Number(req.params.id);
+        const userId = Number(req.user.id);
+
+        const participant = await prisma.participant.findFirst({
+            where: {
+                gameId: gameId,
+                userId: Number(userId)
+            }
+        });
+
+        if (!participant) {
+            return res.status(403).json({ message: "Cannot view drawings of games you are not in" });
+        }
+
+        const drawings = await prisma.game.findMany({
+            where: {
+                participant: {
+                    gameId
+                }
+            },
+            include: {
+                participant: {
+                    select: {
+                        user: {
+                            select: {
+                                id: true,
+                                username: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!drawings) {
+            return res.status(404).json({ message: "Game lobby not found" });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: drawings
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 async function update(req, res, next) {
     try {
         const gameId = Number(req.params.id);
@@ -374,5 +423,6 @@ module.exports = {
     submitDrawing,
     getOpenGames,
     getGameStatus,
+    getDrawings,
     update,
 }
