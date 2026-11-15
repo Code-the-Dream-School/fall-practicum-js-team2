@@ -12,7 +12,7 @@ const createGameSchema = Joi.object({
 const joinGameSchema = Joi.object({
   gameId: Joi.number().integer().min(1).optional(),
   joinCode: Joi.string().trim().uppercase().optional(),
-}).xor('gameId', 'joinCode'); 
+}); 
 
 const submitDrawingSchema = Joi.array().items(
   Joi.object({
