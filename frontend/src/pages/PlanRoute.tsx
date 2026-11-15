@@ -52,24 +52,13 @@ export function PlanRoute() {
           </button>
         </div>
 
-        <p className="plan-legend">
-          <span>Gold:</span> planned route
-        </p>
-
-        <div className="plan-stats">
-          <article className="plan-stat">
-            <strong>Heart</strong>
-            <span>shape</span>
-          </article>
-          <article className="plan-stat">
-            <strong>{routeKm == null ? '—' : formatMiles(routeKm)}</strong>
-            <span>size</span>
-          </article>
-          <article className="plan-stat">
-            <strong>Your location</strong>
-            <span>start</span>
-          </article>
-        </div>
+        <article className="plan-estimate">
+          <div>
+            <h2>Planned route</h2>
+            <p>Estimated distance</p>
+          </div>
+          <strong>{routeKm == null ? '—' : formatMiles(routeKm)}</strong>
+        </article>
 
         <button type="button" className="plan-start" onClick={() => navigate('/challenge-map')}>
           Start walk
