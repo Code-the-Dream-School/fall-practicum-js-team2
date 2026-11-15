@@ -333,7 +333,7 @@ async function getDrawings(req, res, next) {
                         user: {
                             select: {
                                 id: true,
-                                username: true
+                                name: true
                             }
                         }
                     }
@@ -349,6 +349,56 @@ async function getDrawings(req, res, next) {
             success: true,
             data: drawings
         })
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getVotes(req, res, next) {
+    try {
+        const gameId = Number(req.params.id);
+        const userId = Number(req.user.id);
+
+        const participant = await prisma.participant.findFirst({
+            where: {
+                gameId: gameId,
+                userId: Number(userId)
+            }
+        });
+
+        if (!participant) {
+            return res.status(403).json({ message: "Cannot view votes of games you are not in" });
+        }
+
+        const votes = await prisma.participant.findMany({
+            where: {
+                gameId
+            },
+            select: {
+                id: true,
+                user: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        received: true
+                    }
+                }
+            },
+            orderBy: {
+                received: {
+                    _count: "desc"
+                }
+            }
+        });
+
+        return res.status(200).json({
+            success: true,
+            data: votes
+        });
     } catch (error) {
         next(error);
     }
@@ -424,5 +474,6 @@ module.exports = {
     getOpenGames,
     getGameStatus,
     getDrawings,
+    getVotes,
     update,
 }
