@@ -3,16 +3,29 @@ const prisma = require("../config/prisma");
 
 async function create(req, res, next) {
     try {
-        const { durationInDays, isPrivate } = req.body;
+        const { 
+            lobbyName, 
+            drawingPrompt, 
+            privacy, 
+            gameDuration, 
+            voteDuration, 
+            playerLimit 
+        } = req.body;
+
         const creatorId = req.user.id;
 
         const startDate = new Date();
-        const endDate = new Date();
-        endDate.setDate(startDate.getDate() + durationInDays);
+        //convert hours to milliseconds (hours * 60 * 60 * 1000)
+        const endDate = new Date(startDate.getTime() + gameDuration * 60 * 60 * 1000);
+        const voteEndDate = new Date(endDate.getTime() + voteDuration * 60 * 60 * 1000);
 
         let joinCode = null;
-        if (isPrivate) {
+        if (privacy === "PRIVATE") {
             joinCode = crypto.randomBytes(3).toString('hex').toUpperCase();
+        }
+
+        if (privacy === "SOLO") {
+            playerLimit = 1;
         }
 
         //@@TODO change this with the pictionary word dictionary later
@@ -20,11 +33,15 @@ async function create(req, res, next) {
 
         const newGame = await prisma.game.create({
             data: {
+                lobbyName,
+                drawingPrompt,
                 startDate,
                 endDate,
-                privacy: isPrivate ? "PRIVATE" : "PUBLIC",
+                voteEndDate,
+                privacy: privacy,
                 joinCode: joinCode,
                 pictionaryWord: pictionaryWord,
+                playerLimit,
                 status: "ACTIVE",
                 
                 participants: {
@@ -78,6 +95,12 @@ async function join(req, res, next) {
         if (game.privacy === "PRIVATE" && game.joinCode !== joinCode) {
             return res.status(403).json({ 
                 message: "Invalid or missing join code for this private game" 
+            });
+        }
+
+        if (game.privacy === "SOLO") {
+            return res.status(403).json({
+                message: "Cannot join solo game"
             });
         }
 
