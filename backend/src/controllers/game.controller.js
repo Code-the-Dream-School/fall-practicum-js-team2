@@ -69,6 +69,59 @@ async function create(req, res, next) {
     }
 }
 
+//Weekly public lobby, dev created
+async function createWeekly(req, res, next) {
+    try {
+        const { 
+            lobbyName, 
+            drawingPrompt, 
+            difficulty, 
+            playerLimit 
+        } = req.body;
+        
+        const startDate = new Date();
+        //end date is 6 days
+        const endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+        const voteEndDate = new Date(endDate.getTime() + 24 * 60 * 60 * 1000);
+
+        const wordPool = PICTONARY_WORDS[difficulty] || PICTONARY_WORDS.EASY;
+        const randomPrompt = wordPool[Math.floor(Math.random() * wordPool.length)];
+        finalPrompt = drawingPrompt || randomPrompt;
+
+        const newGame = await prisma.game.create({
+            data: {
+                lobbyName,
+                drawingPrompt,
+                startDate,
+                endDate,
+                voteEndDate,
+                privacy: "PUBLIC",
+                pictionaryWord: finalPrompt,
+                playerLimit,
+                status: "ACTIVE",
+                
+                participants: {
+                    create: {
+                        userId: Number(creatorId)
+                    },
+                },
+            },
+            include: {
+                participants: true,
+            },
+        });
+
+        return res.status(201).json({
+            success: true, 
+            message: 'Game lobby created successfully',
+            data: newGame,
+        });
+
+    } catch (error) {
+        next (error);
+    }
+}
+
 async function join(req, res, next) {
     try {
         const { gameId, joinCode } = req.body;
@@ -316,6 +369,7 @@ async function update(req, res, next) {
 
 module.exports = {
     create,
+    createWeekly,
     join,
     submitDrawing,
     getOpenGames,
