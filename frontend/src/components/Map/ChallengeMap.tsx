@@ -1,48 +1,29 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 
-type LatLng = [number, number]
+export type LatLng = [number, number]
 
-const shape: LatLng[] = [
-  [47.6062, -122.3321],
-  [47.6072, -122.3321],
-  [47.6072, -122.3306],
-  [47.6062, -122.3306],
-  [47.6062, -122.3321],
-]
+const SEATTLE: LatLng = [47.6062, -122.3321]
+const ROUTE_COLOR = '#ffc000'
 
-const preview: LatLng[] = [
-  [47.6062, -122.3321],
-  [47.6065, -122.3321],
-  [47.6068, -122.3321],
-  [47.6068, -122.3316],
-  [47.6068, -122.3311],
-]
-
-function colorForSegment(a: LatLng, b: LatLng) {
-  const up = b[0] - a[0]
-  const right = b[1] - a[1]
-  if (Math.abs(up) > Math.abs(right)) return up > 0 ? '#2a9d8f' : '#e76f51'
-  return right > 0 ? '#e9c46a' : '#264653'
-}
-
-function FitShape() {
-  const map = useMap()
-
-  useEffect(() => {
-    map.attributionControl.setPrefix('')
-    const frame = requestAnimationFrame(() => {
-      map.invalidateSize()
-      map.fitBounds(shape, { padding: [36, 36] })
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [map])
-
-  return null
+type ChallengeMapProps = {
+  strokes: LatLng[][]
+  onStrokesChange: (strokes: LatLng[][]) => void
 }
 
 function MapControls() {
   const map = useMap()
+
+  const locate = () => {
+    if (!navigator.geolocation) return
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        map.setView([position.coords.latitude, position.coords.longitude], map.getZoom())
+      },
+      () => undefined,
+      { enableHighAccuracy: true, maximumAge: 10000 },
+    )
+  }
 
   return (
     <>
@@ -54,23 +35,125 @@ function MapControls() {
           −
         </button>
       </div>
-      <button
-        type="button"
-        className="map-locate"
-        aria-label="Center on the shape"
-        onClick={() => map.fitBounds(shape, { padding: [36, 36] })}
-      >
+      <button type="button" className="map-locate" aria-label="Center on your location" onClick={locate}>
         <span className="map-locate-icon" aria-hidden="true" />
       </button>
     </>
   )
 }
 
-export function ChallengeMap() {
+function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
+  const map = useMap()
+  const strokesRef = useRef(strokes)
+  const onChangeRef = useRef(onStrokesChange)
+  const drawing = useRef(false)
+  strokesRef.current = strokes
+  onChangeRef.current = onStrokesChange
+
+  useEffect(() => {
+    map.dragging.disable()
+    map.boxZoom.disable()
+    map.doubleClickZoom.disable()
+    map.attributionControl.setPrefix('')
+
+    return () => {
+      map.dragging.enable()
+      map.boxZoom.enable()
+      map.doubleClickZoom.enable()
+    }
+  }, [map])
+
+  useEffect(() => {
+    const container = map.getContainer()
+
+    const toLatLng = (event: PointerEvent): LatLng => {
+      const latlng = map.mouseEventToLatLng(event)
+      return [latlng.lat, latlng.lng]
+    }
+
+    const isControl = (event: PointerEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return false
+      return Boolean(target.closest('.map-zoom, .map-locate, .leaflet-control'))
+    }
+
+    const commit = (next: LatLng[][]) => {
+      strokesRef.current = next
+      onChangeRef.current(next)
+    }
+
+    const onDown = (event: PointerEvent) => {
+      if (!event.isPrimary || event.button !== 0 || isControl(event)) return
+      event.preventDefault()
+      try {
+        container.setPointerCapture(event.pointerId)
+      } catch {
+        // Untrusted pointers still draw from move events on the map.
+      }
+      drawing.current = true
+      commit([...strokesRef.current, [toLatLng(event)]])
+    }
+
+    const onMove = (event: PointerEvent) => {
+      if (!drawing.current || !event.isPrimary) return
+      event.preventDefault()
+      const finished = strokesRef.current.slice(0, -1)
+      const current = strokesRef.current[strokesRef.current.length - 1] ?? []
+      commit([...finished, [...current, toLatLng(event)]])
+    }
+
+    const onUp = (event: PointerEvent) => {
+      if (!drawing.current) return
+      drawing.current = false
+      try {
+        if (container.hasPointerCapture(event.pointerId)) {
+          container.releasePointerCapture(event.pointerId)
+        }
+      } catch {
+        // The stroke is already finished.
+      }
+    }
+
+    container.addEventListener('pointerdown', onDown)
+    container.addEventListener('pointermove', onMove)
+    container.addEventListener('pointerup', onUp)
+    container.addEventListener('pointercancel', onUp)
+
+    return () => {
+      container.removeEventListener('pointerdown', onDown)
+      container.removeEventListener('pointermove', onMove)
+      container.removeEventListener('pointerup', onUp)
+      container.removeEventListener('pointercancel', onUp)
+    }
+  }, [map])
+
+  return (
+    <>
+      {strokes.map((stroke, index) =>
+        stroke.length >= 2 ? (
+          <Polyline
+            key={index}
+            positions={stroke}
+            pathOptions={{ color: ROUTE_COLOR, weight: 5, lineCap: 'round', lineJoin: 'round' }}
+          />
+        ) : (
+          <CircleMarker
+            key={index}
+            center={stroke[0]}
+            radius={5}
+            pathOptions={{ color: ROUTE_COLOR, fillColor: ROUTE_COLOR, fillOpacity: 1, weight: 0 }}
+          />
+        ),
+      )}
+    </>
+  )
+}
+
+export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
   return (
     <div className="live-map">
       <MapContainer
-        center={shape[0]}
+        center={SEATTLE}
         zoom={16}
         zoomControl={false}
         attributionControl
@@ -80,18 +163,31 @@ export function ChallengeMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Polyline positions={shape} pathOptions={{ color: '#e7eef5', weight: 4, dashArray: '6 8' }} />
-        {preview.slice(1).map((point, index) => (
-          <Polyline
-            key={index}
-            positions={[preview[index], point]}
-            pathOptions={{ color: colorForSegment(preview[index], point), weight: 5 }}
-          />
-        ))}
-        <CircleMarker center={preview[preview.length - 1]} radius={8} />
-        <FitShape />
+        <SketchLayer strokes={strokes} onStrokesChange={onStrokesChange} />
         <MapControls />
       </MapContainer>
     </div>
   )
+}
+
+function strokeLengthKm(points: LatLng[]) {
+  const earthRadiusKm = 6371
+  let total = 0
+
+  for (let index = 1; index < points.length; index += 1) {
+    const [lat1, lng1] = points[index - 1]
+    const [lat2, lng2] = points[index]
+    const dLat = ((lat2 - lat1) * Math.PI) / 180
+    const dLng = ((lng2 - lng1) * Math.PI) / 180
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
+    total += 2 * earthRadiusKm * Math.asin(Math.min(1, Math.sqrt(a)))
+  }
+
+  return total
+}
+
+export function routeLengthKm(strokes: LatLng[][]) {
+  return strokes.reduce((total, stroke) => total + strokeLengthKm(stroke), 0)
 }

@@ -1,10 +1,33 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BackLink } from '../components/common/BackLink'
-import { ChallengeMap } from '../components/Map/ChallengeMap'
+import { ChallengeMap, routeLengthKm, type LatLng } from '../components/Map/ChallengeMap'
 import './PlanRoute.css'
+
+const MILES_PER_KM = 0.621371
+
+function formatMiles(kilometers: number) {
+  return `${(kilometers * MILES_PER_KM).toFixed(1)} mi`
+}
+
+function formatRoute(kilometers: number) {
+  const minutes = Math.max(1, Math.round((kilometers / 5) * 60))
+  return `${formatMiles(kilometers)} · about ${minutes} min`
+}
 
 export function PlanRoute() {
   const navigate = useNavigate()
+  const [strokes, setStrokes] = useState<LatLng[][]>([])
+  const hasLine = strokes.some((stroke) => stroke.length >= 2)
+  const routeKm = hasLine ? routeLengthKm(strokes) : null
+
+  const undoStroke = () => {
+    setStrokes((current) => current.slice(0, -1))
+  }
+
+  const resetStrokes = () => {
+    setStrokes([])
+  }
 
   return (
     <div className="plan-stage">
@@ -15,13 +38,22 @@ export function PlanRoute() {
             <h1>Plan your route</h1>
             <span className="plan-pill">Heart</span>
           </div>
-          <p className="plan-meta">2.4 km · about 35 min</p>
+          <p className="plan-meta">{routeKm == null ? 'Draw the route on the map' : formatRoute(routeKm)}</p>
         </header>
 
-        <ChallengeMap />
+        <ChallengeMap strokes={strokes} onStrokesChange={setStrokes} />
+
+        <div className="plan-sketch-actions">
+          <button type="button" onClick={undoStroke} disabled={strokes.length === 0}>
+            Undo
+          </button>
+          <button type="button" onClick={resetStrokes} disabled={strokes.length === 0}>
+            Reset
+          </button>
+        </div>
 
         <p className="plan-legend">
-          <span>Gold:</span> recorded route · Dashed: planned route
+          <span>Gold:</span> planned route
         </p>
 
         <div className="plan-stats">
@@ -30,7 +62,7 @@ export function PlanRoute() {
             <span>shape</span>
           </article>
           <article className="plan-stat">
-            <strong>2.4 km</strong>
+            <strong>{routeKm == null ? '—' : formatMiles(routeKm)}</strong>
             <span>size</span>
           </article>
           <article className="plan-stat">
