@@ -44,12 +44,12 @@ export function PlanRoute() {
         <ChallengeMap strokes={strokes} onStrokesChange={setStrokes} />
 
         <div className="plan-sketch-actions">
-          <button type="button" onClick={undoStroke} disabled={strokes.length === 0}>
+          <Button onClick={undoStroke} disabled={strokes.length === 0}>
             Undo
-          </button>
-          <button type="button" onClick={resetStrokes} disabled={strokes.length === 0}>
+          </Button>
+          <Button onClick={resetStrokes} disabled={strokes.length === 0}>
             Reset
-          </button>
+          </Button>
         </div>
 
         <article className="plan-estimate">
