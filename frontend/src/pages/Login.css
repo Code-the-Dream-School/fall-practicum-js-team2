@@ -1,13 +1,12 @@
 .login-page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 
   box-sizing: border-box;
   max-width: 40rem;
   min-height: 100dvh;
   margin-inline: auto;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem 1.5rem;
 
   border: 1px solid #adbed0;
   background-color: var(--color-background);
@@ -16,26 +15,32 @@
   font-family: var(--font-family);
 }
 
-.login-header-logo {
+/* Two-tone wordmark, same split-span pattern as the Navbar logo:
+   "Van" in the regular text color, "Go" in the gold accent. */
+.login-logo {
+  margin-top: 6dvh;
   text-align: center;
-  color: var(--color-accent);
+  color: var(--color-text);
 }
 
-.login-header-logo h2 {
-  margin: 0 0 1rem;
-  font-size: 2rem;
+.login-logo h1 {
+  margin: 0;
+  font-size: 2.25rem;
   font-weight: 700;
 }
 
+.login-logo-go {
+  color: var(--color-accent);
+}
+
+/* No card: the form sits directly on the page background, pushed
+   down below the logo. */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  padding: 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background-color: var(--color-surface);
+  margin-top: 3.5rem;
 }
 
 .login-form-error {
@@ -53,17 +58,13 @@
   gap: 0.375rem;
 }
 
-.login-field label {
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
 .login-field input {
+  width: 100%;
   min-height: 3rem;
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-button);
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   color: var(--color-text);
 }
 
@@ -122,11 +123,5 @@
   margin: 0;
   text-align: center;
   font-size: var(--font-size-caption);
-  color: var(--color-text-muted);
-}
-
-.login-signup-note {
-  text-align: center;
-  font-size: 0.875rem;
   color: var(--color-text-muted);
 }

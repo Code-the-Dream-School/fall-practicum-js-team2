@@ -2,7 +2,6 @@ import "./Login.css";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageHeader } from "../components/common/PageHeader";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
 const TOKEN_KEY = "vango_token";
@@ -70,10 +69,11 @@ export function LoginPage() {
 
   return (
     <div className="login-page">
-      <div className="login-header-logo">
-        <h2>VanGo</h2>
+      <div className="login-logo">
+        <h1>
+          Van<span className="login-logo-go">Go</span>
+        </h1>
       </div>
-      <PageHeader title="Welcome back" subtitle="Get Outside. Get Creative." />
 
       <form className="login-form" onSubmit={handleSubmit} noValidate>
         {formError && (
@@ -83,12 +83,12 @@ export function LoginPage() {
         )}
 
         <div className="login-field">
-          <label htmlFor="login-email">Email</label>
           <input
             id="login-email"
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            aria-label="Username or Email"
+            placeholder="Username or Email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -96,12 +96,12 @@ export function LoginPage() {
         </div>
 
         <div className="login-field">
-          <label htmlFor="login-password">Password</label>
           <input
             id="login-password"
             type="password"
             autoComplete="current-password"
-            placeholder="Your password"
+            aria-label="Password"
+            placeholder="Password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
@@ -129,10 +129,6 @@ export function LoginPage() {
           </p>
         )}
       </form>
-
-      <p className="login-signup-note">
-        New to VanGo? Sign-up arrives with the onboarding flow.
-      </p>
     </div>
   );
 }
