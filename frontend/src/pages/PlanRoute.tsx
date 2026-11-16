@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BackLink } from '../components/common/BackLink'
 import { Button } from '../components/common/Button'
-import { ChallengeMap, routeLengthKm, type LatLng } from '../components/Map/ChallengeMap'
+import { ChallengeMap } from '../components/Map/ChallengeMap'
+import type { LatLng } from '../types/map'
+import { routeLengthKm } from '../utils/geoUtils'
 import './PlanRoute.css'
 
 const MILES_PER_KM = 0.621371

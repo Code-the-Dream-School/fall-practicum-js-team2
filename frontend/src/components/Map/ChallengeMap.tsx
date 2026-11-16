@@ -1,14 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
-import {
-  distanceMeters,
-  fetchStreets,
-  segmentStaysOnStreets,
-  snapToStreet,
-  type Street,
-} from './streets'
-
-export type LatLng = [number, number]
+import type { LatLng, Street } from '../../types/map'
+import { distanceMeters, segmentStaysOnStreets, snapToStreet } from '../../utils/geoUtils'
+import { fetchStreets } from './streets'
 
 const SEATTLE: LatLng = [47.6062, -122.3321]
 const ROUTE_COLOR = '#ffc000'
@@ -277,26 +271,4 @@ export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
       </MapContainer>
     </div>
   )
-}
-
-function strokeLengthKm(points: LatLng[]) {
-  const earthRadiusKm = 6371
-  let total = 0
-
-  for (let index = 1; index < points.length; index += 1) {
-    const [lat1, lng1] = points[index - 1]
-    const [lat2, lng2] = points[index]
-    const dLat = ((lat2 - lat1) * Math.PI) / 180
-    const dLng = ((lng2 - lng1) * Math.PI) / 180
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
-    total += 2 * earthRadiusKm * Math.asin(Math.min(1, Math.sqrt(a)))
-  }
-
-  return total
-}
-
-export function routeLengthKm(strokes: LatLng[][]) {
-  return strokes.reduce((total, stroke) => total + strokeLengthKm(stroke), 0)
 }
