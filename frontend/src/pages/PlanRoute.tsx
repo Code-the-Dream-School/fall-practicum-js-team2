@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BackLink } from '../components/common/BackLink'
 import { Button } from '../components/common/Button'
+import { PageHeader } from '../components/common/PageHeader'
 import { ChallengeMap } from '../components/Map/ChallengeMap'
 import type { LatLng } from '../types/map'
 import { routeLengthKm } from '../utils/geoUtils'
@@ -13,9 +14,9 @@ function formatMiles(kilometers: number) {
   return `${(kilometers * MILES_PER_KM).toFixed(1)} mi`
 }
 
-function formatRoute(kilometers: number) {
+function formatMinutes(kilometers: number) {
   const minutes = Math.max(1, Math.round((kilometers / 5) * 60))
-  return `${formatMiles(kilometers)} · about ${minutes} min`
+  return `About ${minutes} min`
 }
 
 export function PlanRoute() {
@@ -35,14 +36,10 @@ export function PlanRoute() {
   return (
     <div className="plan-stage">
       <section className="plan-phone" aria-label="Plan your route">
-        <header className="plan-header">
-          <BackLink pathDestination="/home" pathName="Weekend sketch walk" />
-          <div className="plan-title-row">
-            <h1>Plan your route</h1>
-            <span className="plan-pill">Heart</span>
-          </div>
-          <p className="plan-meta">{routeKm == null ? 'Draw the route along the streets' : formatRoute(routeKm)}</p>
-        </header>
+        <div className="plan-header">
+          <BackLink pathDestination="/challenges" pathName="Join a Challenge" />
+          <PageHeader title="Your word: HEART" subtitle="Sketch your route before you head out." />
+        </div>
 
         <ChallengeMap strokes={strokes} onStrokesChange={setStrokes} />
 
@@ -58,7 +55,7 @@ export function PlanRoute() {
         <article className="plan-estimate">
           <div>
             <h2>Planned route</h2>
-            <p>Estimated distance</p>
+            <p>{routeKm == null ? 'Estimated distance' : formatMinutes(routeKm)}</p>
           </div>
           <strong>{routeKm == null ? '—' : formatMiles(routeKm)}</strong>
         </article>
