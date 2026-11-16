@@ -300,7 +300,10 @@ async function getGameStatus(req, res, next) {
 
         return res.status(200).json({
             success: true, 
-            data: game
+            data: {
+                ...game,
+                currentParticipants: game.participants.length,
+            }
         });
 
     } catch (error) {
