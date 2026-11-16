@@ -5,7 +5,7 @@ import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
 import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { ActiveChallengeCard } from "../components/home/ActiveChallengeCard";
 
 // Based on the Participant Model
 type Participant = {
@@ -17,6 +17,7 @@ type Game = {
   id: number;
   lobbyName: string;
   participants: Participant[];
+  privacy: "PUBLIC" | "PRIVATE" | "SOLO";
 };
 
 // This takes in a generic data type T. It will be used to take in a Game object later
@@ -37,8 +38,15 @@ async function getGame(id: number): Promise<Game> {
     id,
     lobbyName: "Weekend sketch walk",
     participants: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
+    privacy: "PRIVATE",
   };
 }
+
+const privacyLabels = {
+  PUBLIC: "Public lobby",
+  PRIVATE: "Private lobby",
+  SOLO: "Solo",
+};
 
 function renderActiveChallenge(state: LoadState) {
   switch (state.status) {
@@ -50,19 +58,15 @@ function renderActiveChallenge(state: LoadState) {
       return <p>You're not in a challenge yet.</p>;
     case "success": {
       const playerCount = state.game.participants.length;
-      const playerLabel = playerCount === 1 ? "player" : "players";
 
       return (
         // TODO: /challenges/:id route doesn't exist yet (add in App.tsx)
-        <Link
-          to={`/challenges/${state.game.id}`}
-          className="active-challenge-card"
-        >
-          <h3>{state.game.lobbyName}</h3>
-          <p>
-            {playerCount} {playerLabel}
-          </p>
-        </Link>
+        <ActiveChallengeCard
+          title={state.game.lobbyName}
+          playerCount={playerCount}
+          path={`/challenges/${state.game.id}`}
+          privacy={privacyLabels[state.game.privacy]}
+        />
       );
     }
   }
@@ -128,10 +132,6 @@ export function HomeDashboard() {
       <section className="home-active-challenge">
         <h2>Active challenge</h2>
         {renderActiveChallenge(state)}
-        {/* <div className="active-challenge-card">
-          <h3>Weekend sketch walk</h3>
-          <p>5 players · Private lobby</p>
-        </div> */}
       </section>
       <BottomNav />
     </div>
