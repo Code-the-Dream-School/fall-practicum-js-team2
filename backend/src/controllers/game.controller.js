@@ -127,11 +127,13 @@ async function join(req, res, next) {
 
         if (joinCode) {
             game = await prisma.game.findUnique({
-                where: { joinCode: joinCode }
+                where: { joinCode: joinCode },
+                include: { _count: { select: { participants: true } } }
             });
         } else if (gameId) {
             game = await prisma.game.findUnique({
-                where: { id: Number(gameId) }
+                where: { id: Number(gameId) },
+                include: { _count: { select: { participants: true } } }
             });
         }
 
@@ -154,6 +156,10 @@ async function join(req, res, next) {
             return res.status(403).json({
                 message: "Cannot join solo game"
             });
+        }
+
+        if (game._count.participants >= game.maxParticipants) {
+            return res.status(400).json({ message: "This game lobby is already full" });
         }
 
         const participantCheck = await prisma.participant.findFirst({
@@ -231,7 +237,8 @@ async function submitDrawing(req, res, next) {
         const newDrawing = await prisma.drawing.create({
             data: {
                 participantId: participant.id,
-                coordinates: coordinates
+                coordinates: coordinates,
+                submittedAt: new Date(),
             }
         })
 
