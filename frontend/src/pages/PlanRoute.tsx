@@ -39,7 +39,7 @@ export function PlanRoute() {
             <h1>Plan your route</h1>
             <span className="plan-pill">Heart</span>
           </div>
-          <p className="plan-meta">{routeKm == null ? 'Draw the route on the map' : formatRoute(routeKm)}</p>
+          <p className="plan-meta">{routeKm == null ? 'Draw the route along the streets' : formatRoute(routeKm)}</p>
         </header>
 
         <ChallengeMap strokes={strokes} onStrokesChange={setStrokes} />

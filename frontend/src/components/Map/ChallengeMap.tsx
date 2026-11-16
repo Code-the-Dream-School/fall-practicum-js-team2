@@ -1,5 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
+import {
+  distanceMeters,
+  fetchStreets,
+  segmentStaysOnStreets,
+  snapToStreet,
+  type Street,
+} from './streets'
 
 export type LatLng = [number, number]
 
@@ -42,13 +49,80 @@ function MapControls() {
   )
 }
 
-function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
+function StreetLayer({ onStreets }: { onStreets: (streets: Street[] | null) => void }) {
+  const map = useMap()
+  const onStreetsRef = useRef(onStreets)
+  onStreetsRef.current = onStreets
+
+  useEffect(() => {
+    let active = true
+    let controller: AbortController | null = null
+    let timer: number | undefined
+
+    const load = () => {
+      if (!active) return
+      if (!map.getSize().x || !map.getSize().y) {
+        timer = window.setTimeout(load, 100)
+        return
+      }
+      controller?.abort()
+      const request = new AbortController()
+      controller = request
+      const bounds = map.getBounds().pad(0.2)
+      const span = {
+        south: bounds.getSouth(),
+        west: bounds.getWest(),
+        north: bounds.getNorth(),
+        east: bounds.getEast(),
+      }
+
+      fetchStreets(span, request.signal)
+        .then((streets) => {
+          if (!active || request.signal.aborted) return
+          if (streets == null && map.getZoom() >= 15) return
+          onStreetsRef.current(streets)
+        })
+        .catch((error: unknown) => {
+          if (error instanceof DOMException && error.name === 'AbortError') return
+        })
+    }
+
+    const schedule = () => {
+      window.clearTimeout(timer)
+      timer = window.setTimeout(load, 200)
+    }
+
+    map.whenReady(schedule)
+    map.on('moveend', schedule)
+    map.on('resize', schedule)
+    schedule()
+
+    return () => {
+      active = false
+      controller?.abort()
+      window.clearTimeout(timer)
+      map.off('moveend', schedule)
+      map.off('resize', schedule)
+    }
+  }, [map])
+
+  return null
+}
+
+function SketchLayer({
+  strokes,
+  onStrokesChange,
+  streets,
+}: ChallengeMapProps & { streets: Street[] | null }) {
   const map = useMap()
   const strokesRef = useRef(strokes)
   const onChangeRef = useRef(onStrokesChange)
+  const streetsRef = useRef(streets)
   const drawing = useRef(false)
+  const [blocked, setBlocked] = useState(false)
   strokesRef.current = strokes
   onChangeRef.current = onStrokesChange
+  streetsRef.current = streets
 
   useEffect(() => {
     map.dragging.disable()
@@ -82,8 +156,26 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
       onChangeRef.current(next)
     }
 
+    let blockedTimer: number | undefined
+    const markBlocked = () => {
+      setBlocked(true)
+      window.clearTimeout(blockedTimer)
+      blockedTimer = window.setTimeout(() => setBlocked(false), 1400)
+    }
+
+    const onStreet = (point: LatLng) => {
+      const streets = streetsRef.current
+      if (!streets) return null
+      return snapToStreet(point, streets)
+    }
+
     const onDown = (event: PointerEvent) => {
       if (!event.isPrimary || event.button !== 0 || isControl(event)) return
+      const point = onStreet(toLatLng(event))
+      if (!point) {
+        markBlocked()
+        return
+      }
       event.preventDefault()
       try {
         container.setPointerCapture(event.pointerId)
@@ -91,7 +183,7 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
         // Untrusted pointers still draw from move events on the map.
       }
       drawing.current = true
-      commit([...strokesRef.current, [toLatLng(event)]])
+      commit([...strokesRef.current, [point]])
     }
 
     const onMove = (event: PointerEvent) => {
@@ -99,7 +191,15 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
       event.preventDefault()
       const finished = strokesRef.current.slice(0, -1)
       const current = strokesRef.current[strokesRef.current.length - 1] ?? []
-      commit([...finished, [...current, toLatLng(event)]])
+      const previous = current[current.length - 1]
+      const next = onStreet(toLatLng(event))
+      const streets = streetsRef.current
+      if (!next || (previous && streets && !segmentStaysOnStreets(previous, next, streets))) {
+        markBlocked()
+        return
+      }
+      if (previous && distanceMeters(previous, next) < 2) return
+      commit([...finished, [...current, next]])
     }
 
     const onUp = (event: PointerEvent) => {
@@ -120,6 +220,7 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
     container.addEventListener('pointercancel', onUp)
 
     return () => {
+      window.clearTimeout(blockedTimer)
       container.removeEventListener('pointerdown', onDown)
       container.removeEventListener('pointermove', onMove)
       container.removeEventListener('pointerup', onUp)
@@ -129,6 +230,11 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
 
   return (
     <>
+      {blocked ? (
+        <p className="map-blocked" role="status">
+          You can't plan a route on a building
+        </p>
+      ) : null}
       {strokes.map((stroke, index) =>
         stroke.length >= 2 ? (
           <Polyline
@@ -150,6 +256,8 @@ function SketchLayer({ strokes, onStrokesChange }: ChallengeMapProps) {
 }
 
 export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
+  const [streets, setStreets] = useState<Street[] | null>(null)
+
   return (
     <div className="live-map">
       <MapContainer
@@ -160,10 +268,11 @@ export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
         style={{ height: 320, width: '100%' }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://openfreemap.org">OpenFreeMap</a>'
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <SketchLayer strokes={strokes} onStrokesChange={onStrokesChange} />
+        <StreetLayer onStreets={setStreets} />
+        <SketchLayer strokes={strokes} onStrokesChange={onStrokesChange} streets={streets} />
         <MapControls />
       </MapContainer>
     </div>

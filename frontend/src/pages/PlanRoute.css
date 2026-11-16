@@ -106,6 +106,24 @@
   color: rgba(215, 227, 239, 0.85);
 }
 
+.map-blocked {
+  position: absolute;
+  z-index: 500;
+  left: 50%;
+  bottom: 28px;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(12, 36, 64, 0.94);
+  color: #ffb4a2;
+  max-width: calc(100% - 32px);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
 .map-zoom,
 .map-locate {
   position: absolute;
