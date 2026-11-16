@@ -50,9 +50,9 @@
 }
 /* Drawings Grid */
 .drawings-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 /* Individual Drawing Card */
 .drawing-vote-card {
@@ -88,58 +88,50 @@
     object-fit: cover;
     display: block;
 }
-.drawing-distance-pill {
-    position: absolute;
-    bottom: 0.75rem;
-    left: 0.75rem;
-    background-color: rgba(6, 34, 64, 0.85);
-    color: var(--color-text);
-    font-size: 0.8rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 9999px;
-    border: 1px solid var(--color-border);
-}
+
 /* Card Footer */
 .drawing-card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 0.85rem;
 }
 .participant-info {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
+    gap: 0.35rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-/* Toggle Switch */
-.vote-toggle {
-    width: 46px;
-    height: 26px;
-    background-color: var(--color-border);
-    border-radius: 9999px;
-    padding: 3px;
-    box-sizing: border-box;
-    transition: background-color 0.2s ease;
+.participant-icon {
+    font-size: 0.85rem;
+}
+.participant-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* Circular Checkmark styling */
+.vote-checkmark {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background-color: transparent;
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
-.toggle-thumb {
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-}
-/* Active Toggle */
-.vote-toggle.toggle-active {
-    background-color: var(--color-accent);
-}
-.vote-toggle.toggle-active .toggle-thumb {
-    transform: translateX(20px);
-    background-color: var(--color-on-accent);
+.vote-checkmark.checked {
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent);
+    color: var(--color-on-accent); 
 }
 /* Sticky Submit Bar */
 .voting-actions-bar {
