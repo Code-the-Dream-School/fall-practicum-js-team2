@@ -12,19 +12,27 @@ type ChallengeMapProps = {
   onStrokesChange: (strokes: LatLng[][]) => void
 }
 
-function MapControls() {
+function MapControls({ onLocation }: { onLocation: (point: LatLng) => void }) {
   const map = useMap()
+  const onLocationRef = useRef(onLocation)
+  onLocationRef.current = onLocation
 
-  const locate = () => {
+  const readLocation = (center: boolean) => {
     if (!navigator.geolocation) return
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        map.setView([position.coords.latitude, position.coords.longitude], map.getZoom())
+        const point: LatLng = [position.coords.latitude, position.coords.longitude]
+        onLocationRef.current(point)
+        if (center) map.setView(point, Math.max(map.getZoom(), 16))
       },
       () => undefined,
       { enableHighAccuracy: true, maximumAge: 10000 },
     )
   }
+
+  useEffect(() => {
+    readLocation(false)
+  }, [map])
 
   return (
     <>
@@ -36,7 +44,7 @@ function MapControls() {
           −
         </button>
       </div>
-      <button type="button" className="map-locate" aria-label="Center on your location" onClick={locate}>
+      <button type="button" className="map-locate" aria-label="Center on your location" onClick={() => readLocation(true)}>
         <span className="map-locate-icon" aria-hidden="true" />
       </button>
     </>
@@ -251,6 +259,7 @@ function SketchLayer({
 
 export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
   const [streets, setStreets] = useState<Street[] | null>(null)
+  const [location, setLocation] = useState<LatLng | null>(null)
 
   return (
     <div className="live-map">
@@ -267,7 +276,20 @@ export function ChallengeMap({ strokes, onStrokesChange }: ChallengeMapProps) {
         />
         <StreetLayer onStreets={setStreets} />
         <SketchLayer strokes={strokes} onStrokesChange={onStrokesChange} streets={streets} />
-        <MapControls />
+        {location ? (
+          <CircleMarker
+            center={location}
+            radius={7}
+            pathOptions={{
+              color: '#ffffff',
+              weight: 3,
+              fillColor: '#2f80ed',
+              fillOpacity: 1,
+              interactive: false,
+            }}
+          />
+        ) : null}
+        <MapControls onLocation={setLocation} />
       </MapContainer>
     </div>
   )
