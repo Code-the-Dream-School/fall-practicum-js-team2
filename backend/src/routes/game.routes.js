@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { requireAuth } = require("../middleware/auth.middleware");
 
 const { 
     create, 
@@ -18,19 +19,14 @@ const {
     validateSubmitDrawing, 
 } = require('../middleware/validation/gameValidation');
 
-// Temporary mock authentication middleware for testing without a user controller
-function mockAuthenticate(req, res, next) {
-    req.user = { id: 1 }; 
-    next();
-}
+router.post("/create", requireAuth, validateCreateGame, create);
+router.post("/join", requireAuth, validateJoinGame, join);
+router.post("/:id/submit", requireAuth, validateSubmitDrawing, submitDrawing);
+router.patch("/:id", requireAuth, update);
+router.get("/:id/drawings", requireAuth, getDrawings);
+router.get("/:id/votes", requireAuth, getVotes);
 
-router.post("/create", mockAuthenticate, validateCreateGame, create);
-router.post("/join", mockAuthenticate, validateJoinGame, join);
-router.post("/:id/submit", mockAuthenticate, validateSubmitDrawing, submitDrawing);
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);
-router.get("/:id/drawings", getDrawings);
-router.get("/:id/votes", getVotes);
-router.patch("/:id", mockAuthenticate, update);
 
 module.exports = router;
