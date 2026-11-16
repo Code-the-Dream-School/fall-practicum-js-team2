@@ -14,7 +14,7 @@ async function create(req, res, next) {
             playerLimit 
         } = req.body;
 
-        const creatorId = req.user.id;
+        const creatorId = req.userId;
 
         const startDate = new Date();
         //convert hours to milliseconds (hours * 60 * 60 * 1000)
@@ -81,20 +81,19 @@ async function createWeekly(req, res, next) {
         const endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
         const voteEndDate = new Date(endDate.getTime() + 24 * 60 * 60 * 1000);
 
-        const wordPool = PICTONARY_WORDS[difficulty] || PICTONARY_WORDS.EASY;
+        const wordPool = PICTIONARY_WORDS[difficulty] || PICTIONARY_WORDS.EASY;
         const randomPrompt = wordPool[Math.floor(Math.random() * wordPool.length)];
-        finalPrompt = drawingPrompt || randomPrompt;
+        const finalPrompt = drawingPrompt || randomPrompt;
 
         const newGame = await prisma.game.create({
             data: {
                 lobbyName,
-                drawingPrompt,
                 startDate,
                 endDate,
                 voteEndDate,
                 privacy: "PUBLIC",
                 pictionaryWord: finalPrompt,
-                playerLimit,
+                maxParticipants: playerLimit,
                 status: "ACTIVE",
                 
                 participants: {
@@ -122,7 +121,7 @@ async function createWeekly(req, res, next) {
 async function join(req, res, next) {
     try {
         const { gameId, joinCode } = req.body;
-        const userId = req.user.id;
+        const userId = req.userId;
 
         let game = null;
 
@@ -189,7 +188,7 @@ async function join(req, res, next) {
 async function submitDrawing(req, res, next) {
     try {
         const gameId = Number(req.params.id);
-        const userId = Number(req.user.id);
+        const userId = Number(req.userId);
         const { coordinates } = req.body;
 
         const game = await prisma.game.findUnique({
@@ -305,7 +304,7 @@ async function getGameStatus(req, res, next) {
 async function getDrawings(req, res, next) {
     try {
         const gameId = Number(req.params.id);
-        const userId = Number(req.user.id);
+        const userId = Number(req.userId);
 
         const participant = await prisma.participant.findFirst({
             where: {
@@ -350,7 +349,7 @@ async function getDrawings(req, res, next) {
 async function getVotes(req, res, next) {
     try {
         const gameId = Number(req.params.id);
-        const userId = Number(req.user.id);
+        const userId = Number(req.userId);
 
         const participant = await prisma.participant.findFirst({
             where: {
@@ -400,7 +399,7 @@ async function getVotes(req, res, next) {
 async function update(req, res, next) {
     try {
         const gameId = Number(req.params.id);
-        const userId = Number(req.user.id);
+        const userId = Number(req.userId);
 
         const { status, endDate, pictionaryWord } = req.body;
 
@@ -433,7 +432,7 @@ async function update(req, res, next) {
 
         if (game.status != "ACTIVE") {
             return res.status(400).json({
-                sucess: false,
+                success: false,
                 message: "Cannot update a game that is no longer active"
             });
         }
