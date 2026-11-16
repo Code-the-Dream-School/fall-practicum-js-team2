@@ -1,6 +1,7 @@
 import "./Home.css";
 import heartRoute from "../assets/featured-heart-route.png";
 import { BottomNav } from "../components/common/BottomNav";
+import { Button } from "../components/common/Button";
 import { PageHeader } from "../components/common/PageHeader";
 
 export function HomeDashboard() {
@@ -32,12 +33,8 @@ export function HomeDashboard() {
         />
       </section>
       <div className="challenge-actions">
-        <button type="button" className="challenge-create">
-          Create challenge
-        </button>
-        <button type="button" className="challenge-join">
-          Join challenge
-        </button>
+        <Button className="challenge-create">Create challenge</Button>
+        <Button className="challenge-join">Join challenge</Button>
       </div>
       <section className="home-active-challenge">
         <h2>Active challenge</h2>

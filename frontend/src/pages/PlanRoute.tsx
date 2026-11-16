@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BackLink } from '../components/common/BackLink'
+import { Button } from '../components/common/Button'
 import { ChallengeMap, routeLengthKm, type LatLng } from '../components/Map/ChallengeMap'
 import './PlanRoute.css'
 
@@ -60,9 +61,9 @@ export function PlanRoute() {
           <strong>{routeKm == null ? '—' : formatMiles(routeKm)}</strong>
         </article>
 
-        <button type="button" className="plan-start" onClick={() => navigate('/challenge-map')}>
+        <Button className="plan-start" onClick={() => navigate('/challenge-map')}>
           Start walk
-        </button>
+        </Button>
       </section>
     </div>
   )

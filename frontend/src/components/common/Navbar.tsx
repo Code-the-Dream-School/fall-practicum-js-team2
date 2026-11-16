@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from './Button';
 
 export const Navbar: React.FC = () => {
     return (
@@ -14,8 +15,8 @@ export const Navbar: React.FC = () => {
                     <a href="#challenges">Challenges</a>
                 </div>
                 <div className="nav-actions">
-                    <button className="btn btn-secondary">Sign In</button>
-                    <button className="btn btn-primary">Get Started</button>
+                    <Button className="btn btn-secondary">Sign In</Button>
+                    <Button className="btn btn-primary">Get Started</Button>
                 </div>
             </div>
         </nav>
