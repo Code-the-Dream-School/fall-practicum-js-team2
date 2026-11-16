@@ -39,6 +39,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex: 1;
 
   margin-top: 3.5rem;
 }
@@ -76,6 +77,45 @@
   margin: 0;
   font-size: var(--font-size-caption);
   color: #ffb4ab;
+}
+
+.login-password-wrap {
+  position: relative;
+}
+
+.login-password-wrap input {
+  padding-right: 3rem;
+}
+
+.login-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.login-forgot-row {
+  text-align: center;
+}
+
+.login-forgot {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-forgot:hover {
+  color: var(--color-text);
+  text-decoration: underline;
 }
 
 .login-submit {
@@ -124,4 +164,52 @@
   text-align: center;
   font-size: var(--font-size-caption);
   color: var(--color-text-muted);
+}
+
+.login-note {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+.login-signup {
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--radius-button);
+  background-color: var(--color-card-background-secondary);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Guest entry sits at the bottom of the screen, as in the Figma:
+   a question line, then "Continue as Guest" with "Guest" in gold. */
+.login-guest-footer {
+  margin-top: auto;
+  padding-top: 2.5rem;
+  text-align: center;
+}
+
+.login-guest-question {
+  margin: 0 0 0.25rem;
+  color: var(--color-text);
+}
+
+.login-guest {
+  padding: 0.25rem;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-guest-word {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.login-guest:hover {
+  text-decoration: underline;
 }
