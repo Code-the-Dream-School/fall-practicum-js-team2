@@ -266,7 +266,7 @@ async function getOpenGames(req, res, next) {
                 }
             },
             orderBy: {
-                endDate: 'asc'
+                startDate: 'desc'
             }
         });
 
