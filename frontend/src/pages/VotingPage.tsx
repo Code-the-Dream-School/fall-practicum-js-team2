@@ -69,18 +69,21 @@ export const VotingPage: React.FC = () => {
     ([
         {
             id: 1,
+            participantId: 10,
             participantName: 'Arturo C.',
             imageUrl: heartImg,
             distanceKm: '2.4 km',
         },
         {
             id: 2,
+            participantId: 15,
             participantName: 'Tonny',
             imageUrl: starImg,
             distanceKm: '3.1 km',
         },
         {
             id: 3,
+            participantId: 22,
             participantName: 'Tanis',
             imageUrl: swanImg,
             distanceKm: '2.8 km',
@@ -96,14 +99,15 @@ export const VotingPage: React.FC = () => {
     const handleSubmitVote = () => {
         if (!selectedDrawingId) return;
 
-        // this should have it ready for backend POST api
-        console.log(`Vote submitted for drawing #${selectedDrawingId} in game #${id ?? '1'}`);
+        const selectedDrawing = drawings.find((d) => d.id === selectedDrawingId);
+        if (!selectedDrawing) return;
+
+        console.log(`Casting vote in game #${id ?? '1'} : targetParticipantId is ${selectedDrawing.participantId} (${selectedDrawing.participantName})`);
+
         setHasVoted(true);
 
-        // Navigate to leaderboard after voting
-        setTimeout(() => {
-            navigate(`/challenges/${id ?? '1'}/leaderboard`);
-        }, 800);
+        setTimeout(() => {navigate(`/challenges/${id ?? '1'}/leaderboard`);
+    }, 800);
     };
 
     return (

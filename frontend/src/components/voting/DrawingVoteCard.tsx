@@ -2,6 +2,7 @@ import React from 'react';
 
 export interface SubmittedDrawing {
     id: number | string;
+    participantId: number;
     participantName: string;
     imageUrl: string;
     distanceKm?: string;
