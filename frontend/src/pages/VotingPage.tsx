@@ -19,7 +19,47 @@ export const VotingPage: React.FC = () => {
     const [selectedDrawingId, setSelectedDrawingId] = useState<number | string | null>(null);
     const [hasVoted, setHasVoted] = useState<boolean>(false);
 
-    const [timeLeft, setTimeLeft] = useState<number>(300);
+    // Timestamps ready for backend
+    const [drawingEndsAt] = useState<Date>(new Date(Date.now() - 1000));
+    const [votingEndsAt] = useState<Date>(new Date(Date.now() + 5 * 60 * 1000));
+
+    const calculateSecondsLeft = () => {
+        const diff = 
+        Math.floor((votingEndsAt.getTime() - Date.now()) / 1000);
+        return diff > 0 ? diff : 0;
+    };
+
+    const [timeLeft, setTimeLeft] = useState<number>(calculateSecondsLeft);
+
+    // checking if voting has started
+    const isVotingOpen = Date.now() >= drawingEndsAt.getTime();
+
+    // Live Timer
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const remaining = calculateSecondsLeft();
+            setTimeLeft(remaining);
+
+            if (remaining <= 0) {
+                clearInterval(timer);
+            }
+        },1000);
+
+        return () => clearInterval(timer);
+    }, [votingEndsAt]);
+
+    // format time 
+    const formatTime = (totalSeconds: number) => {
+        if (totalSeconds <= 0) return '00:00 (Voting Closed)';
+        const hours = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        if (hours > 0) {
+            return `${hours}h ${mins.toString().padStart(2, '0')}m ${secs.toString().padStart(2, '0')}s`;
+        }
+        return `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    };
 
     // sample drawings
 
@@ -33,33 +73,18 @@ export const VotingPage: React.FC = () => {
         },
         {
             id: 2,
-            participantName: 'Edwarb B.',
+            participantName: 'Tonny',
             imageUrl: starImg,
             distanceKm: '3.1 km',
         },
         {
             id: 3,
-            participantName: 'Frank S.',
+            participantName: 'Tanis',
             imageUrl: swanImg,
             distanceKm: '2.8 km',
         },
     ]);
 
-    // Live Countdown
-    useEffect(() => {
-        if(timeLeft <= 0) return;
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-        }, 1000);
-        return ()=> clearInterval(timer);
-    }, [timeLeft]);
-
-    // format time into MM:SS
-    const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-    };
     const handleToggleSelect = (drawingId: number | string) => {
         if (hasVoted) return;
         //selecting same card deselects, otherwise selects the new one
@@ -88,7 +113,15 @@ export const VotingPage: React.FC = () => {
             <h1>Which route looks most like a {promptWord}?</h1>
             <h2 className="challenge-title">{challengeTitle}</h2>
         </header>
-
+        {!isVotingOpen ? (
+            <div className="voting-phase-guard">
+                <div className="phase-guard-card">
+                    <h3>Drawing Phase in Progress</h3>
+                    <p>Participants are currently drawing their routes.</p>
+                    <p className="phase-note">Voting opens as soon as the challenge timer runs out!</p>
+                </div>
+                </div>):(
+            <>
             {/* submissions cards */}
         <section className="drawings-grid">
             {drawings.map((drawing) => (
@@ -119,6 +152,8 @@ export const VotingPage: React.FC = () => {
                 {hasVoted ? 'Vote Submitted!' : 'Submit Vote'}
             </button>
         </div>
+        </>
+                )}
 
         <BottomNav />
         </div>
