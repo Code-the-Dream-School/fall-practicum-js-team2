@@ -14,6 +14,7 @@ export const VotingPage: React.FC = () => {
     const {id} = useParams<{ id: string}>();
     const navigate = useNavigate();
 
+    const [challengeTitle] = useState<string>('Weekend sketch walk');
     const [promptWord] = useState<string>('Heart');
     const [selectedDrawingId, setSelectedDrawingId] = useState<number | string | null>(null);
     const [hasVoted, setHasVoted] = useState<boolean>(false);
@@ -82,18 +83,13 @@ export const VotingPage: React.FC = () => {
         <div className="voting-page">
             <BackLink pathDestination="/challenges" pathName="Vote"/>
         
-        {/* title and timmer banner */}
+        {/* challenge title and prompt */}
         <header className="voting-header">
             <h1>Which route looks most like a {promptWord}?</h1>
-            <p className="voting-subtitle">Vote for your favorite drawing before the timer expires.</p>
-
-            <div className={`voting-time-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
-                <span className="timer-icon">⏳</span>
-                <span>Time Remaining to Vote: <strong>{formatTime(timeLeft)}</strong></span>
-            </div>
+            <h2 className="challenge-title">{challengeTitle}</h2>
         </header>
 
-        {/* submissions cards */}
+            {/* submissions cards */}
         <section className="drawings-grid">
             {drawings.map((drawing) => (
                 <DrawingVoteCard
@@ -103,6 +99,18 @@ export const VotingPage: React.FC = () => {
                 onSelect={handleToggleSelect}/>
             ))}
         </section>
+
+        {/* timer and timer title*/}
+        <div className="voting-status-section">
+            <p className="voting-subtitle">Vote for your favorite drawing before time expires.</p>
+
+            <div className={`voting-time-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
+                {/* <span className="timer-icon">⏳</span> */}
+                <span>Time Remaining to Vote: <strong>{formatTime(timeLeft)}</strong></span>
+            </div>
+        </div>
+
+        
 
         {/* Vote button */}
         <div className="voting-actions-bar">

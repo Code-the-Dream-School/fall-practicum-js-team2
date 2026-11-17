@@ -32,7 +32,7 @@ export const DrawingVoteCard: React.FC<DrawingVoteCardProps> = ({
             {/* Card Footer */}
             <div className="drawing-card-footer">
                 <div className="participant-info">
-                    <span className="participant-icon">👤</span>
+                    {/* <span className="participant-icon">👤</span> */}
                     <span className="participant-name">{drawing.participantName}</span>
                 </div>
                 {/* Checkmark Selector */}
