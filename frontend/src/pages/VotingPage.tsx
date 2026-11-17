@@ -10,6 +10,10 @@ import heartImg from '../assets/featured-heart-route.png';
 import starImg from '../assets/featured-heart-route.png';
 import swanImg from '../assets/featured-heart-route.png';
 
+// Mock timestamps for development
+const MOCK_VOTING_ENDS_AT = new Date(Date.now() + 5 * 60 * 1000);
+const MOCK_DRAWING_ENDS_AT = new Date(Date.now() - 1000);
+
 export const VotingPage: React.FC = () => {
     const {id} = useParams<{ id: string}>();
     const navigate = useNavigate();
@@ -20,30 +24,28 @@ export const VotingPage: React.FC = () => {
     const [hasVoted, setHasVoted] = useState<boolean>(false);
 
     // Timestamps ready for backend
-    const [drawingEndsAt] = useState<Date>(new Date(Date.now() - 1000));
-    const [votingEndsAt] = useState<Date>(new Date(Date.now() + 5 * 60 * 1000));
+    const [drawingEndsAt] = useState<Date>(MOCK_DRAWING_ENDS_AT);
+    const [votingEndsAt] = useState<Date>(MOCK_VOTING_ENDS_AT);
 
-    const calculateSecondsLeft = () => {
-        const diff = 
-        Math.floor((votingEndsAt.getTime() - Date.now()) / 1000);
+    const [timeLeft, setTimeLeft] = useState<number>(() => {
+        const diff = Math.floor((MOCK_VOTING_ENDS_AT.getTime() - Date.now()) / 1000);
         return diff > 0 ? diff : 0;
-    };
-
-    const [timeLeft, setTimeLeft] = useState<number>(calculateSecondsLeft);
+    });
 
     // checking if voting has started
-    const isVotingOpen = Date.now() >= drawingEndsAt.getTime();
+    const isVotingOpen = drawingEndsAt.getTime() <= votingEndsAt.getTime();
 
     // Live Timer
     useEffect(() => {
         const timer = setInterval(() => {
-            const remaining = calculateSecondsLeft();
+            const diff = Math.floor((votingEndsAt.getTime() - Date.now()) / 1000);
+            const remaining = diff > 0 ? diff : 0;
             setTimeLeft(remaining);
 
             if (remaining <= 0) {
                 clearInterval(timer);
             }
-        },1000);
+        }, 1000);
 
         return () => clearInterval(timer);
     }, [votingEndsAt]);
