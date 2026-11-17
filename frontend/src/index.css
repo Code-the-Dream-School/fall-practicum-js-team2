@@ -7,6 +7,10 @@
   --color-text-muted: #adbed0;
   --color-accent: #ffc000;
   --color-on-accent: #062240;
+  --color-accent-hover: #ffd14d;
+  --color-accent-active: #e6ad00;
+  --color-secondary-hover: #2b4966;
+  --color-secondary-active: #1f3d5c;
   --color-border: #2b4966;
   --color-success: #85d6b1;
   --color-card-background-primary: #3c3520;
@@ -24,7 +28,7 @@
   --space-lg: 24px;
   --space-xl: 32px;
 
-  --radius-button: 14px;
+  --radius-button: 16px;
   --radius-card: 18px;
 }
 

@@ -13,8 +13,9 @@ function App() {
         <Route path="/home" element={<HomeDashboard />} />
         <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/profile" element={""} />
-        <Route path="/challenges/:id/vote" element={<VotingPage />}/>
-
+        <Route path="/challenges/new" element={""} />
+        <Route path="/challenges/join" element={""} />
+        <Route path="/challenges/:id/vote" element={<VotingPage />} />
       </Routes>
     </BrowserRouter>
   );
