@@ -104,6 +104,19 @@ export const VotingPage: React.FC = () => {
 
         console.log(`Casting vote in game #${id ?? '1'} : targetParticipantId is ${selectedDrawing.participantId} (${selectedDrawing.participantName})`);
 
+        // fetch call once backend is ready this will replace above console.log
+        // const response = await
+        // fetch(`/api/games/${id}/vote`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         Authorization: `Bearer ${token}`,
+        //     },
+        //     body: JSON.stringify({
+        //         targetParticipantId: selectedDrawing.participantId,
+        //     }),
+        // });
+
         setHasVoted(true);
 
         setTimeout(() => {navigate(`/challenges/${id ?? '1'}/leaderboard`);
