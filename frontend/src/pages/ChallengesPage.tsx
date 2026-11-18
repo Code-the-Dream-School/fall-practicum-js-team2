@@ -3,7 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import './Challenges.css';
 import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
 import {BottomNav} from '../components/common/BottomNav';
-
+import {BackLink} from '../components/common/BackLink';
+import { Button } from '../components/common/Button';
 
 const MOCK_CHALLENGES: Challenge[] = [
     {
@@ -66,6 +67,7 @@ export const ChallengesPage: React.FC = () => {
 
 return (
     <div className="challenges-page">
+        <BackLink pathDestination='/challenges/join' pathName='Join a Challenge'/>
         <header className="page-header">
             <p className="brand-logo">VanGo</p>
             <h1>Active Challenges</h1>
@@ -81,8 +83,9 @@ return (
             {!isLoading && challenges.length === 0 && (
                 <div className="no-challenges">
                     <p>No active challenges at the moment.</p>
-                    <button type="button" className="challenge-action-btn" 
-                    onClick={() => navigate('/home')}> Browse or Create a Challenge</button>
+                    <Button className="challenge-action-btn" onClick={() => navigate('/home')}>
+                        Browse or Create a Challenge
+                    </Button>
                 </div>
             )}
             {/* Pass onSelect to challenge card */}
