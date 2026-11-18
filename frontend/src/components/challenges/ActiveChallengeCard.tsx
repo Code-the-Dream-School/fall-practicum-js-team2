@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../common/Button';
 import heartImg from '../../assets/heart.jpg';
 import starImg from '../../assets/Star.jpg';
 import swanImg from '../../assets/swan.jpg';
@@ -56,13 +57,9 @@ export const ActiveChallengeCard: React.FC<ActiveChallengeCardProps> = ({
         </div>
 
         <div className="challenge-card-footer">
-        <button
-            type="button"
-            className="challenge-action-btn"
-            onClick={() => onSelect?.(challenge.id)}
-        >
-            View Lobby 
-        </button>
+        <Button className="challenge-action-btn" onClick={() => onSelect?.(challenge.id)}>
+            View Lobby
+        </Button>
         </div>
     </article>
     );

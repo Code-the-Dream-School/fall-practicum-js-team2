@@ -4,6 +4,7 @@ import './Challenges.css';
 import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
 import {BottomNav} from '../components/common/BottomNav';
 import {BackLink} from '../components/common/BackLink';
+import { Button } from '../components/common/Button';
 
 const MOCK_CHALLENGES: Challenge[] = [
     {
@@ -82,8 +83,9 @@ return (
             {!isLoading && challenges.length === 0 && (
                 <div className="no-challenges">
                     <p>No active challenges at the moment.</p>
-                    <button type="button" className="challenge-action-btn" 
-                    onClick={() => navigate('/home')}> Browse or Create a Challenge</button>
+                    <Button className="challenge-action-btn" onClick={() => navigate('/home')}>
+                        Browse or Create a Challenge
+                    </Button>
                 </div>
             )}
             {/* Pass onSelect to challenge card */}
