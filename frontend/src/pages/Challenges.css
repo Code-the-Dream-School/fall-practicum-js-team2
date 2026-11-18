@@ -69,6 +69,42 @@
     font-size: var(--font-size-caption);
     color: var(--color-text-muted);
 }
+/* Card Body */
+.challenge-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+}
+.challenge-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+/* Image Thumbnail Container */
+.challenge-visual-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.challenge-shape-preview {
+    width: 116px;
+    height: 116px;
+    min-width: 58px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+.challenge-thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
 .challenge-card-title {
     margin: 0 0 0.35rem;
     font-size: 1.2rem;

@@ -1,5 +1,6 @@
 import React from 'react';
 import heartRoute from '../../assets/featured-heart-route.png';
+import {Link} from "react-router-dom";
 
 export const HeroSection: React.FC = () => {
     return(
@@ -14,7 +15,8 @@ export const HeroSection: React.FC = () => {
                     share routes with friends, and vote on the best design.
                 </p>
                 <div className="hero-actions">
-                    <button className="btn btn-primary" type="button">Start Drawing Routes</button>
+                    <Link to="/login" className="btn btn-primary">
+                    Start Drawing Routes</Link>
                     <a href="#how-it-works" className="btn btn-secondary">Learn More</a>
                 </div>
             </div>
