@@ -1,5 +1,4 @@
 import "./Home.css";
-
 import { BottomNav } from "../components/common/BottomNav";
 import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
@@ -34,13 +33,6 @@ type Game = {
   privacy: "PUBLIC" | "PRIVATE" | "SOLO";
 };
 
-// This takes in a generic data type T. It will be used to take in a Game object later
-// TODO: use when getGame calls the real API
-// type ApiResponse<T> = {
-//   success: boolean;
-//   data: T;
-// };
-
 type LoadState =
   | { status: "loading" }
   | { status: "error"; message: string }
@@ -63,15 +55,11 @@ type User = {
   createdAt: string;
 };
 
-// User model currently uses id and email
-// uses user.name from /me
 async function getCurrentUser(): Promise<User | null> {
   const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
-
   const url = `${API_BASE}/api/auth/me`;
   const token = localStorage.getItem(TOKEN_KEY);
 
-  // null check
   if (!token) {
     return null;
   }
@@ -83,26 +71,13 @@ async function getCurrentUser(): Promise<User | null> {
   });
 
   if (!response.ok) {
-    switch (response.status) {
-      case 401:
-        localStorage.removeItem(TOKEN_KEY);
-        // handleRedirect();
-        throw new Error("Unauthorized: Please log in again.");
-
-      case 404:
-        window.location.href = "/login";
-        throw new Error("Not Found");
-
-      case 500:
-        throw new Error("Server error (500). Please try again later.");
-
-      default:
-        throw new Error(`Response status: ${response.status}`);
+    if (response.status === 401 || response.status === 404) {
+      throw new AuthError("Session is no longer valid", response.status);
     }
+    throw new Error(`Failed to load current user (status ${response.status})`);
   }
-  // happy-path
-  const result = await response.json();
 
+  const result = await response.json();
   return result.user;
 }
 
@@ -137,26 +112,50 @@ function renderActiveChallenge(state: LoadState) {
 }
 
 export function HomeDashboard() {
-  // TODO: Replace with real user data once the user endpoint/auth exists.
-  const userObject = { name: undefined };
-  const greetingName = userObject.name || "Username";
-  const [state, setState] = useState<LoadState>({ status: "loading" });
-
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null); // not sure if I need this
+
+  const [state, setState] = useState<LoadState>({ status: "loading" });
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const handleRedirect = () => {
-      localStorage.removeItem(TOKEN_KEY);
-      navigate("/login", { replace: true });
+    let isCancelled = false;
+
+    async function loadCurrentUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        if (!isCancelled) {
+          setUser(currentUser);
+        }
+      } catch (error: unknown) {
+        if (isCancelled) return;
+
+        if (error instanceof AuthError) {
+          localStorage.removeItem(TOKEN_KEY);
+          navigate("/login", {
+            replace: true,
+            state: { sessionExpired: true },
+          });
+        } else {
+          console.error("Failed to load current user", error);
+        }
+      }
+    }
+
+    loadCurrentUser();
+
+    return () => {
+      isCancelled = true;
     };
+  }, [navigate]);
+
+  useEffect(() => {
     let isCancelled = false;
 
     async function loadGame() {
       try {
-        const game = await getGame(1); // wait for the data
+        const game = await getGame(1);
         if (!isCancelled) {
-          setState({ status: "success", game }); // use the data
+          setState({ status: "success", game });
         }
       } catch (err: unknown) {
         if (!isCancelled) {
@@ -170,47 +169,21 @@ export function HomeDashboard() {
       }
     }
 
-    async function loadUser() {
-      try {
-        const currentUser = await getCurrentUser();
-        // if (!isCancelled) {
-
-        // }
-
-        if (!currentUser) {
-          handleRedirect();
-          return;
-        }
-
-        setUser(currentUser);
-      } catch (error: unknown) {
-        if (error instanceof AuthError) {
-          handleRedirect();
-        } else {
-          console.error("Failed to load user", error);
-          setUser(null);
-        }
-      }
-      return;
-    }
-
-    loadUser();
     loadGame();
 
     return () => {
       isCancelled = true;
     };
-  }, [navigate]);
+  }, []);
+
+  const greeting = user ? `Hey, ${user.name}!` : "Hey there!";
 
   return (
     <div className="home-dashboard">
       <div className="home-header-logo">
         <h2>VanGo</h2>
       </div>
-      <PageHeader
-        title={`Hey, ${greetingName}!`}
-        subtitle="Get Outside. Get Creative."
-      />
+      <PageHeader title={greeting} subtitle="Get Outside. Get Creative." />
       <FeaturedChallengeCard title="Draw a heart" />
       <div className="challenge-actions">
         <ButtonLink
