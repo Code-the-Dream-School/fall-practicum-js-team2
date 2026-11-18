@@ -103,6 +103,7 @@ function StreetLayer({ onStreets }: { onStreets: (streets: Street[] | null) => v
       active = false
       controller?.abort()
       window.clearTimeout(timer)
+      map.off('load', schedule)
       map.off('moveend', schedule)
       map.off('resize', schedule)
     }

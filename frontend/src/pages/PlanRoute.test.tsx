@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { LatLng } from '../types/map'
 import { PlanRoute } from './PlanRoute'
@@ -31,8 +31,12 @@ vi.mock('../components/Map/ChallengeMap', () => ({
 
 function renderPlanRoute() {
   return render(
-    <MemoryRouter>
-      <PlanRoute />
+    <MemoryRouter initialEntries={['/plan-route']}>
+      <Routes>
+        <Route path="/plan-route" element={<PlanRoute />} />
+        <Route path="/challenges" element={<h1>Challenges</h1>} />
+        <Route path="/challenge-map" element={<h1>Challenge map</h1>} />
+      </Routes>
     </MemoryRouter>,
   )
 }
@@ -42,6 +46,31 @@ afterEach(() => {
 })
 
 describe('PlanRoute', () => {
+  it('shows the word and the sketch prompt', () => {
+    renderPlanRoute()
+
+    expect(screen.getByRole('heading', { name: 'Your word: HEART' })).toBeTruthy()
+    expect(screen.getByText('Sketch your route before you head out.')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Undo' })).toHaveProperty('disabled', true)
+    expect(screen.getByRole('button', { name: 'Reset' })).toHaveProperty('disabled', true)
+  })
+
+  it('links back to the challenge list', () => {
+    renderPlanRoute()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Join a Challenge' }))
+
+    expect(screen.getByRole('heading', { name: 'Challenges' })).toBeTruthy()
+  })
+
+  it('starts the walk from the planned route', () => {
+    renderPlanRoute()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Start walk' }))
+
+    expect(screen.getByRole('heading', { name: 'Challenge map' })).toBeTruthy()
+  })
+
   it('shows distance and time from the sketched strokes', () => {
     renderPlanRoute()
 
