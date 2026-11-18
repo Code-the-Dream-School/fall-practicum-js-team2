@@ -6,6 +6,20 @@ import { ButtonLink } from "../components/common/ButtonLink";
 import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 import { useState, useEffect } from "react";
 import { ActiveChallengeCard } from "../components/home/ActiveChallengeCard";
+import { useNavigate } from "react-router-dom";
+
+class AuthError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "AuthError";
+    this.status = status;
+  }
+}
+
+// TODO: move to shared auth module
+const TOKEN_KEY = "vango_token";
 
 // Based on the Participant Model
 type Participant = {
@@ -42,6 +56,56 @@ async function getGame(id: number): Promise<Game> {
   };
 }
 
+type User = {
+  name: string;
+  id: number;
+  email: string;
+  createdAt: string;
+};
+
+// User model currently uses id and email
+// uses user.name from /me
+async function getCurrentUser(): Promise<User | null> {
+  const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+
+  const url = `${API_BASE}/api/auth/me`;
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  // null check
+  if (!token) {
+    return null;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    switch (response.status) {
+      case 401:
+        localStorage.removeItem(TOKEN_KEY);
+        // handleRedirect();
+        throw new Error("Unauthorized: Please log in again.");
+
+      case 404:
+        window.location.href = "/login";
+        throw new Error("Not Found");
+
+      case 500:
+        throw new Error("Server error (500). Please try again later.");
+
+      default:
+        throw new Error(`Response status: ${response.status}`);
+    }
+  }
+  // happy-path
+  const result = await response.json();
+
+  return result.user;
+}
+
 const privacyLabels = {
   PUBLIC: "Public lobby",
   PRIVATE: "Private lobby",
@@ -76,10 +140,16 @@ export function HomeDashboard() {
   // TODO: Replace with real user data once the user endpoint/auth exists.
   const userObject = { name: undefined };
   const greetingName = userObject.name || "Username";
-
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null); // not sure if I need this
+
   useEffect(() => {
+    const handleRedirect = () => {
+      localStorage.removeItem(TOKEN_KEY);
+      navigate("/login", { replace: true });
+    };
     let isCancelled = false;
 
     async function loadGame() {
@@ -100,12 +170,37 @@ export function HomeDashboard() {
       }
     }
 
+    async function loadUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        // if (!isCancelled) {
+
+        // }
+
+        if (!currentUser) {
+          handleRedirect();
+          return;
+        }
+
+        setUser(currentUser);
+      } catch (error: unknown) {
+        if (error instanceof AuthError) {
+          handleRedirect();
+        } else {
+          console.error("Failed to load user", error);
+          setUser(null);
+        }
+      }
+      return;
+    }
+
+    loadUser();
     loadGame();
 
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="home-dashboard">
