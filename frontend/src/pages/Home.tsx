@@ -20,12 +20,10 @@ class AuthError extends Error {
 // TODO: move to shared auth module
 const TOKEN_KEY = "vango_token";
 
-// Based on the Participant Model
 type Participant = {
   id: number;
 };
 
-// Based on the Game Model
 type Game = {
   id: number;
   lobbyName: string;
