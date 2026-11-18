@@ -6,7 +6,6 @@ import {BottomNav} from '../components/common/BottomNav';
 import {BackLink} from '../components/common/BackLink';
 import { Button } from '../components/common/Button';
 
-
 const MOCK_CHALLENGES: Challenge[] = [
     {
     id: 1,
