@@ -4,6 +4,8 @@ const prisma = require('../config/prisma');
 
 const SALT_ROUNDS = 10;
 const TOKEN_TTL = '7d';
+// Used for login when the email is unknown so we still run bcrypt.compare without hashing per request.
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('dummy-password', SALT_ROUNDS);
 
 // The only user fields that are ever sent back to the client.
 function publicUser(user) {
@@ -77,9 +79,7 @@ async function login(req, res) {
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
-    // Compare against a dummy hash when the email is unknown so the
-    // response time does not reveal whether the account exists.
-    const hash = user ? user.hashedPassword : await bcrypt.hash('dummy-password', SALT_ROUNDS);
+    const hash = user ? user.hashedPassword : DUMMY_PASSWORD_HASH;
     const passwordMatches = await bcrypt.compare(password, hash);
     if (!user || !passwordMatches) {
       return res.status(401).json({ error: 'Invalid email or password.' });
