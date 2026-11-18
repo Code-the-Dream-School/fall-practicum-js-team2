@@ -55,7 +55,8 @@ vi.mock('react-leaflet', () => ({
 }))
 
 vi.mock('./streets', () => ({
-  fetchStreets: (...args: unknown[]) => fetchStreets(...args),
+  fetchStreets: (bounds: unknown, signal: AbortSignal) =>
+    (fetchStreets as (b: unknown, s: AbortSignal) => Promise<unknown[]>)(bounds, signal),
 }))
 
 describe('StreetLayer', () => {
