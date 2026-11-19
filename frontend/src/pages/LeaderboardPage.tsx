@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState} from "react";//add useEffect when backend is ready
 import {useParams} from 'react-router-dom';
 import './Leaderboard.css';
 import { BackLink } from "../components/common/BackLink";
@@ -22,7 +22,7 @@ export const LeaderboardPage: React.FC = () => {
     const [promptWord] = useState<string>('Heart');
 
     // Mock rankings for testing
-    const [participants] = useState<LeaderboardEntry[]>([
+    const [participants] = useState<LeaderboardEntry[]>([ //add setParticipants when backend ready
         {
             participantId: 10,
             participantName: 'Andrey',
@@ -52,8 +52,30 @@ export const LeaderboardPage: React.FC = () => {
             participantName: 'Arturo C.',
             votes: 1,
             rank: 5,
-        },
+        },      
     ]);
+    // Backend useEffect 
+    /* useEffect(() => {
+        async function fetchLeaderboard() {
+            try { const response = await fetch(`/api/games/${id ?? '1'}/votes`);
+            const result = await response.json();
+
+            if (result.success && Array.isArray(result.data)) {
+                ({id, user: {name}, _count: {received} }) to LeaderboardEntry
+            const mapped: 
+                LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
+                    participantId: item.id, participantName: item.user.name, votes: item._count.received, rank: index + 1,
+                }));
+            setParticipants(mapped);
+            }
+        }
+        catch(error){
+            console.error('Error fetching leaderboard data:', error);
+        }
+        }
+        fetchLeaderboard();
+    }, [id]);
+    */
 
     // Obtaining top 3 participants for podium
     const firstPlace = participants.find((p) => p.rank === 1);
