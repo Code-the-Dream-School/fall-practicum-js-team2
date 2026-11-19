@@ -5,6 +5,7 @@ import { HomeDashboard } from "./pages/Home";
 import { ChallengesPage } from "./pages/ChallengesPage";
 import { LoginPage } from "./pages/Login";
 import { PlanRoute } from "./pages/PlanRoute";
+import { LeaderboardPage } from "./pages/LeaderboardPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/profile" element={""} />
         <Route path="/challenges/new" element={""} />
         <Route path="/challenges/join" element={""} />
+        <Route path="/challenges/:id/leaderboard" element={<LeaderboardPage />} />
       </Routes>
     </BrowserRouter>
   );
