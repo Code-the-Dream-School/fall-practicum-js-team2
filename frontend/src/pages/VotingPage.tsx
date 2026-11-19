@@ -10,6 +10,10 @@ import heartImg from '../assets/featured-heart-route.png';
 import starImg from '../assets/featured-heart-route.png';
 import swanImg from '../assets/featured-heart-route.png';
 
+// Button and header components
+import {PageHeader} from '../components/common/PageHeader';
+import {Button} from '../components/common/Button';
+
 // Mock timestamps for development
 const MOCK_VOTING_ENDS_AT = new Date(Date.now() + 5 * 60 * 1000);
 const MOCK_DRAWING_ENDS_AT = new Date(Date.now() - 1000);
@@ -128,10 +132,10 @@ export const VotingPage: React.FC = () => {
             <BackLink pathDestination="/YourActivity" pathName="Your activity"/>
         
         {/* challenge title and prompt */}
-        <header className="voting-header">
-            <h1>Which route looks most like a {promptWord}?</h1>
-            <h2 className="challenge-title">{challengeTitle}</h2>
-        </header>
+        <div className="voting-header">
+            <PageHeader title={`Which route looks most like a ${promptWord}?`} 
+            subtitle={challengeTitle}/>
+        </div>
         {!isVotingOpen ? (
             <div className="voting-phase-guard">
                 <div className="phase-guard-card">
@@ -166,10 +170,10 @@ export const VotingPage: React.FC = () => {
 
         {/* Vote button */}
         <div className="voting-actions-bar">
-            <button type="button" className="challenge-action-btn" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
+            <Button type="button" className="challenge-action-btn" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
             onClick={handleSubmitVote}>
                 {hasVoted ? 'Vote Submitted!' : 'Submit Vote'}
-            </button>
+            </Button>
         </div>
         </>
                 )}
