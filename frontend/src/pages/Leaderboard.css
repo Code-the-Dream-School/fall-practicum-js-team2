@@ -1,5 +1,5 @@
 /* container */
-.leader-page {
+.leaderboard-page {
     min-height: 100vh;
     background-color: var(--color-background);
     color: var(--color-text);
@@ -103,10 +103,10 @@
 }
 
 /* Horizontal participant rank list */
-.participant-list {
+.participants-list {
     display: flex;
     flex-direction: column;
-    gap: 0.65;
+    gap: 0.65rem;
     margin-bottom: 2rem;
 }
 .participant-row {

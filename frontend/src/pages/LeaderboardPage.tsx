@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useParams} from 'react-router-dom';
+import './Leaderboard.css';
 import { BackLink } from "../components/common/BackLink";
 import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
@@ -24,27 +25,33 @@ export const LeaderboardPage: React.FC = () => {
     const [participants] = useState<LeaderboardEntry[]>([
         {
             participantId: 10,
-            participantName: 'Arturo C.',
-            votes: 12,
+            participantName: 'Andrey',
+            votes: 5,
             rank: 1,
         },
         {
             participantId: 15,
             participantName: 'Tonny',
-            votes: 8,
+            votes: 4,
             rank: 2,  
         },
         {
             participantId: 22,
             participantName: 'Tanis',
-            votes: 5,
+            votes: 3,
             rank: 3,
         },
         {
             participantId: 30,
             participantName: 'Edward',
-            votes: 3,
+            votes: 2,
             rank: 4,
+        },
+        {
+        participantId: 29,
+            participantName: 'Arturo C.',
+            votes: 1,
+            rank: 5,
         },
     ]);
 
@@ -56,7 +63,7 @@ export const LeaderboardPage: React.FC = () => {
     return (
         <div className="leaderboard-page">
             {/* backlink */}
-            <BackLink pathDestination="={`/challenges/${id ?? '1'}/vote`} pathName="Vote" />
+            <BackLink pathDestination={`/challenges/${id ?? '1'}/vote`} pathName="Vote" />
             {/* header, challenge name, and final result */}
             <div className="leaderboard-header">
                 <PageHeader title={`Draw a ${promptWord}`} subtitle={challengeTitle}/>
@@ -65,7 +72,7 @@ export const LeaderboardPage: React.FC = () => {
             {/* podium */}
             <section className="podium-section" aria-label="Top 3 Winner">
                 {secondPlace && (
-                <div className="podium-column podium second">
+                <div className="podium-column podium-second">
                     <span className="podium-rank">2nd</span>
                     <span className="podium-name">{secondPlace.participantName}</span>
                     <span className="podium-votes">{secondPlace.votes} votes</span>
