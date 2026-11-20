@@ -14,7 +14,7 @@ export interface Challenge {
   participantsCount?: number;
 }
 
-interface ActiveChallengeCardProps {
+interface ChallengeLobbyCardProps {
   challenge: Challenge;
   onSelect?: (id: number | string) => void;
 }
@@ -25,7 +25,7 @@ const PROMPT_IMAGES: Record<string, string> = {
   swan: swanImg,
 };
 
-export const ActiveChallengeCard: React.FC<ActiveChallengeCardProps> = ({
+export const ChallengeLobbyCard: React.FC<ChallengeLobbyCardProps> = ({
   challenge,
   onSelect,
 }) => {

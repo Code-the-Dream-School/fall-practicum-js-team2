@@ -1,10 +1,11 @@
 import React, {useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Challenges.css';
-import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
+import {ChallengeLobbyCard, type Challenge } from '../components/challenges/ChallengeLobbyCard';
 import {BottomNav} from '../components/common/BottomNav';
 import {BackLink} from '../components/common/BackLink';
 import { Button } from '../components/common/Button';
+import { PageHeader } from '../components/common/PageHeader';
 
 const MOCK_CHALLENGES: Challenge[] = [
     {
@@ -68,11 +69,7 @@ export const ChallengesPage: React.FC = () => {
 return (
     <div className="challenges-page">
         <BackLink pathDestination='/challenges/join' pathName='Join a Challenge'/>
-        <header className="page-header">
-            <p className="brand-logo">VanGo</p>
-            <h1>Active Challenges</h1>
-            <p className="page-subtitle">Pick a lobby and start drawing your route.</p>
-        </header>
+        <PageHeader title="Active Challenges" subtitle="Pick a lobby and start drawing your route."/>
 
         {/* {challenge cards feed} */}
         <section className="challenges-feed">
@@ -90,7 +87,7 @@ return (
             )}
             {/* Pass onSelect to challenge card */}
             {!isLoading && challenges.map((challenge) => (
-                <ActiveChallengeCard key={challenge.id} challenge={challenge} onSelect={handleSelectChallenge}/>
+                <ChallengeLobbyCard key={challenge.id} challenge={challenge} onSelect={handleSelectChallenge}/>
             ))}
             
         </section>

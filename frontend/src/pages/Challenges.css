@@ -12,14 +12,6 @@
   }
 }
 
-.brand-logo {
-  color: var(--color-accent);
-  font-weight: 800;
-  font-size: 1.4rem;
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
 /* Challenges Feed */
 .challenges-feed {
   display: flex;
