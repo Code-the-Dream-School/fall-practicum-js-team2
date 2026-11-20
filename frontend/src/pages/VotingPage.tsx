@@ -170,7 +170,7 @@ export const VotingPage: React.FC = () => {
 
         {/* Vote button */}
         <div className="voting-actions-bar">
-            <Button type="button" className="challenge-action-btn" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
+            <Button type="button" variant="primary" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
             onClick={handleSubmitVote}>
                 {hasVoted ? 'Vote Submitted!' : 'Submit Vote'}
             </Button>

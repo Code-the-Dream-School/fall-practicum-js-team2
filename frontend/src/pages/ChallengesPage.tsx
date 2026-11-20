@@ -83,7 +83,7 @@ return (
             {!isLoading && challenges.length === 0 && (
                 <div className="no-challenges">
                     <p>No active challenges at the moment.</p>
-                    <Button className="challenge-action-btn" onClick={() => navigate('/home')}>
+                    <Button variant="primary" onClick={() => navigate('/home')}>
                         Browse or Create a Challenge
                     </Button>
                 </div>
