@@ -27,6 +27,7 @@ export const VotingPage: React.FC = () => {
     const [selectedDrawingId, setSelectedDrawingId] = useState<number | string | null>(null);
     const [hasVoted, setHasVoted] = useState<boolean>(false);
     const [currentParticipantId] = useState<number>(10);
+    const [warningMessage, setWarningMessage] = useState<string | null>(null);
 
     // Timestamps ready for backend
     const [drawingEndsAt] = useState<Date>(MOCK_DRAWING_ENDS_AT);
@@ -100,9 +101,14 @@ export const VotingPage: React.FC = () => {
         //Prevent voting for your own drawing
         const clickedDrawing = drawings.find((d) => d.id === drawingId);
         if (clickedDrawing?.participantId === currentParticipantId) {
-            alert("You cannot vote for your own drawing!");
+            setWarningMessage("You cannot vote for your own drawing.");
+            //clear message after 3 sec
+            setTimeout(() => setWarningMessage(null), 3500);
             return;
         }
+        //Clear any previous warning
+        setWarningMessage(null);
+        
         //selecting same card deselects, otherwise selects the new one
         setSelectedDrawingId((prev) => (prev === drawingId ? null : drawingId));
     };
@@ -143,6 +149,7 @@ export const VotingPage: React.FC = () => {
             <PageHeader title={`Which route looks most like a ${promptWord}?`} 
             subtitle={challengeTitle}/>
         </div>
+        
         {!isVotingOpen ? (
             <div className="voting-phase-guard">
                 <div className="phase-guard-card">
@@ -152,6 +159,14 @@ export const VotingPage: React.FC = () => {
                 </div>
                 </div>):(
             <>
+            {/* In-app warning banner */}
+        {warningMessage && (
+            <div className="voting-warning-banner" role="alert">
+                <span>⚠️</span>
+                <span>{warningMessage}</span>
+            </div>
+            )}
+
             {/* submissions cards */}
         <section className="drawings-grid">
             {drawings.map((drawing) => (
