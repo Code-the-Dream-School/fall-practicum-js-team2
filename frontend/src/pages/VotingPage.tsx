@@ -26,6 +26,7 @@ export const VotingPage: React.FC = () => {
     const [promptWord] = useState<string>('Heart');
     const [selectedDrawingId, setSelectedDrawingId] = useState<number | string | null>(null);
     const [hasVoted, setHasVoted] = useState<boolean>(false);
+    const [currentParticipantId] = useState<number>(10);
 
     // Timestamps ready for backend
     const [drawingEndsAt] = useState<Date>(MOCK_DRAWING_ENDS_AT);
@@ -96,6 +97,12 @@ export const VotingPage: React.FC = () => {
 
     const handleToggleSelect = (drawingId: number | string) => {
         if (hasVoted) return;
+        //Prevent voting for your own drawing
+        const clickedDrawing = drawings.find((d) => d.id === drawingId);
+        if (clickedDrawing?.participantId === currentParticipantId) {
+            alert("You cannot vote for your own drawing!");
+            return;
+        }
         //selecting same card deselects, otherwise selects the new one
         setSelectedDrawingId((prev) => (prev === drawingId ? null : drawingId));
     };
