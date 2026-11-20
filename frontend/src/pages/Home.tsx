@@ -1,31 +1,35 @@
 import "./Home.css";
-
 import { BottomNav } from "../components/common/BottomNav";
 import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
 import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 import { useState, useEffect } from "react";
 import { ActiveChallengeCard } from "../components/home/ActiveChallengeCard";
+import { useNavigate } from "react-router-dom";
 
-// Based on the Participant Model
+class AuthError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "AuthError";
+    this.status = status;
+  }
+}
+
+// TODO: move to shared auth module
+const TOKEN_KEY = "vango_token";
+
 type Participant = {
   id: number;
 };
 
-// Based on the Game Model
 type Game = {
   id: number;
   lobbyName: string;
   participants: Participant[];
   privacy: "PUBLIC" | "PRIVATE" | "SOLO";
 };
-
-// This takes in a generic data type T. It will be used to take in a Game object later
-// TODO: use when getGame calls the real API
-// type ApiResponse<T> = {
-//   success: boolean;
-//   data: T;
-// };
 
 type LoadState =
   | { status: "loading" }
@@ -40,6 +44,39 @@ async function getGame(id: number): Promise<Game> {
     participants: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
     privacy: "PRIVATE",
   };
+}
+
+type User = {
+  name: string;
+  id: number;
+  email: string;
+  createdAt: string;
+};
+
+async function getCurrentUser(): Promise<User | null> {
+  const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+  const url = `${API_BASE}/api/auth/me`;
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  if (!token) {
+    return null;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 404) {
+      throw new AuthError("Session is no longer valid", response.status);
+    }
+    throw new Error(`Failed to load current user (status ${response.status})`);
+  }
+
+  const result = await response.json();
+  return result.user;
 }
 
 const privacyLabels = {
@@ -73,20 +110,50 @@ function renderActiveChallenge(state: LoadState) {
 }
 
 export function HomeDashboard() {
-  // TODO: Replace with real user data once the user endpoint/auth exists.
-  const userObject = { name: undefined };
-  const greetingName = userObject.name || "Username";
+  const navigate = useNavigate();
 
   const [state, setState] = useState<LoadState>({ status: "loading" });
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function loadCurrentUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        if (!isCancelled) {
+          setUser(currentUser);
+        }
+      } catch (error: unknown) {
+        if (isCancelled) return;
+
+        if (error instanceof AuthError) {
+          localStorage.removeItem(TOKEN_KEY);
+          navigate("/login", {
+            replace: true,
+            state: { sessionExpired: true },
+          });
+        } else {
+          console.error("Failed to load current user", error);
+        }
+      }
+    }
+
+    loadCurrentUser();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [navigate]);
 
   useEffect(() => {
     let isCancelled = false;
 
     async function loadGame() {
       try {
-        const game = await getGame(1); // wait for the data
+        const game = await getGame(1);
         if (!isCancelled) {
-          setState({ status: "success", game }); // use the data
+          setState({ status: "success", game });
         }
       } catch (err: unknown) {
         if (!isCancelled) {
@@ -107,15 +174,14 @@ export function HomeDashboard() {
     };
   }, []);
 
+  const greeting = user ? `Hey, ${user.name}!` : "Hey there!";
+
   return (
     <div className="home-dashboard">
       <div className="home-header-logo">
         <h2>VanGo</h2>
       </div>
-      <PageHeader
-        title={`Hey, ${greetingName}!`}
-        subtitle="Get Outside. Get Creative."
-      />
+      <PageHeader title={greeting} subtitle="Get Outside. Get Creative." />
       <FeaturedChallengeCard title="Draw a heart" />
       <div className="challenge-actions">
         <ButtonLink
