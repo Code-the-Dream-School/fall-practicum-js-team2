@@ -4,4 +4,18 @@
   color: var(--color-text);
   text-decoration: none;
   align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s ease;
+}
+
+.backlink-section svg {
+  transition: transform 0.2s ease;
+}
+
+.backlink-section:hover {
+  color: var(--color-accent);
+}
+
+.backlink-section:hover svg {
+  transform: translateX(-3px);
 }
