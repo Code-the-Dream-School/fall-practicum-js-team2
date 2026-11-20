@@ -1,0 +1,148 @@
+/* container */
+.leaderboard-page {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    padding: 1.5rem 1rem 6rem;
+    max-width: 40rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Header & Titles */
+.leaderboard-header {
+    text-align: left;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+.leaderboard-header .page-header-title {
+    margin: 0 0 0.35rem 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: left;
+}
+.leaderboard-header .page-header-subtitle {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+/* Golden yellow sub-heading */
+.results-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin: 0.5rem 0 0;
+    letter-spacing: 0.3px;
+    text-align: left;
+}
+
+/* Podium section */
+.podium-section {
+    display: flex;
+    align-items: flex-end; 
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
+    padding: 0 0.5rem;
+}
+.podium-column {
+    flex: 1;
+    max-width: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px 16px 8px 8px;
+    padding: 1rem 0.5rem 0.75rem;
+    text-align: center;
+    transition: transform 200ms ease;
+}
+.podium-rank {
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+.podium-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    word-break: break-word;
+    }
+.podium-votes {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* 1st Place */
+.podium-first {
+    height: 190px;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    box-shadow: 0 8px 24px rgba(255,192, 0, 0.25);
+}
+
+/* 2nd Place */
+.podium-second {
+    height: 155px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+/* 3rd Place */
+.podium-third {
+    height: 125px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+/* Horizontal participant rank list */
+.participants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 2rem;
+}
+.participant-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    padding: 0.85rem 1.25rem;
+}
+.participant-rank {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--color-accent);
+    min-width: 2rem;
+}
+.participant-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    flex: 1;
+    margin-left: 0.5rem;
+}
+.participant-votes {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+/* Action button */
+.leaderboard-actions-bar {
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+.leaderboard-actions-bar .button-link {
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
