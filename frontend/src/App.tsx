@@ -7,6 +7,7 @@ import { ChallengesPage } from "./pages/ChallengesPage";
 import { VotingPage } from "./pages/VotingPage";
 import { LoginPage } from "./pages/Login";
 import { PlanRoute } from "./pages/PlanRoute";
+import { LeaderboardPage } from "./pages/LeaderboardPage";
 
 
 function App() {
@@ -22,6 +23,10 @@ function App() {
         <Route path="/challenges/new" element={""} />
         <Route path="/challenges/join" element={""} />
         <Route path="/challenges/:id/vote" element={<VotingPage />} />
+        <Route path="/challenges/:id/leaderboard" element={<LeaderboardPage />} />
+
+        
+
       </Routes>
     </BrowserRouter>
   );
