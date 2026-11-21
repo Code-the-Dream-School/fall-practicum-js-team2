@@ -108,18 +108,17 @@ export const VotingPage: React.FC = () => {
 
         console.log(`Casting vote in game #${id ?? '1'} : targetParticipantId is ${selectedDrawing.participantId} (${selectedDrawing.participantName})`);
 
-        // fetch call once backend is ready this will replace above console.log
-        // const response = await
-        // fetch(`/api/games/${id}/vote`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         Authorization: `Bearer ${token}`,
-        //     },
-        //     body: JSON.stringify({
-        //         targetParticipantId: selectedDrawing.participantId,
-        //     }),
+        // Note: fetch call once backend is ready this will replace above console.log
+        // const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+        // const token = localStorage.getItem("vango_token");
+        // const response = await fetch(`${API_BASE}/api/games/${id ?? '1'}/vote` , {
+        //             method: 'POST',
+        //             headers: { 'Content-Type' : 'application/json',
+        //             Authorization: `Bearer ${token}`, },
+        //             body: JSON.stringify({ targetParticipantId:selectedDrawing.participantId,}),
+
         // });
+        
 
         setHasVoted(true);
 
