@@ -5,6 +5,7 @@ import {ActiveChallengeCard, type Challenge } from '../components/challenges/Act
 import {BottomNav} from '../components/common/BottomNav';
 import {BackLink} from '../components/common/BackLink';
 import { Button } from '../components/common/Button';
+import { PageHeader } from '../components/common/PageHeader';
 
 const MOCK_CHALLENGES: Challenge[] = [
     {
@@ -41,8 +42,9 @@ export const ChallengesPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const API_Base = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
         // This will attempt to fetch from backend API
-        fetch('http://localhost:8080/api/games')
+        fetch(`${API_Base}/api/games`)
         .then((res) => {
             if (!res.ok) throw new Error('Failed to load challenges.');
             return res.json();
@@ -68,11 +70,7 @@ export const ChallengesPage: React.FC = () => {
 return (
     <div className="challenges-page">
         <BackLink pathDestination='/challenges/join' pathName='Join a Challenge'/>
-        <header className="page-header">
-            <p className="brand-logo">VanGo</p>
-            <h1>Active Challenges</h1>
-            <p className="page-subtitle">Pick a lobby and start drawing your route.</p>
-        </header>
+        <PageHeader title="Active Challenges" subtitle="Pick a lobby and start drawing your route."/>
 
         {/* {challenge cards feed} */}
         <section className="challenges-feed">
