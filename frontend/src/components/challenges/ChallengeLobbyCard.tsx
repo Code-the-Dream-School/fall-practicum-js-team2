@@ -34,34 +34,34 @@ export const ChallengeLobbyCard: React.FC<ChallengeLobbyCardProps> = ({
   const thumbnailImg = PROMPT_IMAGES[normalizedWord];
 
   return (
-    <article className="active-challenge-card">
-      <div className="challenge-card-header">
-        <span className="challenge-badge">
+    <article className="challenge-lobby-card">
+      <div className="challenge-lobby-card-header">
+        <span className="challenge-lobby-card-badge">
           {challenge.difficulty ?? "EASY"}
         </span>
-        <span className="challenge-lobby">
+        <span className="challenge-lobby-card-details">
           {challenge.participantsCount ?? 1} players ·{" "}
           {challenge.privacy === "PUBLIC" ? "Public" : "Private"} lobby
         </span>
       </div>
 
       {thumbnailImg && (
-        <div className="challenge-shape-preview">
+        <div className="challenge-lobby-card-shape-preview">
           <img
             src={thumbnailImg}
             alt={`${challenge.pictionaryWord} route preview`}
-            className="challenge-thumbnail-image"
+            className="challenge-lobby-card-thumbnail-image"
           />
         </div>
       )}
 
-      <div className="challenge-card-body">
-        <p className="challenge-prompt-text">
+      <div className="challenge-lobby-card-body">
+        <p className="challenge-lobby-card-prompt-text">
           Prompt: <strong>"{challenge.pictionaryWord}"</strong>
         </p>
       </div>
-
-      <div className="challenge-card-footer">
+      {/* No styles yet; hook for footer layout if more actions are added */}
+      <div className="challenge-lobby-card-footer"> 
         <Button
           variant="primary"
           onClick={() => onSelect?.(challenge.id)}
