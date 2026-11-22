@@ -148,3 +148,48 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+.create-lobby-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.create-form-error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-button);
+  background-color: #4a2326;
+  color: #ffb4ab;
+  font-size: 0.875rem;
+}
+
+.create-success {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+}
+
+.create-success h2,
+.create-success p {
+  margin: 0;
+}
+
+.create-join-code {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+}
+
+.create-another-button {
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
