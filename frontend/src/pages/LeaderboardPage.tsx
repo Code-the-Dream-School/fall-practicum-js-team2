@@ -57,11 +57,14 @@ export const LeaderboardPage: React.FC = () => {
     // Backend useEffect 
     /* useEffect(() => {
         async function fetchLeaderboard() {
-            try { const response = await fetch(`/api/games/${id ?? '1'}/votes`);
+            try { const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+            const token = localStorage.getItem("vango_token");
+            const response = await fetch(`${API_BASE}/api/games/${id ?? '1'}/votes`,
+            { headers: { Authorization: `Bearer ${token}`, },});
             const result = await response.json();
 
             if (result.success && Array.isArray(result.data)) {
-                ({id, user: {name}, _count: {received} }) to LeaderboardEntry
+                
             const mapped: 
                 LeaderboardEntry[] = result.data.map((item: any, index: number) => ({
                     participantId: item.id, participantName: item.user.name, votes: item._count.received, rank: index + 1,
