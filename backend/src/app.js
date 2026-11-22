@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const helloRoutes = require('./routes/hello.routes');
 const gameRouter = require("./routes/game.routes");
 const authRoutes = require('./routes/auth.routes');
+const notFound = require('./middleware/notFound');
 
 const app = express();
 
@@ -31,5 +32,7 @@ app.use('/api/auth', authRoutes);
 app.get('/', (req, res) => {
   res.send('Backend API is running');
 });
+
+app.use(notFound);
 
 module.exports = app;
