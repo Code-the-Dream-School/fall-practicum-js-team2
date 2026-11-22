@@ -3,6 +3,7 @@ import { Button } from "../common/Button";
 import heartImg from "../../assets/heart.jpg";
 import starImg from "../../assets/Star.jpg";
 import swanImg from "../../assets/swan.jpg";
+import "./ChallengeLobbyCard.css"
 
 export interface Challenge {
   id: number | string;
@@ -55,7 +56,6 @@ export const ChallengeLobbyCard: React.FC<ChallengeLobbyCardProps> = ({
       )}
 
       <div className="challenge-card-body">
-        {/* <h3 className="challenge-card-title">{challenge.pictionaryWord}</h3>   */}
         <p className="challenge-prompt-text">
           Prompt: <strong>"{challenge.pictionaryWord}"</strong>
         </p>
