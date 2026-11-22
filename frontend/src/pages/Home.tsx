@@ -4,7 +4,7 @@ import { PageHeader } from "../components/common/PageHeader";
 import { ButtonLink } from "../components/common/ButtonLink";
 import { FeaturedChallengeCard } from "../components/home/FeaturedChallengeCard";
 import { useState, useEffect } from "react";
-import { ActiveChallengeCard } from "../components/home/ActiveChallengeCard";
+import { HomeActiveChallengeCard } from "../components/home/HomeActiveChallengeCard";
 import { useNavigate } from "react-router-dom";
 
 class AuthError extends Error {
@@ -98,7 +98,7 @@ function renderActiveChallenge(state: LoadState) {
 
       return (
         // TODO: /challenges/:id route doesn't exist yet (add in App.tsx)
-        <ActiveChallengeCard
+        <HomeActiveChallengeCard
           title={state.game.lobbyName}
           playerCount={playerCount}
           path={`/challenges/${state.game.id}`}

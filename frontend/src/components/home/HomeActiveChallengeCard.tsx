@@ -1,19 +1,19 @@
-import "./ActiveChallengeCard.css";
+import "./HomeActiveChallengeCard.css";
 import { Link } from "react-router-dom";
 
-type ActiveChallengeCardProps = {
+type HomeActiveChallengeCardProps = {
   title: string;
   playerCount: number;
   path: string;
   privacy: string;
 };
 
-export function ActiveChallengeCard({
+export function HomeActiveChallengeCard({
   title,
   playerCount,
   path,
   privacy,
-}: ActiveChallengeCardProps) {
+}: HomeActiveChallengeCardProps) {
   const playerLabel = playerCount === 1 ? "player" : "players";
 
   return (
