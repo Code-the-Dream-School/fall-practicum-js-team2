@@ -8,6 +8,7 @@ const helloRoutes = require('./routes/hello.routes');
 const gameRouter = require("./routes/game.routes");
 const authRoutes = require('./routes/auth.routes');
 const notFound = require('./middleware/notFound');
+const errorHandler = require('./middleware/error-handler');
 
 const app = express();
 
@@ -34,5 +35,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;
