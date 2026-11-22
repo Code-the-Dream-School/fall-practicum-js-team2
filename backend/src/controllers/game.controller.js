@@ -411,7 +411,7 @@ async function update(req, res, next) {
         const gameId = Number(req.params.id);
         const userId = Number(req.userId);
 
-        const { status, endDate, pictionaryWord, maxParticipants } = req.body;
+        const { lobbyName, status, endDate, pictionaryWord, maxParticipants } = req.body;
 
         const game = await prisma.game.findUnique({
             where: { id: gameId },
@@ -448,6 +448,7 @@ async function update(req, res, next) {
         }
 
         const updateData = {};
+        if (lobbyName !== undefined) updateData.lobbyName = lobbyName;
         if (status !== undefined) updateData.status = status;
         if (endDate !== undefined) updateData.endDate = endDate;
         if (pictionaryWord !== undefined) updateData.pictionaryWord = pictionaryWord;
