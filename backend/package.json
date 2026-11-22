@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "smoke:auth": "node scripts/auth-smoke.js"
+    "smoke:auth": "node scripts/auth-smoke.js",
+    "smoke:game": "node scripts/game-smoke.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
