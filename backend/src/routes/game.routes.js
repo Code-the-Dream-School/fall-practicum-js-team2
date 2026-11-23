@@ -10,6 +10,7 @@ const {
     getGameStatus,
     getDrawings,
     getVotes,
+    getGameByJoinCode,
     update,
 } = require("../controllers/game.controller");
 
@@ -25,6 +26,7 @@ router.post("/:id/submit", requireAuth, validateSubmitDrawing, submitDrawing);
 router.patch("/:id", requireAuth, update);
 router.get("/:id/drawings", requireAuth, getDrawings);
 router.get("/:id/votes", requireAuth, getVotes);
+router.get("/code/:joinCode", requireAuth, getGameByJoinCode);
 
 router.get("/", getOpenGames);
 router.get("/:id", getGameStatus);

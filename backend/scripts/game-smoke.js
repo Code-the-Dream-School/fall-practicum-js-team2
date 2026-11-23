@@ -127,6 +127,7 @@ async function main() {
       body: privateGamePayload,
     });
     createdPrivateGameId = createPrivateRes.data.data.id;
+    createdPrivateGameJoinCode = createPrivateRes.data.data.joinCode;
     check(
       'POST /api/games creates a private game (201 + id)',
       createPrivateRes.status === 201 && Boolean(createdPrivateGameId),
@@ -203,6 +204,10 @@ async function main() {
     // Get votes of joined game
     const voteRes = await call(`/api/games/${createdGameId}/votes`, { token: hostToken });
     check('GET /api/games/:id/votes', voteRes.status === 200, `got ${voteRes.status}`);
+
+    // Get game from join code
+    const joinCodeRes = await call(`/api/games/code/${createdPrivateGameJoinCode}`, { token: p2Token });
+    check(`Get /api/games/code/:joincode returns game`, joinCodeRes.status === 200, `got ${joinCodeRes.status}`);
 
     // update the game
     if (createdGameId) {
