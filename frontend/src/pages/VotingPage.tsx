@@ -181,7 +181,7 @@ export const VotingPage: React.FC = () => {
         <div className="voting-status-section">
             <p className="voting-subtitle">Vote for your favorite drawing before time expires.</p>
 
-            <div className={`voting-time-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
+            <div className={`voting-timer-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
                 {/* <span className="timer-icon">⏳</span> */}
                 <span>Time Remaining to Vote: <strong>{formatTime(timeLeft)}</strong></span>
             </div>
@@ -191,7 +191,7 @@ export const VotingPage: React.FC = () => {
 
         {/* Vote button */}
         <div className="voting-actions-bar">
-            <Button type="button" className="challenge-action-btn" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
+            <Button type="button" variant="primary" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
             onClick={handleSubmitVote}>
                 {hasVoted ? 'Vote Submitted!' : 'Submit Vote'}
             </Button>
