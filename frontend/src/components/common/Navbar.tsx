@@ -15,8 +15,8 @@ export const Navbar: React.FC = () => {
                     <a href="#challenges">Challenges</a>
                 </div>
                 <div className="nav-actions">
-                    <Button className="btn btn-secondary">Sign In</Button>
-                    <Button className="btn btn-primary">Get Started</Button>
+                    <Button className="btn btn-secondary" href="/login">Sign In</Button>
+                    <Button className="btn btn-primary" href="/login">Get Started</Button>
                 </div>
             </div>
         </nav>
