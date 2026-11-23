@@ -21,9 +21,9 @@
 
 /* Error Banner */
 .error-banner {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--color-error-background);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
   padding: 0.75rem 1rem;
   border-radius: var(--radius-button);
   font-size: 0.85rem;

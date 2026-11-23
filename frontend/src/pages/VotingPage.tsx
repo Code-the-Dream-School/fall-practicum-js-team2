@@ -160,7 +160,7 @@ export const VotingPage: React.FC = () => {
         <div className="voting-status-section">
             <p className="voting-subtitle">Vote for your favorite drawing before time expires.</p>
 
-            <div className={`voting-time-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
+            <div className={`voting-timer-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
                 {/* <span className="timer-icon">⏳</span> */}
                 <span>Time Remaining to Vote: <strong>{formatTime(timeLeft)}</strong></span>
             </div>

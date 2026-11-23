@@ -17,6 +17,7 @@
   flex-direction: column;
   gap: 0.35rem;
 }
+
 .challenge-title {
   font-size: 0.95rem;
   color: var(--color-text-muted);
@@ -24,6 +25,7 @@
   font-weight: 500;
   letter-spacing: 0.5px;
 }
+
 .voting-question {
   font-size: 1.15rem;
   color: var(--color-text);
@@ -54,10 +56,10 @@
   color: var(--color-accent);
 }
 .timer-urgent {
-  border-color: #ef4444;
+  border-color: var(--color-urgent-border);
 }
 .timer-urgent strong {
-  color: #f87171;
+  color: var(--color-urgent-text);
 }
 /* Drawings Grid */
 .drawings-grid {
@@ -81,17 +83,17 @@
 }
 /* Highlighted Selection State */
 .drawing-vote-card.selected {
-  background-color: #c59a28;
-  border-color: #c59a28;
+  background-color: var(--color-card-border-primary);
+  border-color: var(--color-card-border-primary);
   box-shadow: 0 6px 20px rgba(197, 154, 40, 0.4);
   transform: translateY(-2px);
 }
 .drawing-vote-card.selected .participant-name {
-  color: #062240;
+  color: var(--color-on-accent);
 }
 .drawing-vote-card.selected .vote-checkmark.checked {
-  background-color: #062240;
-  border-color: #062240;
+  background-color: var(--color-on-accent);
+  border-color: var(--color-on-accent);
   color: var(--color-accent);
 }
 /* Image */

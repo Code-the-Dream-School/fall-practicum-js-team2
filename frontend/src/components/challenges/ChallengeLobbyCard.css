@@ -59,7 +59,7 @@
 
 .challenge-lobby-card-prompt-text {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: var(--font-size-small);
   color: var(--color-text-muted);
 }
 

@@ -16,9 +16,15 @@
   --color-card-background-primary: #3c3520;
   --color-card-border-primary: #c59a28;
   --color-card-background-secondary: #123352;
+  --color-error-background: #ef444426;
+  --color-error-border: #ef44444d;
+  --color-error-text: #fca5a5;
+  --color-urgent-border: #ef4444;
+  --color-urgent-text: #f87171;
 
   --font-family: "Inter", sans-serif;
   --font-size-caption: 0.75rem;
+  --font-size-small: 0.875rem;
   --font-size-body: 1rem;
   --font-size-heading: 1.5rem;
 
