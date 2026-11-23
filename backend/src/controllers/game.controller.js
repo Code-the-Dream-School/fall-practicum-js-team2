@@ -280,6 +280,33 @@ async function getOpenGames(req, res, next) {
     }
 }
 
+async function getPrivateGames(req, res, next) {
+    try {
+        const today = new Date();
+        
+        const privateGames = await prisma.game.findMany({
+            where: {
+                status: "ACTIVE",
+                privacy: "PRIVATE",
+                endDate: {
+                    gt: today
+                }
+            },
+            orderBy: {
+                startDate: 'desc'
+            }
+        });
+
+        return res.status(200).json({
+            success:true, 
+            data: privateGames
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 //get game information (eg partipants, status, privacy, etc)
 async function getGameStatus(req, res, next) {
     try{
@@ -507,6 +534,7 @@ module.exports = {
     join,
     submitDrawing,
     getOpenGames,
+    getPrivateGames,
     getGameStatus,
     getDrawings,
     getVotes,

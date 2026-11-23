@@ -7,6 +7,7 @@ const {
     join,
     submitDrawing,
     getOpenGames,
+    getPrivateGames,
     getGameStatus,
     getDrawings,
     getVotes,
@@ -29,6 +30,7 @@ router.get("/:id/votes", requireAuth, getVotes);
 router.get("/code/:joinCode", requireAuth, getGameByJoinCode);
 
 router.get("/", getOpenGames);
+router.get("/", getPrivateGames);
 router.get("/:id", getGameStatus);
 
 module.exports = router;
