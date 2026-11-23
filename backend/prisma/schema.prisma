@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db { 
-  provider = "postgresql"
-  url      = env("DATABASE_URL") // Used when running locally or in production
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // Used when running locally or in production
   directUrl = env("DIRECT_URL") // Used strictly for running migrations (prisma migrate dev)
 }
 
@@ -77,6 +77,7 @@ model Drawing {
   participantId Int       @map("participant_id")
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   submittedAt   DateTime? @map("submitted_at") @db.Timestamptz(6)
+  distance      Float     @default(0) @map("distance")
 
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   coordinates Json        @default("[]") // Index 0 is the starting point of the drawing; stores latitude and longitude
