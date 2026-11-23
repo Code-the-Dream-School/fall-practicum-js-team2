@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 import type { LatLng, Street } from '../../types/map'
 import { distanceMeters, segmentStaysOnStreets, snapToStreet } from '../../utils/geoUtils'
@@ -15,24 +15,30 @@ type ChallengeMapProps = {
 function MapControls({ onLocation }: { onLocation: (point: LatLng) => void }) {
   const map = useMap()
   const onLocationRef = useRef(onLocation)
-  onLocationRef.current = onLocation
 
-  const readLocation = (center: boolean) => {
-    if (!navigator.geolocation) return
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const point: LatLng = [position.coords.latitude, position.coords.longitude]
-        onLocationRef.current(point)
-        if (center) map.setView(point, Math.max(map.getZoom(), 16))
-      },
-      () => undefined,
-      { enableHighAccuracy: true, maximumAge: 10000 },
-    )
-  }
+  useEffect(() => {
+    onLocationRef.current = onLocation
+  }, [onLocation])
+
+  const readLocation = useCallback(
+    (center: boolean) => {
+      if (!navigator.geolocation) return
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const point: LatLng = [position.coords.latitude, position.coords.longitude]
+          onLocationRef.current(point)
+          if (center) map.setView(point, Math.max(map.getZoom(), 16))
+        },
+        () => undefined,
+        { enableHighAccuracy: true, maximumAge: 10000 },
+      )
+    },
+    [map],
+  )
 
   useEffect(() => {
     readLocation(false)
-  }, [map])
+  }, [readLocation])
 
   return (
     <>
@@ -54,7 +60,10 @@ function MapControls({ onLocation }: { onLocation: (point: LatLng) => void }) {
 function StreetLayer({ onStreets }: { onStreets: (streets: Street[] | null) => void }) {
   const map = useMap()
   const onStreetsRef = useRef(onStreets)
-  onStreetsRef.current = onStreets
+
+  useEffect(() => {
+    onStreetsRef.current = onStreets
+  }, [onStreets])
 
   useEffect(() => {
     let active = true
@@ -123,9 +132,12 @@ function SketchLayer({
   const streetsRef = useRef(streets)
   const drawing = useRef(false)
   const [blocked, setBlocked] = useState(false)
-  strokesRef.current = strokes
-  onChangeRef.current = onStrokesChange
-  streetsRef.current = streets
+
+  useEffect(() => {
+    strokesRef.current = strokes
+    onChangeRef.current = onStrokesChange
+    streetsRef.current = streets
+  }, [strokes, onStrokesChange, streets])
 
   useEffect(() => {
     map.dragging.disable()

@@ -42,8 +42,9 @@ export const ChallengesPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const API_Base = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
         // This will attempt to fetch from backend API
-        fetch('http://localhost:8080/api/games')
+        fetch(`${API_Base}/api/games`)
         .then((res) => {
             if (!res.ok) throw new Error('Failed to load challenges.');
             return res.json();
