@@ -69,6 +69,7 @@ fetchDrawing();
 const handleSubmitForVote = () => {
     navigate(`/challenges/${id ?? "1"}/vote`);
 };
+
 // Preview your Entry goes to seperate screen
 const handlePreview = () => {
     navigate(`/challenges/${id ?? "1"}/preview`, {
@@ -83,6 +84,8 @@ const handlePreview = () => {
 // Keep Private sends to personal activity log / profile
 const handleKeepPrivate = async () => {
     console.log("Saving route privately to user profile...");
+
+
 
     // Backend Skeleton to save route image to user profile
     /* const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
@@ -132,10 +135,10 @@ return (
         </section>
 
         {/* Action Buttons */}
-        <section className="activity-actions" aria-label="Activity Actions">
-            <Button variant="primary" className="btn-submit-vote" onClick={handleSubmitForVote}>Submit challenge for vote</Button>
+        <section className="activity-actions" aria-label="Activity Actions">           
             <Button className="btn-preview-entry" onClick={handlePreview}>Preview your entry</Button>
             <Button className="btn-keep-private" onClick={handleKeepPrivate}>Keep private</Button>
+            <Button variant="primary" className="btn-submit-vote" onClick={handleSubmitForVote}>Submit challenge for vote</Button>
         </section>
 
         <BottomNav />
