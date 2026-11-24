@@ -9,7 +9,7 @@ import { LoginPage } from "./pages/Login";
 import { PlanRoute } from "./pages/PlanRoute";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { CreateChallengePage } from "./pages/CreateChallengePage";
-
+import { YourActivityPage } from "./pages/YourActivityPage";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
         <Route path="/challenges/join" element={""} />
         <Route path="/challenges/:id/vote" element={<VotingPage />} />
         <Route path="/challenges/:id/leaderboard" element={<LeaderboardPage />} />
-
+        <Route path="/challenges/:id/activity" element={<YourActivityPage/>} />
         
 
       </Routes>

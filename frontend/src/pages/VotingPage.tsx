@@ -141,7 +141,7 @@ export const VotingPage: React.FC = () => {
 
     return (
         <div className="voting-page">
-            <BackLink pathDestination="/YourActivity" pathName="Your activity"/>
+            <BackLink pathDestination={`/challenges/${id ?? '1'}/activity`} pathName="Your activity"/>
         
         {/* challenge title and prompt */}
         <div className="voting-header">
