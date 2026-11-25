@@ -4,8 +4,9 @@
   gap: 1.5rem;
   max-width: 40rem;
   margin-inline: auto;
-  padding: 1.5rem 1rem 6rem;
-  min-height: 100vh;
+  min-height: 100dvh;
+  --page-padding-x: var(--space-md);
+  padding: var(--space-lg) var(--page-padding-x) 0;
 
   .button {
     width: 100%;

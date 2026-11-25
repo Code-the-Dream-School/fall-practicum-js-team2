@@ -3,9 +3,10 @@
   flex-direction: column;
   gap: 1.25rem;
   max-width: 40rem;
-  min-height: 100vh;
+  min-height: 100dvh;
+  --page-padding-x: var(--space-md);
+  padding: var(--space-lg) var(--page-padding-x) 0;
   margin-inline: auto;
-  padding: 1.5rem 1rem 2rem;
 }
 
 .create-challenge-form {
