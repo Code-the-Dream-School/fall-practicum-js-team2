@@ -16,7 +16,7 @@ export const YourActivityPage: React.FC = () => {
 const passedImage = (location.state as {routeImage?: string })?.routeImage;
 
 // user greeting
-const [userName, setUserName] = useState<string>("Runner");
+const [userName, setUserName] = useState<string>("friend");
 
 // Route Image state
 const [routeImage] = useState<string>(passedImage || featuredHeartRoute); //add setRouteImage when backend is ready
@@ -112,7 +112,7 @@ const handlePreview = () => {
 
 // Keep Private displays confirmation banner and navigates /home
 const handleKeepPrivate = () => {
-setSaveMessage("✓ Route saved privately to your profile");
+setSaveMessage("✓ Route image was saved privately to your profile");
 
 
     // Backend Skeleton to save route image to user profile

@@ -54,7 +54,7 @@ export const RoutePreviewPage: React.FC = () => {
             pathName="Your activity"/>
 
             <div className="route-preview-header">
-                <PageHeader title="Preview your entry" subtitle="Here is how other runners will see your route in the voting gallery."/>
+                <PageHeader title="Preview your entry" subtitle="Here is how other participants will see your route in the voting gallery."/>
             </div>
 
             {/* Card Preview similar to VotingPage */}
