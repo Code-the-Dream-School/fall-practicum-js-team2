@@ -66,7 +66,33 @@ fetchDrawing();
 }, [id]);
 
 // Submit for vote
-const handleSubmitForVote = () => {
+const handleSubmitForVote = async () => {   
+    console.log(`Submitting drawing for challenge #${id ?? '1'}...`);
+
+    //Backend fetch skeleton:
+
+    /*  const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+        const token = localStorage.getItem("vango_token");
+        try { const reponse = await fetch (`${API_BASE}/api/games/${id ?? '1'}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            coordinates: [
+                {lat: 35.7796, lng: -78.6382},
+                {lat: 35.7801, lng: -78.6390}
+            ]
+        })
+    
+    });
+    const result = await response.json();
+    console.log("Submission response: result");
+} catch (error){
+    console.error("Error submitting drawing:", error);
+}
+*/
     navigate(`/challenges/${id ?? "1"}/vote`);
 };
 
@@ -82,9 +108,15 @@ const handlePreview = () => {
     });
 };
 // Keep Private sends to personal activity log / profile
-const handleKeepPrivate = async () => {
-    console.log("Saving route privately to user profile...");
-
+const handleKeepPrivate = () => {
+    navigate(`/challenges/${id ?? "1"}/keep-private`, {
+        state: {
+            routeImage,
+            distance,
+            duration,
+            from: `/challenges/${id ?? "1"}/activity`,
+        },
+    });
 
 
     // Backend Skeleton to save route image to user profile
@@ -105,8 +137,7 @@ const handleKeepPrivate = async () => {
         }),
     });
     */
-    alert("Route saved privately to your personal activity log!");
-    navigate("/profile");
+    
 };
 
 return (
