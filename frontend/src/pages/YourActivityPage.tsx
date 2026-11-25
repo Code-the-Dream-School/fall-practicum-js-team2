@@ -137,7 +137,7 @@ setSaveMessage("✓ Route saved privately to your profile");
     }
     */
 
-    // Smoothly transitions to Home after 1.5 sec 
+    // Smoothly transitions to Home after 3 sec 
     setTimeout(() => {
         navigate("/home");
     }, 3000);
