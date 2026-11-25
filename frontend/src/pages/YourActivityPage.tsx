@@ -24,6 +24,7 @@ const [routeImage] = useState<string>(passedImage || featuredHeartRoute); //add 
 // Route Stats
 const [distance] = useState<string>("3.2 mi");
 const [duration] = useState<string>("42 min");
+const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
 // Fetch logged in user
 useEffect(() => {
@@ -83,8 +84,9 @@ const handleSubmitForVote = async () => {
             coordinates: [
                 {lat: 35.7796, lng: -78.6382},
                 {lat: 35.7801, lng: -78.6390}
-            ]
+                ]
         })
+    //Note: will change coordinates with ({coordinates : userRunCoordinates})
     
     });
     const result = await response.json();
@@ -107,22 +109,16 @@ const handlePreview = () => {
         },
     });
 };
-// Keep Private sends to personal activity log / profile
+
+// Keep Private displays confirmation banner and navigates /home
 const handleKeepPrivate = () => {
-    navigate(`/challenges/${id ?? "1"}/keep-private`, {
-        state: {
-            routeImage,
-            distance,
-            duration,
-            from: `/challenges/${id ?? "1"}/activity`,
-        },
-    });
+setSaveMessage("✓ Route saved privately to your profile");
 
 
     // Backend Skeleton to save route image to user profile
     /* const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
     const token = localStorage.getItem("vango_token");
-
+    try {
     await fetch (`${API_BASE}/api/users/activities`, {
         method: "POST",
         headers: {
@@ -136,12 +132,24 @@ const handleKeepPrivate = () => {
             isPrivate: true,
         }),
     });
+    } catch (err) {
+    console.error("Error saving private route:", err);
+    }
     */
+
+    // Smoothly transitions to Home after 1.5 sec 
+    setTimeout(() => {
+        navigate("/home");
+    }, 3000);
     
 };
 
 return (
     <div className="activity-page">
+        {/* image save success banner */}
+        {saveMessage && (<div className="activity-save-banner" role="status">{saveMessage}</div>)}
+
+        {/* BackLink to plan your route */}
         <BackLink pathDestination="/plan-route" pathName="Plan route" />
 
         <div className="activity-header">
