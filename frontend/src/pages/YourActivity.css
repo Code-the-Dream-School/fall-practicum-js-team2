@@ -1,0 +1,153 @@
+.activity-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: 1.5rem 1rem 6.5rem; 
+    min-height: 100vh;
+    box-sizing: border-box;  
+}
+/* header */
+.activity-header {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.activity-header .page-header-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.35rem 0;
+    text-align: left; 
+}
+.activity-header .page-header-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-align: left;
+}
+/* image card */
+.activity-image-container {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); 
+    height: 320px; 
+}
+.activity-route-image {
+    width: 100%;
+    height: 100%;   
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* Side by Side stats */
+.activity-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+.activity-stat-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 0.90rem 0.90rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.25rem;
+    text-align: left;
+}
+.activity-stat-card .stat-label {
+    font-size: var(--font-size-caption);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+.activity-stat-card .stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+/* Action Buttons */
+.activity-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 4rem;
+}
+.activity-actions button, .activity-actions .button {
+    width: 100%;
+    min-height: 3.25rem; 
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-button); 
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+/* Primary button */
+.activity-actions .btn-submit-vote {
+    box-shadow: 0 4px 12px rgba(255, 192, 0, 0.25);
+}
+/* "Preview Entry" button*/
+.activity-actions .btn-preview-entry {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+.activity-actions .btn-preview-entry:hover {
+    background-color: var(--color-secondary-hover);
+    color: var(--color-text);
+}
+
+/* "Keep Private" Action */
+.activity-actions .btn-keep-private {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-weight: 600; 
+}
+.activity-actions .btn-keep-private:hover {
+    background-color: var(--color-secondary-hover);
+    color: var(--color-text);
+}
+/* In-app Success Banner */
+.activity-save-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: rgba(133, 214, 177, 0.15); 
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-button);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    animation: slideDown 250ms ease-out;
+}
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
