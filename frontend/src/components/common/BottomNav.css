@@ -2,7 +2,7 @@
   display: flex;
   margin-top: auto;
   padding-top: 0.75rem;
-  padding-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
   position: sticky;
   bottom: 0;
   background-color: var(--color-background);
