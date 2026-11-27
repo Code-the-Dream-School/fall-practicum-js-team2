@@ -1,0 +1,68 @@
+.challenge-lobby-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+.challenge-lobby-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+.challenge-lobby-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.challenge-lobby-card-badge {
+  font-size: var(--font-size-caption);
+  background-color: rgba(255, 192, 0, 0.15);
+  color: var(--color-accent);
+  border: 1px solid rgba(255, 192, 0, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+.challenge-lobby-card-details {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+/* Card Body */
+.challenge-lobby-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.challenge-lobby-card-shape-preview {
+  width: 116px;
+  height: 116px;
+  min-width: 58px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+.challenge-lobby-card-thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.challenge-lobby-card-prompt-text {
+  margin: 0;
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+}
+
+.challenge-lobby-card-prompt-text strong {
+  color: var(--color-accent);
+}

@@ -1,14 +1,15 @@
 /* container */
 .leaderboard-page {
-    min-height: 100vh;
     background-color: var(--color-background);
     color: var(--color-text);
-    padding: 1.5rem 1rem 6rem;
     max-width: 40rem;
     margin-inline: auto;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    min-height: 100dvh;
+    --page-padding-x: var(--space-md);
+    padding: var(--space-lg) var(--page-padding-x) 0;
 }
 
 /* Header & Titles */
