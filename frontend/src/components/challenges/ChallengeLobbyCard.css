@@ -66,3 +66,15 @@
 .challenge-lobby-card-prompt-text strong {
   color: var(--color-accent);
 }
+
+.challenge-lobby-card-name {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.challenge-lobby-card-ends {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
