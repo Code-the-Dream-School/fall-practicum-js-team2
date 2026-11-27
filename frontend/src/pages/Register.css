@@ -1,0 +1,187 @@
+.register-page {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  max-width: 40rem;
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: 1rem 1.5rem 1.5rem;
+
+  border: 1px solid #adbed0;
+  background-color: var(--color-background);
+
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+/* Two-tone wordmark, same split-span pattern as the Navbar logo:
+   "Van" in the regular text color, "Go" in the gold accent. */
+.register-logo {
+  margin-top: 6dvh;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.register-logo h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.register-logo-go {
+  color: var(--color-accent);
+}
+
+/* No card: the form sits directly on the page background, pushed
+   down below the logo. */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+
+  margin-top: 3.5rem;
+}
+
+.register-form-error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-button);
+  background-color: #4a2326;
+  color: #ffb4ab;
+  font-size: 0.875rem;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.register-field input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.register-field input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.register-field-error {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  color: #ffb4ab;
+}
+
+.register-password-wrap {
+  position: relative;
+}
+
+.register-password-wrap input {
+  padding-right: 3rem;
+}
+
+.register-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.register-submit {
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--radius-button);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.register-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.register-divider {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+/* Google's own button style: white background, dark text, G mark. */
+.register-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  align-self: center;
+
+  min-height: 2.75rem;
+  padding: 0.625rem 1.5rem;
+  border: 1px solid #dadce0;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.register-google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.register-note {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+/* Sign-in entry sits at the bottom of the screen, mirroring the
+   Login page footer: a question line, then "Sign in" with "in" in gold. */
+.register-login-footer {
+  margin-top: auto;
+  padding-top: 2.5rem;
+  text-align: center;
+}
+
+.register-login-question {
+  margin: 0 0 0.25rem;
+  color: var(--color-text);
+}
+
+.register-login {
+  padding: 0.25rem;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.register-login-word {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.register-login:hover {
+  text-decoration: underline;
+}
