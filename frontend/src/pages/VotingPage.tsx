@@ -26,6 +26,8 @@ export const VotingPage: React.FC = () => {
     const [promptWord] = useState<string>('Heart');
     const [selectedDrawingId, setSelectedDrawingId] = useState<number | string | null>(null);
     const [hasVoted, setHasVoted] = useState<boolean>(false);
+    const [currentParticipantId] = useState<number>(10);
+    const [warningMessage, setWarningMessage] = useState<string | null>(null);
 
     // Timestamps ready for backend
     const [drawingEndsAt] = useState<Date>(MOCK_DRAWING_ENDS_AT);
@@ -96,6 +98,17 @@ export const VotingPage: React.FC = () => {
 
     const handleToggleSelect = (drawingId: number | string) => {
         if (hasVoted) return;
+        //Prevent voting for your own drawing
+        const clickedDrawing = drawings.find((d) => d.id === drawingId);
+        if (clickedDrawing?.participantId === currentParticipantId) {
+            setWarningMessage("You cannot vote for your own drawing.");
+            //clear message after 3 sec
+            setTimeout(() => setWarningMessage(null), 3500);
+            return;
+        }
+        //Clear any previous warning
+        setWarningMessage(null);
+        
         //selecting same card deselects, otherwise selects the new one
         setSelectedDrawingId((prev) => (prev === drawingId ? null : drawingId));
     };
@@ -135,6 +148,7 @@ export const VotingPage: React.FC = () => {
             <PageHeader title={`Which route looks most like a ${promptWord}?`} 
             subtitle={challengeTitle}/>
         </div>
+        
         {!isVotingOpen ? (
             <div className="voting-phase-guard">
                 <div className="phase-guard-card">
@@ -144,6 +158,14 @@ export const VotingPage: React.FC = () => {
                 </div>
                 </div>):(
             <>
+            {/* In-app warning banner */}
+        {warningMessage && (
+            <div className="voting-warning-banner" role="alert">
+                <span>⚠️</span>
+                <span>{warningMessage}</span>
+            </div>
+            )}
+
             {/* submissions cards */}
         <section className="drawings-grid">
             {drawings.map((drawing) => (
@@ -159,7 +181,7 @@ export const VotingPage: React.FC = () => {
         <div className="voting-status-section">
             <p className="voting-subtitle">Vote for your favorite drawing before time expires.</p>
 
-            <div className={`voting-time-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
+            <div className={`voting-timer-banner ${timeLeft <60 ? 'timer-urgent' : ''}`}>
                 {/* <span className="timer-icon">⏳</span> */}
                 <span>Time Remaining to Vote: <strong>{formatTime(timeLeft)}</strong></span>
             </div>
@@ -169,7 +191,7 @@ export const VotingPage: React.FC = () => {
 
         {/* Vote button */}
         <div className="voting-actions-bar">
-            <Button type="button" className="challenge-action-btn" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
+            <Button type="button" variant="primary" disabled={!selectedDrawingId || hasVoted || timeLeft === 0}
             onClick={handleSubmitVote}>
                 {hasVoted ? 'Vote Submitted!' : 'Submit Vote'}
             </Button>

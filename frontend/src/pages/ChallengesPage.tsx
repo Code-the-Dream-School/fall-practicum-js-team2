@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Challenges.css';
-import {ActiveChallengeCard, type Challenge } from '../components/challenges/ActiveChallengeCard';
+import {ChallengeLobbyCard, type Challenge } from '../components/challenges/ChallengeLobbyCard';
 import {BottomNav} from '../components/common/BottomNav';
 import {BackLink} from '../components/common/BackLink';
 import { Button } from '../components/common/Button';
@@ -81,14 +81,14 @@ return (
             {!isLoading && challenges.length === 0 && (
                 <div className="no-challenges">
                     <p>No active challenges at the moment.</p>
-                    <Button className="challenge-action-btn" onClick={() => navigate('/home')}>
+                    <Button variant="primary" onClick={() => navigate('/home')}>
                         Browse or Create a Challenge
                     </Button>
                 </div>
             )}
             {/* Pass onSelect to challenge card */}
             {!isLoading && challenges.map((challenge) => (
-                <ActiveChallengeCard key={challenge.id} challenge={challenge} onSelect={handleSelectChallenge}/>
+                <ChallengeLobbyCard key={challenge.id} challenge={challenge} onSelect={handleSelectChallenge}/>
             ))}
             
         </section>
