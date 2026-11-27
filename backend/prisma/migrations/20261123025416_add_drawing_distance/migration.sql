@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "drawings" ADD COLUMN     "distance" DOUBLE PRECISION NOT NULL DEFAULT 0;
