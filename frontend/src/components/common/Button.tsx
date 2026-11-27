@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import "./Button.css";
 
 type ButtonProps = {
   className?: string;
@@ -7,6 +8,7 @@ type ButtonProps = {
   onClick?: () => void;
   href?: string;
   children: ReactNode;
+  variant?: "primary";
 };
 
 export function Button({
@@ -16,17 +18,26 @@ export function Button({
   onClick,
   href,
   children,
+  variant,
 }: ButtonProps) {
+  const classes = [variant ? `button button-${variant}` : null, className]
+    .filter(Boolean)
+    .join(" ");
   if (href) {
     return (
-      <a className={className} href={href}>
+      <a className={classes} href={href}>
         {children}
       </a>
     );
   }
 
   return (
-    <button type={type} className={className} disabled={disabled} onClick={onClick}>
+    <button
+      type={type}
+      className={classes}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
