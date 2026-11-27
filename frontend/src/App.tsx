@@ -6,6 +6,7 @@ import { ChallengesPage } from "./pages/ChallengesPage";
 
 import { VotingPage } from "./pages/VotingPage";
 import { LoginPage } from "./pages/Login";
+import { RegisterPage } from "./pages/Register";
 import { PlanRoute } from "./pages/PlanRoute";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { CreateChallengePage } from "./pages/CreateChallengePage";
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<HomeDashboard />} />
         <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/plan-route" element={<PlanRoute />} />

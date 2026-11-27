@@ -199,17 +199,6 @@ export function LoginPage() {
             Google sign-in is coming soon - please use your email for now.
           </p>
         )}
-
-        <div className="login-guest-footer">
-          <p className="login-guest-question">Don&apos;t have an account?</p>
-          <button
-            className="login-guest"
-            type="button"
-            onClick={() => navigate("/home")}
-          >
-            Continue as <span className="login-guest-word">Guest</span>
-          </button>
-        </div>
       </form>
     </div>
   );
