@@ -406,6 +406,37 @@ async function getVotes(req, res, next) {
     }
 }
 
+async function getGameByJoinCode(req, res, next) {
+    try {
+        const joinCode = req.params.joinCode.trim().toUpperCase();
+
+        const game = await prisma.game.findUnique({
+            where: {
+                joinCode
+            },
+            include: {
+                participants: true
+            }
+        });
+
+        if (!game) {
+            return res.status(404).json({
+                success: false,
+                message: "Game lobby not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Game lobby found with join code",
+            data: game
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 async function update(req, res, next) {
     try {
         const gameId = Number(req.params.id);
@@ -428,7 +459,7 @@ async function update(req, res, next) {
             return res.status(404).json({
                 success: false,
                 message: "Game lobby not found"
-            })
+            });
         }
 
         //First participant is the creator
@@ -479,5 +510,6 @@ module.exports = {
     getGameStatus,
     getDrawings,
     getVotes,
+    getGameByJoinCode,
     update,
 }
