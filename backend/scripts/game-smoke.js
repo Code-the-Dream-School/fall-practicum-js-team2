@@ -193,6 +193,16 @@ async function main() {
       `got ${listRes.status}`
     );
 
+    const privateRes = await call('/api/games', { token: p2Token });
+    const privateGamesList = Array.isArray(privateRes.data.data) 
+        ? privateRes.data.data 
+        : privateRes.data.games || [];
+    check(
+      'GET /api/games lists the new private game',
+      privateRes.status === 200 && gamesList.some((g) => g.id === createdGameId),
+      `got ${privateRes.status}`
+    );
+
     // Get public game status
     const statusRes = await call(`/api/games/${createdGameId}`);
     check('GET /api/games/:id returns game status', statusRes.status === 200, `got ${statusRes.status}`);
