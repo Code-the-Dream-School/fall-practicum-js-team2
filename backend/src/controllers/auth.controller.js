@@ -4,6 +4,10 @@ const prisma = require('../config/prisma');
 
 const SALT_ROUNDS = 10;
 const TOKEN_TTL = '7d';
+const RESET_TOKEN_TTL = '30m';
+// Where password reset links point. The frontend dev server by default;
+// set FRONTEND_URL in deployed environments.
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 // Used for login when the email is unknown so we still run bcrypt.compare without hashing per request.
 const DUMMY_PASSWORD_HASH = bcrypt.hashSync('dummy-password', SALT_ROUNDS);
 
@@ -22,6 +26,17 @@ function signToken(user) {
     { sub: user.id, email: user.email },
     process.env.JWT_SECRET,
     { expiresIn: TOKEN_TTL }
+  );
+}
+
+// Password reset tokens are stateless JWTs like the login tokens, but
+// short-lived and marked with a purpose so a login token can never be
+// used to reset a password (and a reset token never works as a login).
+function signResetToken(user) {
+  return jwt.sign(
+    { sub: user.id, purpose: 'password-reset' },
+    process.env.JWT_SECRET,
+    { expiresIn: RESET_TOKEN_TTL }
   );
 }
 
@@ -112,4 +127,82 @@ function logout(req, res) {
   return res.json({ message: 'Logged out.' });
 }
 
-module.exports = { register, login, me, logout };
+// POST /api/auth/forgot-password
+// Always answers with the same generic message, whether or not the
+// email is registered, so this endpoint never reveals which emails
+// have accounts (same idea as the generic 401 in login).
+async function forgotPassword(req, res) {
+  const email =
+    typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required.' });
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user) {
+      const resetLink = `${FRONTEND_URL}/reset-password?token=${signResetToken(user)}`;
+      // TODO(email): there is no email provider wired up yet, so for now
+      // the reset link is printed to the server console instead of being
+      // emailed. Send this link through the mailer once one exists.
+      console.log(`[password reset] Reset link for ${user.email}: ${resetLink}`);
+    }
+    return res.json({
+      message:
+        'If an account with that email exists, a password reset link is on its way.',
+    });
+  } catch (err) {
+    console.error('forgotPassword failed:', err);
+    return res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
+}
+
+// POST /api/auth/reset-password
+// Verifies the reset token, then replaces the user's password hash.
+async function resetPassword(req, res) {
+  const token = typeof req.body.token === 'string' ? req.body.token : '';
+  const newPassword =
+    typeof req.body.newPassword === 'string' ? req.body.newPassword : '';
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: 'Token and new password are required.' });
+  }
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    payload = null;
+  }
+  // Expired, tampered with, or not a reset token at all: one generic
+  // message, so the response never hints at which part failed.
+  if (!payload || payload.purpose !== 'password-reset') {
+    return res.status(400).json({
+      error: 'This reset link is invalid or has expired. Please request a new one.',
+    });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    await prisma.user.update({
+      where: { id: payload.sub },
+      data: { hashedPassword },
+    });
+    return res.json({ message: 'Your password has been reset. You can now sign in.' });
+  } catch (err) {
+    // P2025 = record not found (account deleted after the link was sent)
+    if (err.code === 'P2025') {
+      return res.status(400).json({
+        error: 'This reset link is invalid or has expired. Please request a new one.',
+      });
+    }
+    console.error('resetPassword failed:', err);
+    return res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
+}
+
+module.exports = { register, login, me, logout, forgotPassword, resetPassword };
