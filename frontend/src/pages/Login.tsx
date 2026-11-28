@@ -1,7 +1,7 @@
 import "./Login.css";
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
@@ -51,7 +51,6 @@ export function LoginPage() {
   const [passwordError, setPasswordError] = useState("");
   const [formError, setFormError] = useState("");
   const [googleNotice, setGoogleNotice] = useState(false);
-  const [forgotNotice, setForgotNotice] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   function validate(): boolean {
@@ -164,23 +163,10 @@ export function LoginPage() {
         </button>
 
         <div className="login-forgot-row">
-          <a
-            className="login-forgot"
-            href="#"
-            onClick={(event) => {
-              event.preventDefault();
-              setForgotNotice(true);
-            }}
-          >
+          <Link className="login-forgot" to="/forgot-password">
             Forgot Username or Password?
-          </a>
+          </Link>
         </div>
-        {forgotNotice && (
-          <p className="login-note">
-            Password reset is not available yet - it arrives with a follow-up
-            ticket.
-          </p>
-        )}
 
         <div className="login-divider">
           <span>- Or -</span>
